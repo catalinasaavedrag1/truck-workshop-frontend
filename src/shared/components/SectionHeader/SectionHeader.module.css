@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.copy {
+  min-width: 0;
+}
+
+.copy h2 {
+  font-size: 0.96rem;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.copy p {
+  max-width: 760px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .header {
+    display: grid;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+}

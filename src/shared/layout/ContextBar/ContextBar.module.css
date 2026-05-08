@@ -1,0 +1,134 @@
+.contextBar {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(220px, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  padding: 6px 18px;
+  background: rgb(255 255 255 / 0.92);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 740;
+  white-space: nowrap;
+}
+
+.moduleIcon {
+  display: inline-grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-sm);
+}
+
+.group,
+.parentLink,
+.current {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group {
+  max-width: 150px;
+  color: var(--color-text-muted);
+}
+
+.parentLink {
+  max-width: 180px;
+  color: var(--color-text);
+}
+
+.parentLink:hover {
+  color: var(--color-primary-dark);
+}
+
+.current {
+  max-width: 190px;
+  color: var(--color-text);
+  font-weight: 820;
+}
+
+.separator {
+  color: var(--color-border-strong);
+}
+
+.tabs {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: inline-flex;
+  min-height: 28px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.tab:hover {
+  color: var(--color-text);
+  background: var(--color-surface-muted);
+}
+
+.tab.active {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.18);
+}
+
+@media (max-width: 880px) {
+  .contextBar {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 7px 12px;
+  }
+
+  .identity {
+    width: 100%;
+  }
+
+  .tabs {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .group,
+  .separator:first-of-type {
+    display: none;
+  }
+
+  .tab span {
+    max-width: 132px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

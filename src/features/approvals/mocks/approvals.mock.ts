@@ -1,0 +1,40 @@
+import type { Approval } from '../types/approval.types'
+
+export const approvalsMock: Approval[] = [
+  {
+    id: 'approval-001',
+    type: 'quote',
+    status: 'pending',
+    relatedEntityId: 'quote-001',
+    caseId: 'case-001',
+    title: 'Aprobar cotizacion COT-2026-0012',
+    requestedBy: 'Javier Torres',
+    approverRole: 'JEFE_TALLER',
+    amount: 223800,
+    createdAt: '2026-05-05T10:35:00.000Z',
+  },
+  {
+    id: 'approval-002',
+    type: 'purchase',
+    status: 'approved',
+    relatedEntityId: 'po-001',
+    caseId: 'case-002',
+    title: 'Compra valvula moduladora freno',
+    requestedBy: 'Felipe Araya',
+    approverRole: 'JEFE_TALLER',
+    amount: 630000,
+    createdAt: '2026-05-04T16:25:00.000Z',
+    resolvedAt: '2026-05-04T16:50:00.000Z',
+  },
+  {
+    id: 'approval-003',
+    type: 'repair',
+    status: 'pending',
+    relatedEntityId: 'case-004',
+    caseId: 'case-004',
+    title: 'Autorizar entrega con recepcion parcial',
+    requestedBy: 'Camila Herrera',
+    approverRole: 'SUPERVISOR',
+    createdAt: '2026-05-05T09:10:00.000Z',
+  },
+]

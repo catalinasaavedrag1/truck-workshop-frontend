@@ -1,0 +1,249 @@
+.costHeaderActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.segmented button {
+  min-height: 32px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+}
+
+.segmented button[data-active='true'] {
+  color: var(--color-text);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.periodInput {
+  min-height: 38px;
+  padding: 0 10px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 700;
+}
+
+.overviewGrid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.costHero,
+.costMetric {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.costHero {
+  background: linear-gradient(135deg, #f8fafc, #eefdf8);
+}
+
+.costHero span,
+.costMetric span {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.costHero strong {
+  color: var(--color-text);
+  font-size: 1.65rem;
+  line-height: 1.05;
+}
+
+.costMetric strong {
+  color: var(--color-text);
+  font-size: 1.12rem;
+}
+
+.costHero small,
+.costMetric small {
+  color: var(--color-text-muted);
+  line-height: 1.35;
+}
+
+.fleetCell {
+  display: grid;
+  gap: 3px;
+}
+
+.fleetCell strong {
+  color: var(--color-text);
+}
+
+.fleetCell span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.costValue {
+  display: grid;
+  gap: 3px;
+  justify-items: end;
+}
+
+.costValue strong {
+  color: var(--color-text);
+}
+
+.costValue span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+}
+
+.categoryPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.categoryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.costLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.34fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.breakdownPanel {
+  display: grid;
+  gap: 10px;
+}
+
+.breakdownHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.breakdownHeader h2 {
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.categoryRows {
+  display: grid;
+  gap: 8px;
+}
+
+.categoryRow {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(120px, 1fr) minmax(90px, auto);
+  gap: 8px;
+  align-items: center;
+}
+
+.categoryLabel {
+  display: grid;
+  gap: 2px;
+}
+
+.categoryLabel strong {
+  color: var(--color-text);
+  font-size: 0.84rem;
+}
+
+.categoryLabel span {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+.bar {
+  height: 9px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+  border-radius: 999px;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #0f766e, #0284c7);
+  border-radius: inherit;
+}
+
+.categoryAmount {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 850;
+  text-align: right;
+}
+
+.detailSummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 1180px) {
+  .overviewGrid,
+  .detailSummary {
+    grid-template-columns: repeat(2, minmax(170px, 1fr));
+  }
+
+  .costLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .costHeaderActions,
+  .overviewGrid,
+  .detailSummary {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .segmented {
+    width: 100%;
+  }
+
+  .segmented button {
+    flex: 1;
+  }
+
+  .categoryRow {
+    grid-template-columns: 1fr;
+  }
+
+  .categoryAmount {
+    text-align: left;
+  }
+}

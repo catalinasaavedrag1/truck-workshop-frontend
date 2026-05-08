@@ -1,0 +1,170 @@
+.panel {
+  display: grid;
+  gap: 18px;
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+.section h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.98rem;
+}
+
+.section p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mode {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  color: var(--color-info);
+  background: #d1e9ff;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.shortcutGrid {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.shortcutRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 12px;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 12px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.shortcutRow:last-child {
+  border-bottom: 0;
+}
+
+.keys {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.keys kbd,
+.actionCard kbd {
+  min-width: 24px;
+  padding: 4px 7px;
+  color: var(--color-text);
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 -1px 0 rgb(23 33 47 / 0.08);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1;
+  text-align: center;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.actionCard {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) max-content;
+  gap: 8px;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.actionCard:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-muted);
+}
+
+.actionIcon {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-sm);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.footer > span {
+  margin-right: auto;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.settingsLink {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  color: #fff;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.settingsLink:hover {
+  background: var(--color-primary-dark);
+}
+
+@media (max-width: 620px) {
+  .sectionHeader,
+  .footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer > span {
+    margin-right: 0;
+  }
+}

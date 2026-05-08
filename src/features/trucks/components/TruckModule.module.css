@@ -1,0 +1,351 @@
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.tableShell {
+  display: grid;
+  gap: 12px;
+}
+
+.truckCell {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.truckIcon,
+.detailIcon,
+.timelineIcon {
+  display: grid;
+  place-items: center;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-sm);
+}
+
+.truckIcon {
+  width: 34px;
+  height: 34px;
+}
+
+.plateLink {
+  color: var(--color-text);
+  font-weight: 800;
+}
+
+.plateLink:hover,
+.actionLink:hover {
+  color: var(--color-primary);
+}
+
+.modelMeta,
+.vinText,
+.serviceHelper,
+.formHint,
+.detailMeta {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.vinText {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+}
+
+.serviceCell {
+  display: grid;
+  gap: 5px;
+  justify-items: start;
+}
+
+.serviceCell small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-text-muted);
+}
+
+.inlineMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.actionLink {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  color: var(--color-text-muted);
+  font-weight: 750;
+}
+
+.detailHero {
+  display: grid;
+  gap: 16px;
+}
+
+.heroTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.plateBlock {
+  display: grid;
+  gap: 5px;
+}
+
+.plateBlock strong {
+  font-size: 1.55rem;
+  line-height: 1.1;
+}
+
+.eyebrow {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.heroStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.heroStat {
+  display: grid;
+  gap: 4px;
+  min-height: 74px;
+  padding: 11px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.heroStat span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.heroStat strong {
+  overflow-wrap: anywhere;
+  font-size: 1.05rem;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.detailCard {
+  display: grid;
+  gap: 14px;
+}
+
+.detailHeader {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.detailIcon {
+  width: 34px;
+  height: 34px;
+}
+
+.detailHeader h2,
+.formSection h2 {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.infoItem {
+  display: grid;
+  gap: 5px;
+  padding: 11px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.infoItem dt {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.infoItem dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 800;
+}
+
+.servicePanel {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.serviceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.progressTrack {
+  height: 9px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+  border-radius: 999px;
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: inherit;
+}
+
+.timelineList {
+  display: grid;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timelineItem:last-child {
+  border-bottom: 0;
+}
+
+.timelineIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.timelineCopy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.timelineDate {
+  color: var(--color-text-muted);
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.formLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.formCard,
+.guideCard {
+  display: grid;
+  gap: 16px;
+}
+
+.formStack {
+  display: grid;
+  gap: 18px;
+}
+
+.formSection {
+  display: grid;
+  gap: 12px;
+}
+
+.formSectionHeader {
+  display: grid;
+  gap: 4px;
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.guideList {
+  display: grid;
+  gap: 12px;
+}
+
+.guideItem {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.guideIcon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--color-info);
+  background: #eff8ff;
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 980px) {
+  .heroStats,
+  .detailGrid,
+  .formLayout,
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineItem {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .timelineDate {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroTop,
+  .serviceRow,
+  .formActions {
+    justify-content: flex-start;
+  }
+
+  .heroTop,
+  .serviceRow {
+    display: grid;
+  }
+}

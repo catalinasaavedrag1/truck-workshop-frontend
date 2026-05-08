@@ -1,0 +1,32 @@
+{
+  "name": "truck-workshop-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend monolitico JavaScript para Truck Workshop con SQL Server.",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "seed:generate": "node scripts/generate-seed-data.js",
+    "seed:from-mocks": "npm run seed:generate && npm run seed",
+    "db:reset": "npm run migrate && npm run seed:from-mocks",
+    "check": "node scripts/check-syntax.js",
+    "db:audit": "node scripts/audit-database.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "msnodesqlv8": "^5.1.9",
+    "mssql": "^12.2.0",
+    "truck-workshop-frontend": "file:..",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

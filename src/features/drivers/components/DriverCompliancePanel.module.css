@@ -1,0 +1,164 @@
+.panel {
+  display: grid;
+  gap: 14px;
+}
+
+.decision {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.decisionHeader,
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.decisionCopy,
+.sectionCopy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.decisionCopy h2,
+.sectionCopy h3 {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.decisionCopy p,
+.sectionCopy p,
+.muted {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.metric {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.metric span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 780;
+}
+
+.metric strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.flowStep {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.flowStep strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text);
+  font-size: 0.86rem;
+}
+
+.section {
+  display: grid;
+  gap: 10px;
+}
+
+.docList,
+.fineList {
+  display: grid;
+  gap: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.9fr) minmax(160px, 0.8fr) max-content;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.rowTitle {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rowTitle strong,
+.rowTitle span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowTitle span {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.fineAmount {
+  display: grid;
+  gap: 3px;
+  text-align: right;
+}
+
+.fineAmount strong {
+  color: var(--color-text);
+}
+
+.empty {
+  padding: 12px;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-size: 0.86rem;
+}
+
+@media (max-width: 980px) {
+  .metrics,
+  .flow,
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .fineAmount {
+    text-align: left;
+  }
+}

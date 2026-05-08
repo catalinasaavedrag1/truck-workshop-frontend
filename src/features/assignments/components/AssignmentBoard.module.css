@@ -1,0 +1,294 @@
+.board {
+  display: grid;
+  gap: 18px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metricCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metricIcon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: var(--color-info);
+  background: #e8f0fe;
+  border-radius: var(--radius-sm);
+}
+
+.metricIcon.success {
+  color: var(--color-success);
+  background: #dcfae6;
+}
+
+.metricIcon.warning {
+  color: var(--color-warning);
+  background: #fff4e5;
+}
+
+.metricCard strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.metricCard small {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.35fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.caseQueue,
+.caseDetail,
+.mechanicsPanel {
+  display: grid;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.caseList {
+  display: grid;
+  gap: 10px;
+}
+
+.caseCard {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  color: var(--color-text);
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.caseCard:hover,
+.caseCardActive {
+  border-color: var(--color-primary);
+  background: #f7fcfb;
+}
+
+.caseCardHeader,
+.caseFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.caseCardHeader small,
+.partRow small {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+.badgeStack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.caseTitle {
+  color: var(--color-text);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.caseMetaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.caseMetaGrid span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.caseFooter {
+  padding-top: 8px;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.84rem;
+}
+
+.caseFooter strong {
+  color: var(--color-text);
+}
+
+.detailStack {
+  display: grid;
+  gap: 16px;
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.detailHeader h2 {
+  margin: 2px 0 4px;
+  font-size: 1.35rem;
+}
+
+.eyebrow {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.detailGrid,
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.detailGrid div,
+.summaryGrid div {
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.detailGrid dt,
+.summaryGrid dt {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.detailGrid dd,
+.summaryGrid dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.partsPanel {
+  display: grid;
+  gap: 10px;
+}
+
+.partList {
+  display: grid;
+  gap: 8px;
+}
+
+.partRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.recommendation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  background: var(--color-primary-soft);
+  border: 1px solid #9bd8ce;
+  border-radius: var(--radius-md);
+}
+
+.recommendation strong {
+  display: block;
+  margin-top: 2px;
+}
+
+.detailActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.textLink {
+  color: var(--color-primary-dark);
+  font-weight: 850;
+}
+
+.mechanicGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1180px) {
+  .metrics,
+  .mechanicGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .metrics,
+  .mechanicGrid,
+  .detailGrid,
+  .summaryGrid,
+  .caseMetaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailHeader,
+  .caseCardHeader,
+  .caseFooter,
+  .partRow,
+  .recommendation,
+  .detailActions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

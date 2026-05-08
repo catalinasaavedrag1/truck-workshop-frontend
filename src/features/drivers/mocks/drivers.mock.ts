@@ -1,0 +1,48 @@
+import type { Driver } from '../types/driver.types'
+
+export const driversMock: Driver[] = [
+  {
+    id: 'driver-001',
+    name: 'Luis Herrera',
+    document: '12.345.678-5',
+    phone: '+56 9 6123 4567',
+    company: 'Ruta Norte SpA',
+    license: 'A5 vigente',
+    status: 'active',
+    caseIds: ['case-001'],
+    createdAt: '2026-04-18T10:00:00.000Z',
+  },
+  {
+    id: 'driver-002',
+    name: 'Marcela Soto',
+    document: '14.222.391-0',
+    phone: '+56 9 7344 1100',
+    company: 'Transportes Maipo',
+    license: 'A5 vigente',
+    status: 'active',
+    caseIds: ['case-002'],
+    createdAt: '2026-04-21T15:20:00.000Z',
+  },
+  {
+    id: 'driver-003',
+    name: 'Rodrigo Pavez',
+    document: '16.901.112-7',
+    phone: '+56 9 8112 7744',
+    company: 'Minerales del Sur',
+    license: 'A5 vigente',
+    status: 'active',
+    caseIds: ['case-003'],
+    createdAt: '2026-04-25T09:15:00.000Z',
+  },
+  {
+    id: 'driver-004',
+    name: 'Claudio Munoz',
+    document: '10.554.901-2',
+    phone: '+56 9 6901 4455',
+    company: 'Logistica Cordillera',
+    license: 'A4 vencimiento 2026',
+    status: 'inactive',
+    caseIds: ['case-004'],
+    createdAt: '2026-03-30T11:40:00.000Z',
+  },
+]

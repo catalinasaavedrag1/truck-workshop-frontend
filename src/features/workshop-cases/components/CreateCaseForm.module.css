@@ -1,0 +1,182 @@
+.intakeLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.formCard {
+  display: grid;
+  gap: 14px;
+}
+
+.sectionTitle {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  padding-top: 10px;
+  color: var(--color-text);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.82rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.sectionTitle:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.truckContext {
+  display: grid;
+  gap: 10px;
+}
+
+.truckHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 12px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.truckHero strong {
+  display: block;
+  overflow: hidden;
+  font-size: 1.15rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.truckHero p,
+.contextList p,
+.impactPanel p {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.contextList {
+  display: grid;
+  gap: 8px;
+}
+
+.contextRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.contextRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.contextRow span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.contextRow strong {
+  text-align: right;
+}
+
+.impactPanel {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background: var(--color-primary-soft);
+  border: 1px solid rgb(15 118 110 / 0.2);
+  border-radius: var(--radius-sm);
+}
+
+.impactPanel strong {
+  color: var(--color-primary-dark);
+}
+
+.driverSignal {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.checkGrid {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.summaryRail {
+  position: sticky;
+  top: 74px;
+  display: grid;
+  gap: 12px;
+}
+
+.quickSteps {
+  display: grid;
+  gap: 8px;
+}
+
+.quickStep {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.quickStepNumber {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.quickStep strong {
+  display: block;
+  font-size: 0.86rem;
+}
+
+.quickStep span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 1080px) {
+  .intakeLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryRail {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .truckHero,
+  .checkGrid {
+    grid-template-columns: 1fr;
+  }
+}

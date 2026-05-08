@@ -1,0 +1,359 @@
+.pageStack {
+  display: grid;
+  gap: 14px;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.specialtyGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.summaryItem,
+.metric {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.summaryItem small,
+.metric small,
+.helperText,
+.timelineBody span,
+.timeCell span,
+.nextBlock p,
+.decisionBox span,
+.identityBlock p,
+.sectionHeader p {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.summaryItem strong,
+.metric strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.22rem;
+  line-height: 1.1;
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.filterButton {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-weight: 780;
+}
+
+.filterButton:hover,
+.filterButtonActive {
+  color: var(--color-primary-dark);
+  border-color: var(--color-border);
+  background: var(--color-primary-soft);
+}
+
+.filterCount {
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  color: var(--color-text);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.76rem;
+}
+
+.mechanicCell {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.mechanicCell strong,
+.mechanicCell span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badgeLine,
+.riskLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.assignmentPreview {
+  display: grid;
+  gap: 4px;
+  min-height: 64px;
+  align-content: center;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.assignmentPreview strong {
+  color: var(--color-text);
+  font-size: 0.88rem;
+}
+
+.assignmentPreview span {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.loadCell {
+  display: grid;
+  gap: 5px;
+  min-width: 100px;
+}
+
+.progressTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.operationalPanel,
+.panel {
+  display: grid;
+  gap: 14px;
+}
+
+.decisionHeader,
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.identityBlock {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  min-width: 0;
+}
+
+.identityBlock h2,
+.sectionHeader h2 {
+  color: var(--color-text);
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+
+.avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
+  font-weight: 860;
+}
+
+.decisionBox {
+  display: grid;
+  gap: 4px;
+  max-width: 330px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.metric > span {
+  color: var(--color-primary);
+}
+
+.metric.success {
+  background: #f3fbf7;
+}
+
+.metric.warning {
+  background: #fff8ed;
+}
+
+.metric.danger {
+  background: #fff5f4;
+}
+
+.metric.info {
+  background: #f3f7ff;
+}
+
+.loadSection {
+  display: grid;
+  gap: 8px;
+}
+
+.nextBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.nextBlock a,
+.timelineRow a {
+  font-weight: 780;
+}
+
+.warningNote,
+.successNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 760;
+}
+
+.warningNote {
+  color: var(--color-danger);
+  background: #fff5f4;
+}
+
+.successNote {
+  color: var(--color-success);
+  background: #f3fbf7;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.detailMain,
+.detailSide {
+  display: grid;
+  gap: 14px;
+}
+
+.timelineList {
+  display: grid;
+  gap: 8px;
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.timelineRow:hover {
+  border-color: var(--color-border-strong);
+  background: #f9fbfc;
+}
+
+.timeCell,
+.timelineBody,
+.badgeColumn {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.timelineBody strong,
+.timelineBody span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badgeColumn {
+  justify-items: end;
+}
+
+@media (max-width: 1120px) {
+  .summaryGrid,
+  .specialtyGrid,
+  .metricGrid,
+  .detailGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .summaryGrid,
+  .specialtyGrid,
+  .metricGrid,
+  .detailGrid,
+  .timelineRow {
+    grid-template-columns: 1fr;
+  }
+
+  .decisionHeader,
+  .nextBlock,
+  .sectionHeader {
+    display: grid;
+  }
+
+  .badgeColumn {
+    justify-items: start;
+  }
+}

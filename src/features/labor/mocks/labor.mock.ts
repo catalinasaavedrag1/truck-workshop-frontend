@@ -1,0 +1,47 @@
+import type { LaborTask } from '../types/labor.types'
+
+export const laborTasksMock: LaborTask[] = [
+  {
+    id: 'labor-001',
+    caseId: 'case-001',
+    description: 'Diagnostico sistema combustible',
+    estimatedHours: 2,
+    realHours: 1.5,
+    mechanicId: 'mechanic-001',
+    mechanicName: 'Daniel Rivas',
+    hourlyRate: 42000,
+    status: 'in_progress',
+  },
+  {
+    id: 'labor-002',
+    caseId: 'case-002',
+    description: 'Reparacion linea de aire y valvula moduladora',
+    estimatedHours: 6,
+    realHours: 4,
+    mechanicId: 'mechanic-002',
+    mechanicName: 'Paula Fuentes',
+    hourlyRate: 48000,
+    status: 'in_progress',
+  },
+  {
+    id: 'labor-003',
+    caseId: 'case-003',
+    description: 'Revision tren delantero y suspension',
+    estimatedHours: 3,
+    mechanicId: 'mechanic-003',
+    mechanicName: 'Marco Silva',
+    hourlyRate: 39000,
+    status: 'pending',
+  },
+  {
+    id: 'labor-004',
+    caseId: 'case-004',
+    description: 'Prueba final y ajuste de embrague',
+    estimatedHours: 2,
+    realHours: 2.2,
+    mechanicId: 'mechanic-004',
+    mechanicName: 'Camila Herrera',
+    hourlyRate: 52000,
+    status: 'done',
+  },
+]

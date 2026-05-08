@@ -1,0 +1,24 @@
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 36px 0 12px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.select:focus {
+  border-color: var(--color-primary);
+  outline: 3px solid var(--color-primary-soft);
+}

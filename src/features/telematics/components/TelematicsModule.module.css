@@ -1,0 +1,421 @@
+.pageStack {
+  display: grid;
+  gap: 14px;
+}
+
+.opsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.opsItem {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.opsItem small,
+.helper,
+.routeMeta,
+.vehicleCell span,
+.alertItem p,
+.decisionPanel p,
+.timelineBody span {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.opsItem strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+.controlStrip {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.55fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: end;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.quickFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.filterButton {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-weight: 800;
+}
+
+.filterButton:hover,
+.filterButtonActive {
+  color: var(--color-primary-dark);
+  border-color: var(--color-border);
+  background: var(--color-primary-soft);
+}
+
+.filterCount {
+  display: inline-grid;
+  min-width: 22px;
+  height: 22px;
+  place-items: center;
+  padding: 0 6px;
+  color: var(--color-text);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.76rem;
+}
+
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.36fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.mapCard,
+.decisionPanel,
+.alertsPanel {
+  display: grid;
+  gap: 12px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panelHeader h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.panelHeader p {
+  color: var(--color-text-muted);
+  font-size: 0.83rem;
+}
+
+.mapCanvas {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(90deg, rgb(15 23 42 / 0.045) 1px, transparent 1px),
+    linear-gradient(rgb(15 23 42 / 0.045) 1px, transparent 1px),
+    linear-gradient(135deg, #f8fafc 0%, #f2fbf8 52%, #f7fbff 100%);
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+}
+
+.mapCanvas::before,
+.mapCanvas::after {
+  content: '';
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.mapCanvas::before {
+  top: 26%;
+  right: 10%;
+  left: 12%;
+  height: 6px;
+  transform: rotate(9deg);
+  background: linear-gradient(90deg, rgb(15 118 110 / 0.22), rgb(2 132 199 / 0.2));
+}
+
+.mapCanvas::after {
+  right: 14%;
+  bottom: 24%;
+  left: 20%;
+  height: 5px;
+  transform: rotate(-13deg);
+  background: linear-gradient(90deg, rgb(2 132 199 / 0.16), rgb(15 118 110 / 0.2));
+}
+
+.mapMarker {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  min-width: 118px;
+  max-width: 180px;
+  gap: 4px;
+  padding: 8px;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.95);
+  box-shadow: 0 10px 22px rgb(15 23 42 / 0.08);
+  transform: translate(-50%, -50%);
+  text-align: left;
+}
+
+.mapMarker:hover,
+.mapMarkerActive {
+  border-color: var(--color-primary);
+  box-shadow: 0 12px 26px rgb(15 118 110 / 0.16);
+}
+
+.mapMarker::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-success);
+}
+
+.markerWarning::before {
+  background: var(--color-warning);
+}
+
+.markerCritical::before {
+  background: var(--color-danger);
+}
+
+.mapMarker strong,
+.vehicleCell strong,
+.timelineBody strong {
+  overflow: hidden;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mapMarker span {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mapLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.legendItem {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.legendDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--color-success);
+}
+
+.legendDotWarning {
+  background: var(--color-warning);
+}
+
+.legendDotCritical {
+  background: var(--color-danger);
+}
+
+.decisionHero {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.decisionHero strong {
+  color: var(--color-text);
+  font-size: 1.15rem;
+}
+
+.decisionMeta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.decisionMetric {
+  display: grid;
+  gap: 3px;
+  padding: 9px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.decisionMetric span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 780;
+}
+
+.decisionMetric strong {
+  color: var(--color-text);
+  font-size: 0.92rem;
+}
+
+.actionStack {
+  display: grid;
+  gap: 8px;
+}
+
+.alertList,
+.timelineList {
+  display: grid;
+  gap: 8px;
+}
+
+.alertItem {
+  display: grid;
+  gap: 5px;
+  padding: 9px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.alertTitle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timelineRow:last-child {
+  border-bottom: 0;
+}
+
+.timelineTime {
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.timelineBody {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.vehicleCell {
+  display: grid;
+  gap: 3px;
+  min-width: 190px;
+}
+
+.badgeLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.fuelCell {
+  display: grid;
+  min-width: 100px;
+  gap: 5px;
+}
+
+.fuelTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+}
+
+.fuelTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.fuelTrackLow span {
+  background: var(--color-warning);
+}
+
+.tableActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1180px) {
+  .opsGrid,
+  .controlStrip,
+  .workbench {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .opsGrid,
+  .controlStrip,
+  .decisionMeta,
+  .workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .mapCanvas {
+    min-height: 520px;
+  }
+
+  .mapMarker {
+    min-width: 104px;
+    max-width: 150px;
+    padding: 7px;
+  }
+
+  .panelHeader,
+  .alertTitle {
+    display: grid;
+  }
+}

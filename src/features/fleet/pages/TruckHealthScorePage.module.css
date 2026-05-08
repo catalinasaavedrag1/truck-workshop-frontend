@@ -1,0 +1,282 @@
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.warningBanner {
+  padding: 10px 12px;
+  color: #92400e;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.controlPanel {
+  display: grid;
+  gap: 12px;
+}
+
+.distributionHeader {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.distributionHeader h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.distributionHeader p,
+.distributionHeader span {
+  margin: 3px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.distributionBar {
+  display: flex;
+  height: 12px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+  border-radius: 999px;
+}
+
+.distributionBar span {
+  min-width: 0;
+}
+
+.healthy {
+  background: #16a34a;
+}
+
+.warning {
+  background: #f59e0b;
+}
+
+.risk {
+  background: #f97316;
+}
+
+.critical {
+  background: #dc2626;
+}
+
+.ruleGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ruleGrid div {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 9px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.ruleGrid span:last-child {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.searchField {
+  display: grid;
+  min-width: min(320px, 100%);
+  gap: 5px;
+}
+
+.searchField span {
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.searchField input {
+  min-height: 38px;
+  padding: 0 10px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+
+.searchField input:focus {
+  border-color: var(--color-primary);
+  outline: 3px solid var(--color-primary-soft);
+}
+
+.riskBoard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.riskCard {
+  display: grid;
+  gap: 9px;
+  border-left: 4px solid #dc2626;
+}
+
+.riskCardHeader {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.riskCardHeader div {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.riskCardHeader strong {
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.riskCardHeader small,
+.riskCard p {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.riskCard p {
+  margin: 0;
+}
+
+.riskIcon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #b91c1c;
+  background: #fef2f2;
+  border-radius: var(--radius-sm);
+}
+
+.truckCell {
+  display: grid;
+  gap: 2px;
+}
+
+.truckCell strong {
+  color: var(--color-text);
+  font-size: 0.92rem;
+}
+
+.truckCell span,
+.truckCell small {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+
+.scoreCell {
+  display: grid;
+  min-width: 120px;
+  gap: 6px;
+}
+
+.scoreLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.scoreLine strong {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.deltaUp,
+.deltaDown {
+  font-size: 0.74rem;
+  font-weight: 850;
+}
+
+.deltaUp {
+  color: #15803d;
+}
+
+.deltaDown {
+  color: #b91c1c;
+}
+
+.scoreTrack {
+  height: 7px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+  border-radius: 999px;
+}
+
+.scoreTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.statusStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.riskList {
+  display: grid;
+  gap: 4px;
+}
+
+.riskList span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.riskList strong {
+  color: var(--color-danger);
+}
+
+.actionText {
+  max-width: 340px;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 1080px) {
+  .metricGrid,
+  .ruleGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .riskBoard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .metricGrid,
+  .ruleGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .distributionHeader {
+    display: grid;
+  }
+}

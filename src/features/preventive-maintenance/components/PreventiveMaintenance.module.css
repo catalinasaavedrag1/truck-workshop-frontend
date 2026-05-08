@@ -1,0 +1,359 @@
+.pageStack {
+  display: grid;
+  gap: 14px;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.summaryItem,
+.metricItem {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.summaryItem small,
+.metricItem small,
+.helperText,
+.truckMeta,
+.sectionHeader p,
+.timelineBody span,
+.decisionBox span,
+.contextRow span,
+.formHint {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.summaryItem strong,
+.metricItem strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.22rem;
+  line-height: 1.1;
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.filterButton {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-weight: 780;
+}
+
+.filterButton:hover,
+.filterButtonActive {
+  color: var(--color-primary-dark);
+  border-color: var(--color-border);
+  background: var(--color-primary-soft);
+}
+
+.filterCount {
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  color: var(--color-text);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.76rem;
+}
+
+.panel,
+.tableShell,
+.contextPanel,
+.detailPanel {
+  display: grid;
+  gap: 14px;
+}
+
+.sectionHeader,
+.decisionHeader,
+.contextHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionHeader h2,
+.contextHeader h2,
+.decisionHeader h2 {
+  color: var(--color-text);
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+
+.coverageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+.truckCard {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.truckCard:hover {
+  border-color: var(--color-border-strong);
+  background: #f9fbfc;
+}
+
+.truckCardHeader,
+.truckCell,
+.planCell,
+.nextCell,
+.decisionCell {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.truckCardHeader {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: start;
+}
+
+.truckCell strong,
+.truckCell span,
+.planCell strong,
+.planCell span,
+.nextCell strong,
+.nextCell span,
+.decisionCell strong,
+.decisionCell span,
+.timelineBody strong,
+.timelineBody span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badgeLine,
+.quickActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.progressTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.danger .progressTrack span,
+.progressDanger span {
+  background: var(--color-danger);
+}
+
+.warning .progressTrack span,
+.progressWarning span {
+  background: var(--color-warning);
+}
+
+.success .progressTrack span,
+.progressSuccess span {
+  background: var(--color-success);
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.detailMain,
+.detailSide {
+  display: grid;
+  gap: 14px;
+}
+
+.heroPanel {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.decisionHeader {
+  align-items: center;
+}
+
+.decisionBox {
+  display: grid;
+  gap: 4px;
+  max-width: 340px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.metricItem.success {
+  background: #f3fbf7;
+}
+
+.metricItem.warning {
+  background: #fff8ed;
+}
+
+.metricItem.danger {
+  background: #fff5f4;
+}
+
+.metricItem.info {
+  background: #f3f7ff;
+}
+
+.contextGrid {
+  display: grid;
+  gap: 8px;
+}
+
+.contextRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.contextRow strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+}
+
+.timelineList {
+  display: grid;
+  gap: 8px;
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.timelineDot {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #fff;
+  border-radius: 999px;
+  background: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.formShell {
+  display: grid;
+  gap: 14px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.formSection {
+  display: grid;
+  gap: 12px;
+}
+
+.formPreview {
+  position: sticky;
+  top: calc(var(--topbar-height) + 14px);
+}
+
+@media (max-width: 1120px) {
+  .summaryGrid,
+  .detailGrid,
+  .metricGrid,
+  .formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .summaryGrid,
+  .detailGrid,
+  .metricGrid,
+  .formGrid,
+  .timelineRow,
+  .contextRow {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader,
+  .decisionHeader,
+  .contextHeader {
+    display: grid;
+  }
+
+  .formPreview {
+    position: static;
+  }
+}

@@ -1,0 +1,82 @@
+.card {
+  height: 100%;
+}
+
+.recommended {
+  border-color: var(--color-primary);
+  background: #f7fcfb;
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+  height: 100%;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: start;
+}
+
+.icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-sm);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.reason {
+  min-height: 38px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.caseBlock {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.caseBlockTitle {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.caseLink {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.caseLink:hover {
+  border-color: var(--color-border-strong);
+}
+
+.caseLink span {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 650;
+}

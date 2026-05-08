@@ -1,0 +1,33 @@
+.error {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 14px;
+  color: var(--color-danger);
+  background: #fff1f0;
+  border: 1px solid #fecdca;
+  border-radius: var(--radius-sm);
+}
+
+.error p {
+  margin-top: 2px;
+  color: #7a271a;
+}
+
+.action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .error {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .action {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+}
