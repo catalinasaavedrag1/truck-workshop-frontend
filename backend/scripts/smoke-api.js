@@ -38,6 +38,17 @@ try {
     },
     method: 'GET',
   }, 200)
+  const purchaseOrdersResponse = await fetch(`${baseUrl}/purchase-orders?page=-5&limit=500&order=invalid`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'GET',
+  })
+  const purchaseOrders = await purchaseOrdersResponse.json()
+
+  assertEqual(purchaseOrdersResponse.status, 200, 'purchase orders pagination status')
+  assertEqual(purchaseOrders.meta?.page, 1, 'purchase orders pagination page')
+  assertEqual(purchaseOrders.meta?.limit, 100, 'purchase orders pagination limit')
 
   console.log('Backend API smoke checks OK.')
 } finally {

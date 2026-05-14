@@ -2,6 +2,7 @@ import { isValidElement, useMemo, useState } from 'react'
 import type { KeyboardEvent, MouseEvent, ReactNode } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, ChevronUp, Search, X } from 'lucide-react'
+import { Button } from '../Button/Button'
 import { ErrorState } from '../ErrorState/ErrorState'
 import { LoadingState } from '../LoadingState/LoadingState'
 import styles from './Table.module.css'
@@ -24,7 +25,14 @@ interface TableSortState {
   key: string
 }
 
+export interface TableSelectionState<T> {
+  getRowLabel?: (item: T) => string
+  onSelectionChange: (nextSelectedKeys: Set<string>) => void
+  selectedKeys: ReadonlySet<string>
+}
+
 interface TableProps<T> {
+  bulkActions?: ReactNode
   columns: TableColumn<T>[]
   data: T[]
   density?: 'compact' | 'comfortable'
@@ -41,9 +49,11 @@ interface TableProps<T> {
   isLoading?: boolean
   loadingLabel?: string
   onRowClick?: (item: T) => void
+  onRetry?: () => void
   pageSize?: number
   searchLabel?: string
   searchPlaceholder?: string
+  selection?: TableSelectionState<T>
 }
 
 function isInteractiveTarget(target: EventTarget | null) {
@@ -147,6 +157,7 @@ function compareValues(a: SortValue, b: SortValue) {
 }
 
 export function Table<T,>({
+  bulkActions,
   columns,
   data,
   density = 'comfortable',
@@ -163,9 +174,11 @@ export function Table<T,>({
   isLoading = false,
   loadingLabel,
   onRowClick,
+  onRetry,
   pageSize = 12,
   searchLabel = 'Buscar en la tabla',
   searchPlaceholder = 'Buscar en resultados',
+  selection,
 }: TableProps<T>) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -224,6 +237,12 @@ export function Table<T,>({
     ? sortedData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     : sortedData
   const hasControls = searchable || paginated || Boolean(sort)
+  const visibleRowKeys = useMemo(() => visibleData.map((item) => getRowKey(item)), [getRowKey, visibleData])
+  const selectable = Boolean(selection)
+  const allVisibleSelected =
+    selectable && visibleRowKeys.length > 0 && visibleRowKeys.every((key) => selection?.selectedKeys.has(key))
+  const selectedCount = selection?.selectedKeys.size ?? 0
+  const renderedColumnCount = selectable ? columns.length + 1 : columns.length
 
   const handleSort = (column: TableColumn<T>) => {
     if (column.sortable === false || !column.header || column.key === 'actions') {
@@ -262,6 +281,39 @@ export function Table<T,>({
   }
 
   const isRowActionable = (item: T) => Boolean(onRowClick || getRowHref?.(item))
+
+  const handleRowSelection = (item: T) => {
+    if (!selection) {
+      return
+    }
+
+    const key = getRowKey(item)
+    const nextSelectedKeys = new Set(selection.selectedKeys)
+
+    if (nextSelectedKeys.has(key)) {
+      nextSelectedKeys.delete(key)
+    } else {
+      nextSelectedKeys.add(key)
+    }
+
+    selection.onSelectionChange(nextSelectedKeys)
+  }
+
+  const handleVisibleSelection = () => {
+    if (!selection) {
+      return
+    }
+
+    const nextSelectedKeys = new Set(selection.selectedKeys)
+
+    if (allVisibleSelected) {
+      visibleRowKeys.forEach((key) => nextSelectedKeys.delete(key))
+    } else {
+      visibleRowKeys.forEach((key) => nextSelectedKeys.add(key))
+    }
+
+    selection.onSelectionChange(nextSelectedKeys)
+  }
 
   const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, item: T) => {
     if (!isRowActionable(item) || isInteractiveTarget(event.target)) {
@@ -322,10 +374,40 @@ export function Table<T,>({
         </div>
       ) : null}
 
+      {selectable && selectedCount > 0 ? (
+        <div className={styles.selectionBar}>
+          <strong>{selectedCount} seleccionados</strong>
+          <div className={styles.selectionActions}>
+            {bulkActions}
+            <Button
+              onClick={() => selection?.onSelectionChange(new Set())}
+              size="sm"
+              type="button"
+              variant="ghost"
+            >
+              Limpiar seleccion
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
       <div className={styles.tableScroll}>
         <table className={[styles.table, styles[density]].join(' ')}>
           <thead>
             <tr>
+              {selectable ? (
+                <th className={styles.center}>
+                  <span className={styles.selectionHeader}>
+                    <input
+                      aria-label={allVisibleSelected ? 'Deseleccionar filas visibles' : 'Seleccionar filas visibles'}
+                      checked={Boolean(allVisibleSelected)}
+                      disabled={visibleRowKeys.length === 0}
+                      onChange={handleVisibleSelection}
+                      type="checkbox"
+                    />
+                  </span>
+                </th>
+              ) : null}
               {columns.map((column) => {
                 const sortable = sortableColumns.some((item) => item.key === column.key)
                 const ariaSort =
@@ -353,14 +435,23 @@ export function Table<T,>({
           <tbody>
             {isLoading ? (
               <tr>
-                <td className={styles.stateCell} colSpan={columns.length}>
+                <td className={styles.stateCell} colSpan={renderedColumnCount}>
                   <LoadingState label={loadingLabel} />
                 </td>
               </tr>
             ) : error ? (
               <tr>
-                <td className={styles.stateCell} colSpan={columns.length}>
-                  <ErrorState description={error} />
+                <td className={styles.stateCell} colSpan={renderedColumnCount}>
+                  <ErrorState
+                    action={
+                      onRetry ? (
+                        <Button onClick={onRetry} size="sm" type="button" variant="secondary">
+                          Reintentar
+                        </Button>
+                      ) : undefined
+                    }
+                    description={error}
+                  />
                 </td>
               </tr>
             ) : visibleData.length > 0 ? (
@@ -378,6 +469,18 @@ export function Table<T,>({
                     role={isActionableRow ? 'button' : undefined}
                     tabIndex={isActionableRow ? 0 : undefined}
                   >
+                    {selectable ? (
+                      <td className={styles.center}>
+                        <input
+                          aria-label={
+                            selection?.getRowLabel?.(item) || `Seleccionar ${getRowLabel?.(item) || getRowKey(item)}`
+                          }
+                          checked={selection?.selectedKeys.has(getRowKey(item)) ?? false}
+                          onChange={() => handleRowSelection(item)}
+                          type="checkbox"
+                        />
+                      </td>
+                    ) : null}
                     {columns.map((column) => (
                       <td className={styles[column.align || 'left']} key={column.key}>
                         <div className={styles.cellContent}>{column.render(item)}</div>
@@ -388,7 +491,7 @@ export function Table<T,>({
               })
             ) : (
               <tr>
-                <td className={styles.empty} colSpan={columns.length}>
+                <td className={styles.empty} colSpan={renderedColumnCount}>
                   <strong>{query ? 'No hay resultados' : emptyLabel}</strong>
                   {emptyDescription ? <p>{emptyDescription}</p> : null}
                 </td>

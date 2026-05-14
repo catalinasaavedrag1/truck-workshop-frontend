@@ -4,6 +4,7 @@ import { FileText, Send } from 'lucide-react'
 import { Button } from '../../../shared/components/Button/Button'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
+import { Textarea } from '../../../shared/components/Textarea/Textarea'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { CustomerCreditDecisionPanel } from '../../customers/components/CustomerCreditDecisionPanel'
@@ -125,16 +126,15 @@ export function QuoteForm({ workshopCase, onCreated }: QuoteFormProps) {
           title="Validacion de credito"
         />
       </div>
-      <label className="text-field span-2" htmlFor="quoteDiagnosisSummary">
-        Resumen operativo
-        <textarea
-          defaultValue={workshopCase.failureDescription}
-          id="quoteDiagnosisSummary"
-          name="diagnosisSummary"
-          placeholder="Diagnostico, alcance y condiciones de la cotizacion"
-          required
-        />
-      </label>
+      <Textarea
+        className="span-2"
+        defaultValue={workshopCase.failureDescription}
+        id="quoteDiagnosisSummary"
+        label="Resumen operativo"
+        name="diagnosisSummary"
+        placeholder="Diagnostico, alcance y condiciones de la cotizacion"
+        required
+      />
       <Input
         defaultValue="Servicio taller y repuestos"
         label="Concepto servicio/repuestos"

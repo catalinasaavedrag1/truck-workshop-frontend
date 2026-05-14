@@ -1,37 +1,38 @@
 import type { FormEvent } from 'react'
-import { useState } from 'react'
+import { useCallback } from 'react'
 import { LogIn } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../../config/routes'
 import { Button } from '../../../shared/components/Button/Button'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
-import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { useAsyncAction } from '../../../shared/hooks/useAsyncAction'
 import { login } from '../services/auth.service'
 
 export function LoginForm() {
   const navigate = useNavigate()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setIsSubmitting(true)
-    setErrorMessage('')
-
-    const formData = new FormData(event.currentTarget)
-    try {
-      const session = await login({
-        email: String(formData.get('email') || ''),
-        password: String(formData.get('password') || ''),
-      })
+  const submitLogin = useCallback(
+    async (credentials: { email: string; password: string }) => {
+      const session = await login(credentials)
 
       localStorage.setItem('truck-workshop-session', JSON.stringify(session))
       navigate(ROUTES.dashboard)
-    } catch (error) {
-      setErrorMessage(getApiErrorMessage(error))
-    } finally {
-      setIsSubmitting(false)
+    },
+    [navigate],
+  )
+  const { errorMessage, isRunning: isSubmitting, run } = useAsyncAction(submitLogin)
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
+    try {
+      await run({
+        email: String(formData.get('email') || ''),
+        password: String(formData.get('password') || ''),
+      })
+    } catch {
+      // useAsyncAction centralizes user-facing error mapping.
     }
   }
 

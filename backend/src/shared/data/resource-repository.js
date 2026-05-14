@@ -2,9 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { getPool, sql } from '../../db/pool.js'
 import { AppError } from '../errors/app-error.js'
 import { toSnakeCase } from '../utils/case-converters.js'
-
-const DEFAULT_PAGE_SIZE = 25
-const MAX_PAGE_SIZE = 100
+import { buildPaginationMeta, parsePaginationOptions, parseSortOrder } from './query-options.js'
 
 export class ResourceRepository {
   constructor(resource) {
@@ -21,11 +19,9 @@ export class ResourceRepository {
   }
 
   async findAll(query = {}) {
-    const page = Math.max(Number(query.page || 1), 1)
-    const limit = Math.min(Math.max(Number(query.limit || DEFAULT_PAGE_SIZE), 1), MAX_PAGE_SIZE)
-    const offset = (page - 1) * limit
+    const { limit, offset, page } = parsePaginationOptions(query)
     const sortField = this.safeSortField(query.sort)
-    const sortOrder = String(query.order || 'desc').toLowerCase() === 'asc' ? 'ASC' : 'DESC'
+    const sortOrder = parseSortOrder(query.order).toUpperCase()
     const request = (await getPool()).request()
     const where = this.buildWhereClause(request, query)
     const selectColumns = this.selectColumns()
@@ -42,17 +38,12 @@ export class ResourceRepository {
     `
     const [dataResult, countResult] = await Promise.all([
       request.query(dataQuery),
-      this.count(where, query),
+      this.count(query),
     ])
 
     return {
       data: dataResult.recordset.map((row) => this.fromDb(row)),
-      meta: {
-        limit,
-        page,
-        total: countResult,
-        totalPages: Math.ceil(countResult / limit),
-      },
+      meta: buildPaginationMeta({ limit, page, total: countResult }),
     }
   }
 
@@ -235,9 +226,9 @@ export class ResourceRepository {
     return Number(result.recordset[0]?.total || 0)
   }
 
-  async count(where, originalQuery) {
+  async count(query) {
     const request = (await getPool()).request()
-    this.buildWhereClause(request, originalQuery)
+    const where = this.buildWhereClause(request, query)
 
     const result = await request.query(`
       SELECT COUNT(1) AS total

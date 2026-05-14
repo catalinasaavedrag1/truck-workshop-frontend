@@ -4,6 +4,7 @@ import { AlertCircle, ArrowLeft, Trash2 } from 'lucide-react'
 import { ROUTES } from '../../../config/routes'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
 import { EmptyState } from '../../../shared/components/EmptyState/EmptyState'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -27,6 +28,7 @@ export function SupplierDetailPage() {
   const { supplierId } = useParams()
   const navigate = useNavigate()
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const { data: supplier } = useResourceItem('/suppliers', supplierId, suppliersMock)
   const { data: allPurchaseOrders } = useResourceList<PurchaseOrder>('/purchase-orders', purchaseOrdersMock, {
@@ -51,7 +53,7 @@ export function SupplierDetailPage() {
   )
 
   const handleDelete = async () => {
-    if (!supplier || !window.confirm(`Eliminar proveedor ${supplier.name}?`)) {
+    if (!supplier) {
       return
     }
 
@@ -78,7 +80,13 @@ export function SupplierDetailPage() {
                   Volver
                 </Button>
               </Link>
-              <Button disabled={isDeleting} icon={<Trash2 size={18} />} onClick={handleDelete} type="button" variant="danger">
+              <Button
+                disabled={isDeleting}
+                icon={<Trash2 size={18} />}
+                onClick={() => setIsDeleteConfirmOpen(true)}
+                type="button"
+                variant="danger"
+              >
                 {isDeleting ? 'Eliminando...' : 'Eliminar'}
               </Button>
             </div>
@@ -145,6 +153,16 @@ export function SupplierDetailPage() {
             </Card>
           </div>
         </div>
+        <ConfirmModal
+          confirmLabel="Eliminar proveedor"
+          description={`El proveedor ${supplier.name} dejara de estar disponible para nuevas ordenes.`}
+          isConfirming={isDeleting}
+          onCancel={() => setIsDeleteConfirmOpen(false)}
+          onConfirm={handleDelete}
+          open={isDeleteConfirmOpen}
+          title="Eliminar proveedor"
+          tone="danger"
+        />
       </div>
     </PageContainer>
   )

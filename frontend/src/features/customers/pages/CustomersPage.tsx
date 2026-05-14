@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { FilterBar } from '../../../shared/components/FilterBar/FilterBar'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -41,6 +42,7 @@ export function CustomersPage() {
   const [savedCustomers, setSavedCustomers] = useState<Customer[]>([])
   const [deletedIds, setDeletedIds] = useState<string[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
+  const [customerPendingDeletion, setCustomerPendingDeletion] = useState<Customer | null>(null)
   const [deletingId, setDeletingId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [query, setQuery] = useState(searchParams.get('query') || '')
@@ -168,17 +170,22 @@ export function CustomersPage() {
   }
 
   const handleDelete = async (customer: Customer) => {
-    if (!window.confirm(`Eliminar cliente ${customer.name}?`)) {
+    setCustomerPendingDeletion(customer)
+  }
+
+  const confirmDelete = async () => {
+    if (!customerPendingDeletion) {
       return
     }
 
-    setDeletingId(customer.id)
+    setDeletingId(customerPendingDeletion.id)
     setErrorMessage('')
 
     try {
-      await deleteCustomer(customer.id)
-      setDeletedIds((current) => Array.from(new Set([...current, customer.id])))
-      setSelectedCustomer((current) => (current?.id === customer.id ? null : current))
+      await deleteCustomer(customerPendingDeletion.id)
+      setDeletedIds((current) => Array.from(new Set([...current, customerPendingDeletion.id])))
+      setSelectedCustomer((current) => (current?.id === customerPendingDeletion.id ? null : current))
+      setCustomerPendingDeletion(null)
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
     } finally {
@@ -307,6 +314,20 @@ export function CustomersPage() {
           </div>
         </Card>
       </div>
+      <ConfirmModal
+        confirmLabel="Eliminar cliente"
+        description={
+          customerPendingDeletion
+            ? `El cliente ${customerPendingDeletion.name} dejara de estar disponible para nuevas operaciones.`
+            : undefined
+        }
+        isConfirming={Boolean(deletingId)}
+        onCancel={() => setCustomerPendingDeletion(null)}
+        onConfirm={confirmDelete}
+        open={Boolean(customerPendingDeletion)}
+        title="Eliminar cliente"
+        tone="danger"
+      />
     </PageContainer>
   )
 }

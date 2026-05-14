@@ -1,6 +1,7 @@
 import { customerResource, freightQuoteResource, freightRequestResource, quoteResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const customerStatuses = new Set(['active', 'inactive', 'suspended'])
 const customerRiskLevels = new Set(['low', 'medium', 'high'])
@@ -41,7 +42,7 @@ export class CustomerService {
   }
 
   update(id, payload, actorName) {
-    const editablePayload = stripImmutableFields(payload)
+    const editablePayload = stripImmutableFields(payload, ['deletedBy'])
 
     return this.customers.update(id, {
       ...normalizeCustomerPayload(editablePayload, { partial: true }),
@@ -354,15 +355,4 @@ function clamp(value, min, max) {
   }
 
   return Math.min(Math.max(value, min), max)
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.deletedBy
-  delete editablePayload.id
-
-  return editablePayload
 }

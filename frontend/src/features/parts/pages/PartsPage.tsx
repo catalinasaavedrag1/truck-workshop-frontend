@@ -5,6 +5,7 @@ import { ROUTES } from '../../../config/routes'
 import { partsMock } from '../../../mocks/parts.mock'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { FilterBar } from '../../../shared/components/FilterBar/FilterBar'
 import { Input } from '../../../shared/components/Input/Input'
@@ -29,6 +30,7 @@ export function PartsPage() {
   const [savedParts, setSavedParts] = useState<Part[]>([])
   const [deletedIds, setDeletedIds] = useState<string[]>([])
   const [selectedPart, setSelectedPart] = useState<Part | null>(null)
+  const [partPendingDeletion, setPartPendingDeletion] = useState<{ partId: string; sku: string } | null>(null)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
   const [deletingId, setDeletingId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -97,20 +99,25 @@ export function PartsPage() {
   }
 
   const handleDelete = async (row: { partId: string; sku: string }) => {
-    if (!window.confirm(`Eliminar SKU ${row.sku}?`)) {
+    setPartPendingDeletion(row)
+  }
+
+  const confirmDelete = async () => {
+    if (!partPendingDeletion) {
       return
     }
 
-    setDeletingId(row.partId)
+    setDeletingId(partPendingDeletion.partId)
     setErrorMessage('')
     setSuccessMessage('')
 
     try {
-      const removedPart = await deletePart(row.partId)
-      setDeletedIds((current) => Array.from(new Set([...current, row.partId])))
-      setSelectedPart((current) => (current?.id === row.partId ? null : current))
-      setIsEditorOpen((current) => (selectedPart?.id === row.partId ? false : current))
-      setSuccessMessage(`SKU ${removedPart.sku} eliminado por ${removedPart.deletedBy || removedPart.updatedBy || 'Sistema'}`)
+      const removedPart = await deletePart(partPendingDeletion.partId)
+      setDeletedIds((current) => Array.from(new Set([...current, partPendingDeletion.partId])))
+      setSelectedPart((current) => (current?.id === partPendingDeletion.partId ? null : current))
+      setIsEditorOpen((current) => (selectedPart?.id === partPendingDeletion.partId ? false : current))
+      setSuccessMessage(`SKU ${removedPart.sku} anulado por ${removedPart.deletedBy || removedPart.updatedBy || 'Sistema'}`)
+      setPartPendingDeletion(null)
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
     } finally {
@@ -144,7 +151,7 @@ export function PartsPage() {
         />
         <InventoryModuleNav />
         <PartInventorySummary rows={rows} />
-        {errorMessage ? <ErrorState description={errorMessage} title="No se pudo eliminar el SKU" /> : null}
+        {errorMessage ? <ErrorState description={errorMessage} title="No se pudo anular el SKU" /> : null}
         {successMessage ? (
           <Card>
             <p className="muted-text" role="status">
@@ -223,6 +230,20 @@ export function PartsPage() {
           ) : null}
         </div>
         <PartsRequiredByCase />
+        <ConfirmModal
+          confirmLabel="Anular SKU"
+          description={
+            partPendingDeletion
+              ? `Esta accion retira ${partPendingDeletion.sku} del catalogo operativo sin borrar su trazabilidad.`
+              : undefined
+          }
+          isConfirming={Boolean(deletingId)}
+          onCancel={() => setPartPendingDeletion(null)}
+          onConfirm={confirmDelete}
+          open={Boolean(partPendingDeletion)}
+          title="Anular SKU"
+          tone="danger"
+        />
       </div>
     </PageContainer>
   )

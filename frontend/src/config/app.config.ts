@@ -14,6 +14,8 @@ export interface AppNavigationGroup {
   items: AppNavigationItem[]
 }
 
+const warehouseView = (view: string) => `${ROUTES.warehouse}?view=${view}`
+
 const navigationGroups: AppNavigationGroup[] = [
   {
     label: 'Plataforma',
@@ -60,19 +62,26 @@ const navigationGroups: AppNavigationGroup[] = [
         ],
       },
       {
-        label: 'Compras',
+        label: 'Compras y abastecimiento',
         path: ROUTES.warehouse,
         icon: 'shopping-cart',
         children: [
-          { label: 'Inventario taller', path: ROUTES.warehouse, icon: 'warehouse', section: 'Inventario' },
-          { label: 'Repuestos / SKUs', path: ROUTES.parts, icon: 'package-search', section: 'Inventario' },
-          { label: 'Stock fisico', path: ROUTES.warehouseStock, icon: 'package-search', section: 'Inventario' },
-          { label: 'Ubicaciones', path: ROUTES.warehouseLocations, icon: 'warehouse', section: 'Inventario' },
-          { label: 'Encargados bodega', path: ROUTES.warehouseManagers, icon: 'users', section: 'Inventario' },
-          { label: 'Ordenes de compra', path: ROUTES.purchaseOrders, icon: 'shopping-cart', section: 'Compras' },
+          { label: 'Panel de control', path: ROUTES.warehouse, icon: 'warehouse', section: 'Decision' },
+          { label: 'Reposicion sugerida', path: warehouseView('suggestions'), icon: 'package-search', section: 'Decision' },
+          { label: 'Solicitudes de compra', path: warehouseView('requests'), icon: 'clipboard-list', section: 'Decision' },
+          { label: 'Ordenes de compra', path: ROUTES.purchaseOrders, icon: 'shopping-cart', section: 'Ejecucion' },
+          { label: 'Recepcion', path: warehouseView('receipts'), icon: 'package-plus', section: 'Ejecucion' },
+          { label: 'Control documentos', path: warehouseView('documents'), icon: 'receipt-text', section: 'Ejecucion' },
+          { label: 'Repuestos / SKUs', path: ROUTES.parts, icon: 'package-search', section: 'Catalogo y stock' },
+          { label: 'Stock fisico', path: ROUTES.warehouseStock, icon: 'package-search', section: 'Catalogo y stock' },
+          { label: 'Ubicaciones', path: ROUTES.warehouseLocations, icon: 'warehouse', section: 'Catalogo y stock' },
+          { label: 'Compradores / responsables', path: ROUTES.warehouseManagers, icon: 'users', section: 'Responsables' },
           { label: 'Nueva OC', path: ROUTES.purchaseOrderNew, icon: 'circle-plus', section: 'Compras', showInSidebar: false },
           { label: 'Proveedores', path: ROUTES.suppliers, icon: 'building-2', section: 'Proveedores' },
           { label: 'Nuevo proveedor', path: ROUTES.supplierNew, icon: 'circle-plus', section: 'Proveedores', showInSidebar: false },
+          { label: 'Auditoria de compras', path: warehouseView('audit'), icon: 'shield-check', section: 'Auditoria' },
+          { label: 'Calendario abastecimiento', path: warehouseView('calendar'), icon: 'calendar-days', section: 'Auditoria' },
+          { label: 'Reportes abastecimiento', path: ROUTES.inventoryReport, icon: 'bar-chart-3', section: 'Auditoria' },
         ],
       },
       {

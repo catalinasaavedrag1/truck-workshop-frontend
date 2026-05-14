@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
 import { SectionHeader } from '../../../shared/components/SectionHeader/SectionHeader'
@@ -21,6 +22,7 @@ export function WarehouseLocationsPage() {
   const [savedLocations, setSavedLocations] = useState<WarehouseLocation[]>([])
   const [deletedIds, setDeletedIds] = useState<string[]>([])
   const [selectedLocation, setSelectedLocation] = useState<WarehouseLocation | null>(null)
+  const [locationPendingDeletion, setLocationPendingDeletion] = useState<WarehouseLocation | null>(null)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
   const [deletingId, setDeletingId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -70,18 +72,23 @@ export function WarehouseLocationsPage() {
   }
 
   const handleDelete = async (location: WarehouseLocation) => {
-    if (!window.confirm(`Eliminar bodega ${location.code}?`)) {
+    setLocationPendingDeletion(location)
+  }
+
+  const confirmDelete = async () => {
+    if (!locationPendingDeletion) {
       return
     }
 
-    setDeletingId(location.id)
+    setDeletingId(locationPendingDeletion.id)
     setErrorMessage('')
 
     try {
-      await deleteWarehouseLocation(location.id)
-      setDeletedIds((current) => Array.from(new Set([...current, location.id])))
-      setSelectedLocation((current) => (current?.id === location.id ? null : current))
-      setIsEditorOpen((current) => (selectedLocation?.id === location.id ? false : current))
+      await deleteWarehouseLocation(locationPendingDeletion.id)
+      setDeletedIds((current) => Array.from(new Set([...current, locationPendingDeletion.id])))
+      setSelectedLocation((current) => (current?.id === locationPendingDeletion.id ? null : current))
+      setIsEditorOpen((current) => (selectedLocation?.id === locationPendingDeletion.id ? false : current))
+      setLocationPendingDeletion(null)
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
     } finally {
@@ -149,6 +156,20 @@ export function WarehouseLocationsPage() {
             </Card>
           ) : null}
         </div>
+        <ConfirmModal
+          confirmLabel="Eliminar bodega"
+          description={
+            locationPendingDeletion
+              ? `La ubicacion ${locationPendingDeletion.code} dejara de aparecer en el mapa operativo.`
+              : undefined
+          }
+          isConfirming={Boolean(deletingId)}
+          onCancel={() => setLocationPendingDeletion(null)}
+          onConfirm={confirmDelete}
+          open={Boolean(locationPendingDeletion)}
+          title="Eliminar ubicacion"
+          tone="danger"
+        />
       </div>
     </PageContainer>
   )

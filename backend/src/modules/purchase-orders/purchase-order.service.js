@@ -1,15 +1,22 @@
 import { purchaseOrderResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_STATUSES = new Set([
   'DRAFT',
   'REQUESTED',
+  'PENDING_APPROVAL',
   'APPROVED',
   'ORDERED',
   'PARTIALLY_RECEIVED',
   'RECEIVED',
+  'CLOSED',
+  'OVERDUE',
   'CANCELLED',
+  'ANNULLED',
+  'WITH_DIFFERENCE',
+  'DOCUMENT_BLOCKED',
 ])
 
 export class PurchaseOrderService {
@@ -29,7 +36,7 @@ export class PurchaseOrderService {
   }
 
   update(id, payload, actorName) {
-    const normalized = normalizePurchaseOrderPayload(stripImmutableFields(payload), actorName, { partial: true })
+    const normalized = normalizePurchaseOrderPayload(stripImmutableFields(payload, ['deletedBy']), actorName, { partial: true })
 
     return this.purchaseOrders.update(id, {
       ...normalized,
@@ -166,15 +173,4 @@ function defaultExpectedDeliveryDate() {
   date.setUTCHours(18, 0, 0, 0)
 
   return date.toISOString()
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.deletedBy
-  delete editablePayload.id
-
-  return editablePayload
 }

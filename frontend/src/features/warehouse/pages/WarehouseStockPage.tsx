@@ -19,6 +19,7 @@ import { InventoryModuleNav } from '../components/InventoryModuleNav'
 import styles from '../components/InventoryModule.module.css'
 import { WarehouseStockInsightTable } from '../components/WarehouseStockInsightTable'
 import { warehouseStockMock } from '../mocks/warehouse.mock'
+import { getProcurementSummaryMetrics } from '../services/procurementInsights.service'
 import { getWarehouseStockInsightRows } from '../services/warehouseInsights.service'
 import type { StockStatus, WarehouseStockItem } from '../types/warehouse.types'
 
@@ -84,10 +85,19 @@ export function WarehouseStockPage() {
               </Link>
             </div>
           }
-          description="Mapa fisico accionable: ubicacion, demanda de casos, OC activa y proxima accion."
+          description="Separa stock sano de stock bloqueado, comprometido, en transito, critico, lento o con diferencia."
           title="Stock fisico"
         />
         <InventoryModuleNav />
+        <div className={styles.inventorySummaryStrip}>
+          {getProcurementSummaryMetrics().map((metric) => (
+            <div className={[styles.inventorySummaryItem, styles[metric.tone]].join(' ')} key={metric.label}>
+              <span>{metric.label}</span>
+              <strong>{metric.value}</strong>
+              <small>{metric.helper}</small>
+            </div>
+          ))}
+        </div>
         <FilterBar
           activeCount={(query ? 1 : 0) + (status !== 'all' ? 1 : 0)}
           activeFilters={[
@@ -126,7 +136,7 @@ export function WarehouseStockPage() {
         <Card>
           <div className="stack">
             <SectionHeader
-              description={`${filteredRows.length} de ${rows.length} SKUs visibles. Cada fila prioriza stock, demanda, estado y accion siguiente.`}
+              description={`${filteredRows.length} de ${rows.length} SKUs visibles. Cada fila prioriza disponibilidad, demanda, OC activa y accion siguiente.`}
               title="Mapa operativo de stock"
             />
             <WarehouseStockInsightTable enableSearch={false} isLoading={isLoading} rows={filteredRows} />

@@ -7,6 +7,7 @@ import {
 } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_QUOTE_STATUSES = new Set(['DRAFT', 'SENT', 'APPROVED', 'REJECTED', 'EXPIRED'])
 const VALID_LINE_TYPES = new Set(['part', 'labor', 'discount'])
@@ -38,7 +39,7 @@ export class QuoteService {
   async update(id, payload, actorName) {
     const currentQuote = await this.requireQuote(id)
     const workshopCase = await this.requireCase(payload.caseId || currentQuote.caseId)
-    const normalized = await this.normalizeQuotePayload(stripImmutableFields(payload), {
+    const normalized = await this.normalizeQuotePayload(stripImmutableFields(payload, ['customerId', 'quoteNumber', 'updatedAt']), {
       actorName,
       currentQuote,
       partial: true,
@@ -365,16 +366,4 @@ function currentStepForQuoteStatus(status) {
   }
 
   return steps[normalizeStatus(status)]
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.customerId
-  delete editablePayload.id
-  delete editablePayload.quoteNumber
-  delete editablePayload.updatedAt
-
-  return editablePayload
 }

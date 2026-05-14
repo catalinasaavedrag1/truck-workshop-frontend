@@ -9,6 +9,7 @@ import {
 } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_STATUSES = new Set(['DRAFT', 'SUBMITTED', 'REVIEWED', 'APPROVED', 'REJECTED', 'PAID'])
 const FINAL_STATUSES = new Set(['SUBMITTED', 'REVIEWED', 'APPROVED', 'PAID'])
@@ -61,7 +62,7 @@ export class DriverTripSheetService {
     const normalized = await this.normalizePayload(
       {
         ...current,
-        ...stripImmutableFields(payload),
+        ...stripImmutableFields(payload, ['deletedBy']),
         sheetNumber: current.sheetNumber,
       },
       actorName,
@@ -358,15 +359,4 @@ function round(value) {
 
 function slug(value) {
   return String(value || 'sheet').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.deletedBy
-  delete editablePayload.id
-
-  return editablePayload
 }

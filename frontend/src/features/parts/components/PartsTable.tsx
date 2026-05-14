@@ -70,14 +70,14 @@ export function PartsTable({ deletingId, onDelete, onEdit, parts }: PartsTablePr
         <div className="inline-actions">
           <Link to={ROUTES.partDetail(item.partId)}>
             <Button size="sm" variant="secondary">
-              Ver
+              Ficha 360
             </Button>
           </Link>
           <Button onClick={() => onEdit(item)} size="sm" type="button" variant="secondary">
-            Editar
+            Ajustar politica
           </Button>
           <Button disabled={deletingId === item.partId} onClick={() => onDelete(item)} size="sm" type="button" variant="danger">
-            {deletingId === item.partId ? 'Eliminando...' : 'Eliminar'}
+            {deletingId === item.partId ? 'Anulando...' : 'Anular SKU'}
           </Button>
         </div>
       ),

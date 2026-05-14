@@ -34,13 +34,13 @@ export function PurchaseRequestCard({ request }: PurchaseRequestCardProps) {
         {request.purchaseOrderId ? (
           <Link to={ROUTES.purchaseOrderDetail(request.purchaseOrderId)}>
             <Button size="sm" variant="secondary">
-              Ver orden
+              Trazabilidad OC
             </Button>
           </Link>
         ) : (
           <Link to={ROUTES.purchaseOrderNew}>
             <Button size="sm" variant="secondary">
-              Crear orden
+              Convertir en OC
             </Button>
           </Link>
         )}

@@ -1,5 +1,6 @@
 import { partResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 export class PartService {
   constructor() {
@@ -48,14 +49,4 @@ function normalizePartPayload(payload, options = {}) {
   }
 
   return normalized
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.id
-
-  return editablePayload
 }

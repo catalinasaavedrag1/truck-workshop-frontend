@@ -1,28 +1,16 @@
-import { httpClient } from '../../../shared/services/httpClient'
-import { getActorHeaders } from '../../../shared/services/sessionUser'
-import type { ApiResponse } from '../../../shared/types/api.types'
+import { createResource, deleteResource, updateResource } from '../../../shared/services/resourceApi'
 import type { Customer, CustomerPayload } from '../types/customer.types'
 
-export async function createCustomer(payload: CustomerPayload) {
-  const response = await httpClient.post<ApiResponse<Customer>>('/customers', payload, {
-    headers: getActorHeaders(),
-  })
+const CUSTOMERS_PATH = '/customers'
 
-  return response.data.data
+export async function createCustomer(payload: CustomerPayload) {
+  return createResource<Customer, CustomerPayload>(CUSTOMERS_PATH, payload)
 }
 
 export async function updateCustomer(customerId: string, payload: CustomerPayload) {
-  const response = await httpClient.patch<ApiResponse<Customer>>(`/customers/${customerId}`, payload, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
+  return updateResource<Customer, CustomerPayload>(CUSTOMERS_PATH, customerId, payload)
 }
 
 export async function deleteCustomer(customerId: string) {
-  const response = await httpClient.delete<ApiResponse<Customer>>(`/customers/${customerId}`, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
+  return deleteResource<Customer>(CUSTOMERS_PATH, customerId)
 }

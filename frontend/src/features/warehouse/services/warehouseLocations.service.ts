@@ -1,30 +1,18 @@
-import { httpClient } from '../../../shared/services/httpClient'
-import { getActorHeaders } from '../../../shared/services/sessionUser'
-import type { ApiResponse } from '../../../shared/types/api.types'
+import { createResource, deleteResource, updateResource } from '../../../shared/services/resourceApi'
 import type { WarehouseLocation } from '../types/warehouse.types'
 
 export type WarehouseLocationPayload = Omit<WarehouseLocation, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
 
-export async function createWarehouseLocation(payload: WarehouseLocationPayload) {
-  const response = await httpClient.post<ApiResponse<WarehouseLocation>>('/warehouse/locations', payload, {
-    headers: getActorHeaders(),
-  })
+const WAREHOUSE_LOCATIONS_PATH = '/warehouse/locations'
 
-  return response.data.data
+export async function createWarehouseLocation(payload: WarehouseLocationPayload) {
+  return createResource<WarehouseLocation, WarehouseLocationPayload>(WAREHOUSE_LOCATIONS_PATH, payload)
 }
 
 export async function updateWarehouseLocation(locationId: string, payload: WarehouseLocationPayload) {
-  const response = await httpClient.patch<ApiResponse<WarehouseLocation>>(`/warehouse/locations/${locationId}`, payload, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
+  return updateResource<WarehouseLocation, WarehouseLocationPayload>(WAREHOUSE_LOCATIONS_PATH, locationId, payload)
 }
 
 export async function deleteWarehouseLocation(locationId: string) {
-  const response = await httpClient.delete<ApiResponse<WarehouseLocation>>(`/warehouse/locations/${locationId}`, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
+  return deleteResource<WarehouseLocation>(WAREHOUSE_LOCATIONS_PATH, locationId)
 }

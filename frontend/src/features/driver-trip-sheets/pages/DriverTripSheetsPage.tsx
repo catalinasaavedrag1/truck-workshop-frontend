@@ -5,6 +5,8 @@ import { trucksMock } from '../../../mocks/trucks.mock'
 import { Badge } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
+import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { FilterBar } from '../../../shared/components/FilterBar/FilterBar'
 import { Input } from '../../../shared/components/Input/Input'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -42,10 +44,12 @@ export function DriverTripSheetsPage() {
   const [savedSheets, setSavedSheets] = useState<DriverTripSheet[]>([])
   const [deletedSheetIds, setDeletedSheetIds] = useState<string[]>([])
   const [selectedSheet, setSelectedSheet] = useState<DriverTripSheet | null>(null)
+  const [sheetPendingDeletion, setSheetPendingDeletion] = useState<DriverTripSheet | null>(null)
   const [quickAssignmentKey, setQuickAssignmentKey] = useState('')
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | DriverTripSheetStatus>('all')
   const [driverFilter, setDriverFilter] = useState('all')
+  const [errorMessage, setErrorMessage] = useState('')
   const { data: drivers } = useResourceList<Driver>('/drivers', driversMock, { order: 'asc', sort: 'name' })
   const { data: trucks } = useResourceList<Truck>('/trucks', trucksMock, { order: 'asc', sort: 'plate' })
   const { data: assignments } = useResourceList<FreightAssignment>('/freight/assignments', freightAssignmentsMock, {
@@ -130,22 +134,28 @@ export function DriverTripSheetsPage() {
   }
 
   const handleDelete = async (sheet: DriverTripSheet) => {
-    const confirmed = window.confirm(`Eliminar ${sheet.sheetNumber}?`)
+    setSheetPendingDeletion(sheet)
+  }
 
-    if (!confirmed) {
+  const confirmDelete = async () => {
+    if (!sheetPendingDeletion) {
       return
     }
 
-    try {
-      await deleteDriverTripSheet(sheet.id)
-      setDeletedSheetIds((current) => Array.from(new Set([...current, sheet.id])))
-      setSavedSheets((current) => current.filter((item) => item.id !== sheet.id))
+    setErrorMessage('')
 
-      if (selectedSheet?.id === sheet.id) {
+    try {
+      await deleteDriverTripSheet(sheetPendingDeletion.id)
+      setDeletedSheetIds((current) => Array.from(new Set([...current, sheetPendingDeletion.id])))
+      setSavedSheets((current) => current.filter((item) => item.id !== sheetPendingDeletion.id))
+
+      if (selectedSheet?.id === sheetPendingDeletion.id) {
         setSelectedSheet(null)
       }
+
+      setSheetPendingDeletion(null)
     } catch (error) {
-      window.alert(getApiErrorMessage(error))
+      setErrorMessage(getApiErrorMessage(error))
     }
   }
 
@@ -176,6 +186,7 @@ export function DriverTripSheetsPage() {
       />
 
       <DriverTripSheetSummary sheets={filteredSheets} />
+      {errorMessage ? <ErrorState description={errorMessage} title="No se pudo eliminar la planilla" /> : null}
 
       <Card>
         <div className={styles.miniFlow}>
@@ -311,6 +322,19 @@ export function DriverTripSheetsPage() {
           trucks={trucks}
         />
       </div>
+      <ConfirmModal
+        confirmLabel="Eliminar planilla"
+        description={
+          sheetPendingDeletion
+            ? `La planilla ${sheetPendingDeletion.sheetNumber} se retirara del control operativo.`
+            : undefined
+        }
+        onCancel={() => setSheetPendingDeletion(null)}
+        onConfirm={confirmDelete}
+        open={Boolean(sheetPendingDeletion)}
+        title="Eliminar planilla"
+        tone="danger"
+      />
     </PageContainer>
   )
 }

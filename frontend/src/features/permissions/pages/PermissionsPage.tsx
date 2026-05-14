@@ -4,6 +4,7 @@ import { RefreshCw, ShieldCheck, UserCheck, Users } from 'lucide-react'
 import { Badge } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { LoadingState } from '../../../shared/components/LoadingState/LoadingState'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -27,8 +28,10 @@ export function PermissionsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
   const [roles, setRoles] = useState<Role[]>([])
+  const [rolePendingDeletion, setRolePendingDeletion] = useState<Role | null>(null)
   const [selectedRole, setSelectedRole] = useState<Role | null>(null)
   const [selectedUser, setSelectedUser] = useState<UserRoleAssignmentModel | null>(null)
+  const [userPendingDeletion, setUserPendingDeletion] = useState<UserRoleAssignmentModel | null>(null)
   const [users, setUsers] = useState<UserRoleAssignmentModel[]>([])
 
   useEffect(() => {
@@ -78,15 +81,25 @@ export function PermissionsPage() {
   }
 
   const deleteRole = async (role: Role) => {
-    if ((role.usersCount ?? 0) > 0 || !window.confirm(`Eliminar perfil ${role.name}?`)) {
+    if ((role.usersCount ?? 0) > 0) {
+      setErrorMessage(`No se puede eliminar ${role.name}: tiene usuarios asociados.`)
+      return
+    }
+
+    setRolePendingDeletion(role)
+  }
+
+  const confirmRoleDelete = async () => {
+    if (!rolePendingDeletion) {
       return
     }
 
     try {
-      await permissionsApi.deleteRole(role.id)
-      if (selectedRole?.id === role.id) {
+      await permissionsApi.deleteRole(rolePendingDeletion.id)
+      if (selectedRole?.id === rolePendingDeletion.id) {
         setSelectedRole(null)
       }
+      setRolePendingDeletion(null)
       refresh()
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
@@ -94,15 +107,20 @@ export function PermissionsPage() {
   }
 
   const deleteUser = async (user: UserRoleAssignmentModel) => {
-    if (!window.confirm(`Eliminar usuario ${user.userName}?`)) {
+    setUserPendingDeletion(user)
+  }
+
+  const confirmUserDelete = async () => {
+    if (!userPendingDeletion) {
       return
     }
 
     try {
-      await permissionsApi.deleteUser(user.id)
-      if (selectedUser?.id === user.id) {
+      await permissionsApi.deleteUser(userPendingDeletion.id)
+      if (selectedUser?.id === userPendingDeletion.id) {
         setSelectedUser(null)
       }
+      setUserPendingDeletion(null)
       refresh()
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
@@ -181,6 +199,32 @@ export function PermissionsPage() {
           <PermissionMatrix modules={permissionModulesMock} roles={roles} />
         </div>
       </Card>
+      <ConfirmModal
+        confirmLabel="Eliminar perfil"
+        description={
+          rolePendingDeletion
+            ? `El perfil ${rolePendingDeletion.name} se quitara de la administracion de permisos.`
+            : undefined
+        }
+        onCancel={() => setRolePendingDeletion(null)}
+        onConfirm={confirmRoleDelete}
+        open={Boolean(rolePendingDeletion)}
+        title="Eliminar perfil"
+        tone="danger"
+      />
+      <ConfirmModal
+        confirmLabel="Eliminar usuario"
+        description={
+          userPendingDeletion
+            ? `El usuario ${userPendingDeletion.userName} perdera su asignacion operacional.`
+            : undefined
+        }
+        onCancel={() => setUserPendingDeletion(null)}
+        onConfirm={confirmUserDelete}
+        open={Boolean(userPendingDeletion)}
+        title="Eliminar usuario"
+        tone="danger"
+      />
     </PageContainer>
   )
 }

@@ -5,18 +5,38 @@ import { startFuelPriceScheduler } from './modules/fuel-prices/fuel-price.schedu
 
 const app = createApp()
 const stopFuelPriceScheduler = startFuelPriceScheduler()
+let isShuttingDown = false
 
 const server = app.listen(env.port, () => {
   console.log(`Truck Workshop API listening on http://localhost:${env.port}${env.apiPrefix}`)
 })
 
 async function shutdown(signal) {
+  if (isShuttingDown) {
+    return
+  }
+
+  isShuttingDown = true
   console.log(`${signal} received. Closing HTTP server and SQL pool.`)
   stopFuelPriceScheduler()
-  server.close(async () => {
+
+  try {
+    await new Promise((resolve, reject) => {
+      server.close((error) => {
+        if (error) {
+          reject(error)
+          return
+        }
+
+        resolve()
+      })
+    })
     await closePool()
     process.exit(0)
-  })
+  } catch (error) {
+    console.error(error)
+    process.exit(1)
+  }
 }
 
 process.on('SIGINT', () => void shutdown('SIGINT'))

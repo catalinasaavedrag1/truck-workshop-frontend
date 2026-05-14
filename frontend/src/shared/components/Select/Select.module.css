@@ -22,3 +22,18 @@
   border-color: var(--color-primary);
   outline: 3px solid var(--color-primary-soft);
 }
+
+.select[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.helper {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: 0.8rem;
+  font-weight: 700;
+}

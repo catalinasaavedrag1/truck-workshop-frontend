@@ -33,10 +33,14 @@ export function getVisibleNavigationItems(items: AppNavigationItem[], query: str
 }
 
 export function isNavigationPathActive(pathname: string, path: string) {
-  const currentPath = normalizePath(pathname)
-  const targetPath = normalizePath(path)
+  const current = parseNavigationPath(pathname)
+  const target = parseNavigationPath(path)
 
-  return currentPath === targetPath || (targetPath !== '/' && currentPath.startsWith(`${targetPath}/`))
+  if (target.search) {
+    return current.pathname === target.pathname && current.search === target.search
+  }
+
+  return current.pathname === target.pathname || (target.pathname !== '/' && current.pathname.startsWith(`${target.pathname}/`))
 }
 
 export function isNavigationItemActive(item: AppNavigationItem, pathname: string) {
@@ -64,8 +68,13 @@ export function groupNavigationItemsBySection(items: AppNavigationItem[] = []) {
   }, [])
 }
 
-function normalizePath(path: string) {
-  const normalized = path.replace(/\/+$/, '')
+function parseNavigationPath(path: string) {
+  const [withoutHash] = path.split('#')
+  const [rawPathname, rawSearch = ''] = withoutHash.split('?')
+  const normalized = rawPathname.replace(/\/+$/, '')
 
-  return normalized || '/'
+  return {
+    pathname: normalized || '/',
+    search: rawSearch ? `?${rawSearch}` : '',
+  }
 }

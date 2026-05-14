@@ -3,6 +3,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import { env } from './config/env.js'
 import { registerRoutes } from './routes/index.js'
+import { AppError } from './shared/errors/app-error.js'
 import { errorHandler } from './shared/middleware/error-handler.js'
 import { notFoundHandler } from './shared/middleware/not-found-handler.js'
 import { requestContext } from './shared/middleware/request-context.js'
@@ -37,9 +38,7 @@ function corsMiddleware(request, response, next) {
   }
 
   if (!isCorsOriginAllowed(origin)) {
-    const error = new Error(`CORS origin not allowed: ${origin}`)
-    error.statusCode = 403
-    next(error)
+    next(new AppError('Origen CORS no permitido', 403, { origin }))
     return
   }
 

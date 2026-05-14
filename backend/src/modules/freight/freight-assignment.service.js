@@ -6,6 +6,7 @@ import {
 } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_STATUSES = new Set(['SCHEDULED', 'IN_TRANSIT', 'DELIVERED', 'CANCELLED'])
 const REQUEST_STATUS_BY_ASSIGNMENT_STATUS = {
@@ -60,7 +61,7 @@ export class FreightAssignmentService {
 
   async update(id, payload, actorName) {
     const current = await this.requireAssignment(id)
-    const normalized = normalizeAssignmentPayload(stripImmutableFields(payload), actorName, {
+    const normalized = normalizeAssignmentPayload(stripImmutableFields(payload, ['deletedBy']), actorName, {
       freightRequest: await this.requireFreightRequest(payload.requestId || current.requestId),
       partial: true,
     })
@@ -196,15 +197,4 @@ function normalizeDate(value) {
   }
 
   return date.toISOString()
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.deletedBy
-  delete editablePayload.id
-
-  return editablePayload
 }

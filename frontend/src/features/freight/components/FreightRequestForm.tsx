@@ -8,6 +8,7 @@ import { Card } from '../../../shared/components/Card/Card'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
+import { Textarea } from '../../../shared/components/Textarea/Textarea'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { createResource } from '../../../shared/services/resourceApi'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
@@ -179,10 +180,12 @@ export function FreightRequestForm() {
           <input id="requiresUnloadingHelp" name="requiresUnloadingHelp" type="checkbox" />
           <span>Requiere ayuda de descarga</span>
         </label>
-        <label className="span-2 text-field" htmlFor="observations">
-          <span>Observaciones</span>
-          <textarea id="observations" name="observations" placeholder="Condiciones de retiro, restricciones o ventanas horarias" />
-        </label>
+        <Textarea
+          className="span-2"
+          label="Observaciones"
+          name="observations"
+          placeholder="Condiciones de retiro, restricciones o ventanas horarias"
+        />
         <div className="span-2 inline-actions">
           <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
             {isSaving ? 'Creando...' : 'Crear solicitud'}

@@ -47,10 +47,11 @@ export function Sidebar({
   )
   const [expandedItemPaths, setExpandedItemPaths] = useState<Record<string, boolean>>({})
   const normalizedQuery = query.trim().toLowerCase()
+  const currentNavigationPath = `${location.pathname}${location.search}`
   const flatNavigationItems = useMemo(() => flattenNavigationItems(appConfig.navigationGroups), [])
   const visibleNavigationItems = flatNavigationItems.filter((item) => matchesFlatNavigationItem(item, normalizedQuery))
   const activeItemPath = flatNavigationItems
-    .filter((item) => isNavigationPathActive(location.pathname, item.path))
+    .filter((item) => isNavigationPathActive(currentNavigationPath, item.path))
     .sort((first, second) => second.path.length - first.path.length)[0]?.path
 
   useEffect(() => {
@@ -100,8 +101,8 @@ export function Sidebar({
             <div className={styles.railGroup} key={group.label}>
               {group.items.map((item) => {
                 const Icon = getSidebarIcon(item.icon)
-                const itemActive = isNavigationPathActive(location.pathname, item.path)
-                  || Boolean(item.children?.some((child) => isNavigationPathActive(location.pathname, child.path)))
+                const itemActive = isNavigationPathActive(currentNavigationPath, item.path)
+                  || Boolean(item.children?.some((child) => isNavigationPathActive(currentNavigationPath, child.path)))
 
                 return (
                   <NavLink
@@ -201,7 +202,7 @@ export function Sidebar({
                 key={group.label}
                 onToggle={() => toggleGroup(group)}
                 onToggleItem={toggleItem}
-                pathname={location.pathname}
+                pathname={currentNavigationPath}
               />
             ))}
           </div>

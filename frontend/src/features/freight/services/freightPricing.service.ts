@@ -1,14 +1,11 @@
 import { httpClient } from '../../../shared/services/httpClient'
+import type { ApiResponse } from '../../../shared/types/api.types'
 import type {
   FreightPricingCalculation,
   FreightPricingSettings,
   FreightQuoteCalculationInput,
   FreightRequest,
 } from '../types/freight.types'
-
-interface ApiResponse<T> {
-  data: T
-}
 
 export interface FreightPricingCalculatePayload extends FreightQuoteCalculationInput {
   destinationAddress?: string

@@ -14,6 +14,12 @@ interface PurchaseOrderTableProps {
 }
 
 export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) {
+  const getOverdueDays = (expectedDeliveryDate: string) => {
+    const elapsed = Date.now() - new Date(expectedDeliveryDate).getTime()
+
+    return elapsed > 0 ? Math.ceil(elapsed / 86_400_000) : 0
+  }
+
   const columns: TableColumn<PurchaseOrder>[] = [
     {
       header: 'OC / proveedor',
@@ -50,7 +56,20 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
         </div>
       ),
     },
-    { header: 'Entrega esperada', key: 'expectedDeliveryDate', render: (item) => formatDate(item.expectedDeliveryDate) },
+    {
+      header: 'Entrega esperada',
+      key: 'expectedDeliveryDate',
+      render: (item) => {
+        const overdueDays = getOverdueDays(item.expectedDeliveryDate)
+
+        return (
+          <div className="stack-tight">
+            <span>{formatDate(item.expectedDeliveryDate)}</span>
+            <span className="muted-text">{overdueDays > 0 ? `${overdueDays} dias de atraso` : 'Dentro de plazo'}</span>
+          </div>
+        )
+      },
+    },
     {
       align: 'right',
       header: 'Items',
@@ -63,13 +82,28 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
       align: 'right',
       header: '',
       key: 'actions',
-      render: (item) => (
-        <Link to={ROUTES.purchaseOrderDetail(item.id)}>
-          <Button size="sm" variant="secondary">
-            Ver
-          </Button>
-        </Link>
-      ),
+      render: (item) => {
+        const isReceivable = ['ORDERED', 'PARTIALLY_RECEIVED', 'OVERDUE', 'WITH_DIFFERENCE'].includes(item.status)
+        const actionLabel =
+          item.status === 'CANCELLED' || item.status === 'ANNULLED'
+            ? 'Trazabilidad'
+            : isReceivable
+              ? 'Registrar recepcion'
+              : 'Seguir OC'
+
+        return (
+          <div className="inline-actions">
+            <Link to={ROUTES.purchaseOrderDetail(item.id)}>
+              <Button size="sm" variant="secondary">
+                Trazabilidad
+              </Button>
+            </Link>
+            <Button size="sm" type="button" variant={item.status === 'OVERDUE' ? 'danger' : 'secondary'}>
+              {actionLabel}
+            </Button>
+          </div>
+        )
+      },
     },
   ]
 

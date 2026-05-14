@@ -500,16 +500,610 @@
   align-items: center;
 }
 
+.procurementShell,
+.procurementStack {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.procurementHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.6fr);
+  gap: 14px;
+  align-items: end;
+}
+
+.procurementHero h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  line-height: 1.22;
+}
+
+.procurementHero p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.procurementSearch {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.procurementSearch input {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 600;
+}
+
+.procurementCommandBar {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.42fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  background: rgb(255 255 255 / 0.94);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(10px);
+}
+
+.commandCopy,
+.commandActions,
+.commandButton {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.commandCopy {
+  gap: 8px;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 820;
+}
+
+.commandCopy button,
+.commandButton {
+  min-height: 30px;
+  gap: 6px;
+  padding: 0 9px;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.commandCopy button:hover,
+.commandButton:hover {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.28);
+}
+
+.commandActions {
+  justify-content: flex-end;
+  gap: 6px;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.commandActions::-webkit-scrollbar {
+  display: none;
+}
+
+.commandButton {
+  flex: 0 0 auto;
+  color: var(--color-text);
+}
+
+.commandButton kbd,
+.commandCopy kbd {
+  padding: 1px 5px;
+  color: var(--color-text-muted);
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.focusFilterRail {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.focusFilterRail::-webkit-scrollbar {
+  display: none;
+}
+
+.focusFilterRail button {
+  min-height: 30px;
+  flex: 0 0 auto;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 780;
+}
+
+.focusFilterRail button:hover,
+.focusFilterActive {
+  color: #b42318 !important;
+  background: #fff1f0 !important;
+  border-color: #fecdca !important;
+}
+
+.bulkActionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.bulkActionBar > div:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bulkActionBar strong {
+  color: var(--color-text);
+  font-size: 0.86rem;
+}
+
+.bulkActionBar span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.bulkActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.operationalKpiGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(136px, 1fr));
+  gap: 8px;
+}
+
+.operationalKpi {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.operationalKpi:hover {
+  border-color: var(--color-border-strong);
+}
+
+.operationalKpi span,
+.operationalKpi small {
+  overflow: hidden;
+  color: currentcolor;
+  font-size: 0.76rem;
+  line-height: 1.25;
+  opacity: 0.78;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.operationalKpi strong {
+  overflow-wrap: anywhere;
+  color: currentcolor;
+  font-size: 1.18rem;
+  line-height: 1.1;
+}
+
+.procurementGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.8fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.procurementQueue {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(135px, 1fr));
+  gap: 8px;
+}
+
+.procurementQueueItem {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  min-height: 74px;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+}
+
+.procurementQueueItem span,
+.procurementQueueItem small {
+  overflow: hidden;
+  color: currentcolor;
+  font-size: 0.76rem;
+  line-height: 1.25;
+  opacity: 0.78;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.procurementQueueItem strong {
+  color: currentcolor;
+  font-size: 1.35rem;
+  line-height: 1.05;
+}
+
+.procurementQueueItem:hover {
+  border-color: var(--color-border-strong);
+  filter: saturate(1.05);
+}
+
+.procurementFlowNav {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(180px, 0.7fr) minmax(320px, 1.4fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.procurementFlowGroup {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.procurementFlowHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.procurementFlowHeading strong {
+  color: var(--color-text);
+  font-size: 0.86rem;
+}
+
+.procurementFlowHeading span {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.procurementStepGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 6px;
+}
+
+.procurementStepButton {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0 8px;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 780;
+}
+
+.procurementStepButton span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.procurementStepButton strong {
+  min-width: 22px;
+  padding: 2px 6px;
+  color: currentcolor;
+  background: #fff;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.procurementStepButton:hover,
+.procurementStepActive {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.28);
+}
+
+.activeViewGuide {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.44fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.activeViewTitle {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.activeViewTitle span,
+.activeViewTitle small,
+.activeViewGrid span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  line-height: 1.25;
+}
+
+.activeViewTitle strong {
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.activeViewGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.activeViewGrid div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.activeViewGrid strong {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  line-height: 1.24;
+  overflow-wrap: anywhere;
+}
+
+.procurementTagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.buyerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 10px;
+}
+
+.buyerCard {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.buyerMetricGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.buyerMetricGrid span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.buyerMetricGrid strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.timelineList {
+  display: grid;
+  gap: 8px;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.timelineItem strong {
+  display: block;
+  color: var(--color-text);
+}
+
+.timelineItem p {
+  margin: 2px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.contextSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.contextSummaryGrid div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.contextSummaryGrid span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+}
+
+.contextSummaryGrid strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+}
+
+.drawerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.drawerGrid section,
+.drawerRecommendation {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f9fbfc;
+}
+
+.drawerGrid h3,
+.drawerRecommendation strong {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.92rem;
+}
+
+.drawerGrid dl {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.drawerGrid dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.drawerGrid dt {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.drawerGrid dd {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 760;
+  text-align: right;
+}
+
+.drawerRecommendation p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
 @media (max-width: 1120px) {
   .actionRail,
   .inventoryMetricStrip,
-  .inventorySummaryStrip {
+  .inventorySummaryStrip,
+  .operationalKpiGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .inventoryWorkspace,
-  .inventoryEditorLayout {
+  .inventoryEditorLayout,
+  .procurementGrid,
+  .procurementHero,
+  .procurementCommandBar,
+  .procurementFlowNav,
+  .activeViewGuide {
     grid-template-columns: 1fr;
+  }
+
+  .procurementQueue,
+  .contextSummaryGrid,
+  .activeViewGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .editorPanel {
@@ -526,7 +1120,8 @@
   .flowGrid,
   .reportGrid,
   .statusSegment,
-  .reportColumns {
+  .reportColumns,
+  .drawerGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -535,7 +1130,13 @@
   .actionRail,
   .inventoryMetricStrip,
   .inventorySummaryStrip,
-  .sideQueue {
+  .sideQueue,
+  .operationalKpiGrid,
+  .procurementQueue,
+  .activeViewGrid,
+  .contextSummaryGrid,
+  .drawerGrid,
+  .buyerMetricGrid {
     grid-template-columns: 1fr;
   }
 
@@ -551,8 +1152,15 @@
   .actionHeader,
   .sectionHeader,
   .reportRow,
-  .flowHeader {
+  .flowHeader,
+  .bulkActionBar,
+  .timelineItem {
     display: grid;
+  }
+
+  .commandActions,
+  .bulkActions {
+    justify-content: flex-start;
   }
 
   .reportValue {

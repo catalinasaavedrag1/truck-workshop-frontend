@@ -1,9 +1,8 @@
 import { randomUUID } from 'node:crypto'
 import { seedRecordsByResource } from '../../../scripts/seed-data.js'
 import { AppError } from '../errors/app-error.js'
+import { buildPaginationMeta, compareValues, parsePaginationOptions, parseSortOrder } from './query-options.js'
 
-const DEFAULT_PAGE_SIZE = 25
-const MAX_PAGE_SIZE = 100
 const stores = new Map()
 
 export class MemoryResourceRepository {
@@ -20,24 +19,17 @@ export class MemoryResourceRepository {
   }
 
   async findAll(query = {}) {
-    const page = Math.max(Number(query.page || 1), 1)
-    const limit = Math.min(Math.max(Number(query.limit || DEFAULT_PAGE_SIZE), 1), MAX_PAGE_SIZE)
+    const { limit, offset, page } = parsePaginationOptions(query)
     const sortField = this.safeSortField(query.sort)
-    const sortOrder = String(query.order || 'desc').toLowerCase() === 'asc' ? 1 : -1
+    const sortOrder = parseSortOrder(query.order) === 'asc' ? 1 : -1
     const filtered = this.records()
       .filter((record) => this.matchesSearch(record, query))
       .filter((record) => this.matchesFilters(record, query))
       .sort((first, second) => compareValues(first[sortField], second[sortField]) * sortOrder)
-    const offset = (page - 1) * limit
 
     return {
       data: filtered.slice(offset, offset + limit),
-      meta: {
-        limit,
-        page,
-        total: filtered.length,
-        totalPages: Math.ceil(filtered.length / limit),
-      },
+      meta: buildPaginationMeta({ limit, page, total: filtered.length }),
     }
   }
 
@@ -178,20 +170,4 @@ function ensureStore(resource) {
   }
 
   return stores.get(resource.name)
-}
-
-function compareValues(first, second) {
-  if (first === second) {
-    return 0
-  }
-
-  if (first === undefined || first === null) {
-    return 1
-  }
-
-  if (second === undefined || second === null) {
-    return -1
-  }
-
-  return first > second ? 1 : -1
 }

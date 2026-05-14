@@ -7,6 +7,7 @@ import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
+import { Textarea } from '../../../shared/components/Textarea/Textarea'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { saveDiagnostic } from '../services/diagnostics.service'
 import type { Diagnostic } from '../types/diagnostic.types'
@@ -83,10 +84,13 @@ export function DiagnosticForm({ caseId, formId = 'diagnostic-form', onSaved, sh
           <Input label="Sintoma principal" name="symptomPrimary" placeholder="Perdida de potencia" required />
           <Input label="Condicion" name="condition" placeholder="En subida, con carga completa" />
           <Input className={styles.wideField} label="Observaciones" name="notes" placeholder="Detalle tecnico inicial" />
-          <label className={[styles.textField, styles.wideField].join(' ')} htmlFor="rootCause">
-            <span>Causa probable</span>
-            <textarea id="rootCause" name="rootCause" placeholder="Describe la causa tecnica encontrada" required />
-          </label>
+          <Textarea
+            className={styles.wideField}
+            label="Causa probable"
+            name="rootCause"
+            placeholder="Describe la causa tecnica encontrada"
+            required
+          />
         </div>
         {showActions ? (
           <div className="inline-actions">

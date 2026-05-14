@@ -1,17 +1,14 @@
-import { httpClient } from '../../../shared/services/httpClient'
-import type { ApiResponse } from '../../../shared/types/api.types'
+import { createResource, updateResource } from '../../../shared/services/resourceApi'
 import type { Driver } from '../types/driver.types'
 
 export type CreateDriverPayload = Omit<Driver, 'id' | 'createdAt'>
 
-export async function createDriver(payload: CreateDriverPayload) {
-  const response = await httpClient.post<ApiResponse<Driver>>('/drivers', payload)
+const DRIVERS_PATH = '/drivers'
 
-  return response.data.data
+export async function createDriver(payload: CreateDriverPayload) {
+  return createResource<Driver, CreateDriverPayload>(DRIVERS_PATH, payload)
 }
 
 export async function updateDriver(driverId: string, payload: CreateDriverPayload) {
-  const response = await httpClient.patch<ApiResponse<Driver>>(`/drivers/${driverId}`, payload)
-
-  return response.data.data
+  return updateResource<Driver, CreateDriverPayload>(DRIVERS_PATH, driverId, payload)
 }

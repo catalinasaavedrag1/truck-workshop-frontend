@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { fetchResourceList, resolveMockFallback } from '../services/resourceApi'
 
@@ -8,9 +8,14 @@ export function useResourceList<T>(path: string, fallback: T[], params: QueryPar
   const [data, setData] = useState<T[]>([])
   const [error, setError] = useState<unknown>(null)
   const [isFallback, setIsFallback] = useState(false)
-  const paramsKey = JSON.stringify(params)
+  const [reloadIndex, setReloadIndex] = useState(0)
+  const paramsKey = useMemo(() => JSON.stringify(params), [params])
   const requestKey = `${path}:${paramsKey}`
   const [settledRequestKey, setSettledRequestKey] = useState('')
+  const reload = useCallback(() => {
+    setSettledRequestKey('')
+    setReloadIndex((current) => current + 1)
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -52,9 +57,9 @@ export function useResourceList<T>(path: string, fallback: T[], params: QueryPar
       isMounted = false
       controller.abort()
     }
-  }, [fallback, paramsKey, path, requestKey])
+  }, [fallback, paramsKey, path, reloadIndex, requestKey])
 
   const isLoading = settledRequestKey !== requestKey
 
-  return { data, error: isLoading ? null : error, isFallback: isLoading ? false : isFallback, isLoading }
+  return { data, error: isLoading ? null : error, isFallback: isLoading ? false : isFallback, isLoading, reload }
 }

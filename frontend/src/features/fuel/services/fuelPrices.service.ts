@@ -1,9 +1,6 @@
 import { httpClient } from '../../../shared/services/httpClient'
+import type { ApiResponse } from '../../../shared/types/api.types'
 import type { FuelPriceSnapshot } from '../types/fuel.types'
-
-interface ApiResponse<T> {
-  data: T
-}
 
 interface FuelPriceQuery {
   fuelType?: string

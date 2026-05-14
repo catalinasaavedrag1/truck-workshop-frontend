@@ -1,9 +1,8 @@
-import { httpClient } from '../../../shared/services/httpClient'
-import type { ApiResponse } from '../../../shared/types/api.types'
+import { createResource } from '../../../shared/services/resourceApi'
 import type { Assignment } from '../types/assignment.types'
 
-export async function assignCase(payload: Assignment) {
-  const response = await httpClient.post<ApiResponse<Assignment>>('/assignments', payload)
+const ASSIGNMENTS_PATH = '/assignments'
 
-  return response.data.data
+export async function assignCase(payload: Assignment) {
+  return createResource<Assignment, Assignment>(ASSIGNMENTS_PATH, payload)
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import { fetchResourceById, resolveMockFallback } from '../services/resourceApi'
 
@@ -6,8 +6,13 @@ export function useResourceItem<T extends { id: string }>(path: string, id: stri
   const [data, setData] = useState<T | undefined>(undefined)
   const [error, setError] = useState<unknown>(null)
   const [isFallback, setIsFallback] = useState(false)
+  const [reloadIndex, setReloadIndex] = useState(0)
   const requestKey = id ? `${path}:${id}` : ''
   const [settledRequestKey, setSettledRequestKey] = useState('')
+  const reload = useCallback(() => {
+    setSettledRequestKey('')
+    setReloadIndex((current) => current + 1)
+  }, [])
 
   useEffect(() => {
     if (!id) {
@@ -52,9 +57,9 @@ export function useResourceItem<T extends { id: string }>(path: string, id: stri
       isMounted = false
       controller.abort()
     }
-  }, [fallback, id, path, requestKey])
+  }, [fallback, id, path, reloadIndex, requestKey])
 
   const isLoading = Boolean(id) && settledRequestKey !== requestKey
 
-  return { data, error: isLoading ? null : error, isFallback: isLoading ? false : isFallback, isLoading }
+  return { data, error: isLoading ? null : error, isFallback: isLoading ? false : isFallback, isLoading, reload }
 }

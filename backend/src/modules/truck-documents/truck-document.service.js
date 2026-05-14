@@ -7,6 +7,7 @@ import {
 } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_DOCUMENT_TYPES = new Set([
   'CIRCULATION_PERMIT',
@@ -50,7 +51,7 @@ export class TruckDocumentService {
     const truckId = payload.truckId || current.truckId
     const truck = await this.requireTruck(truckId)
     const document = await this.documents.update(id, {
-      ...normalizeDocumentPayload(stripImmutableFields(payload), { current, partial: true }),
+      ...normalizeDocumentPayload(stripImmutableFields(payload, ['deletedBy']), { current, partial: true }),
       updatedBy: actorName,
     })
 
@@ -389,15 +390,4 @@ function mergeNotes(currentNotes, nextNote) {
   const notes = String(currentNotes || '').trim()
 
   return notes.includes(nextNote) ? notes : [notes, nextNote].filter(Boolean).join(' ')
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.deletedBy
-  delete editablePayload.id
-
-  return editablePayload
 }

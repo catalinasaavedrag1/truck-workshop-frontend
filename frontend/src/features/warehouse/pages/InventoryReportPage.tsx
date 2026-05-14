@@ -17,6 +17,7 @@ import styles from '../components/InventoryModule.module.css'
 import { InventoryReportPanel } from '../components/InventoryReportPanel'
 import { warehouseLocationsMock, warehouseMovementsMock, warehouseStockMock } from '../mocks/warehouse.mock'
 import { getInventoryReportSummary } from '../services/inventoryOperations'
+import { getProcurementDashboard, getProcurementSummaryMetrics } from '../services/procurementInsights.service'
 import { getWarehouseDemandRows } from '../services/warehouseInsights.service'
 import type { WarehouseLocation, WarehouseMovement, WarehouseStockItem } from '../types/warehouse.types'
 
@@ -49,6 +50,7 @@ export function InventoryReportPage() {
     stockItems,
     suppliers,
   })
+  const procurementReport = getProcurementDashboard(purchaseOrders)
 
   return (
     <PageContainer>
@@ -68,11 +70,20 @@ export function InventoryReportPage() {
               </Link>
             </div>
           }
-          description="Consolida stock, valor, quiebres, compras abiertas, proveedores y ubicaciones para decidir rapido."
-          title="Reporte de inventario"
+          description="Reporte ejecutivo y accionable de quiebres, cobertura, sobrestock, stock muerto, OC vencidas, documentos, proveedores y compradores."
+          title="Reportes de abastecimiento"
         />
 
         <InventoryModuleNav />
+        <div className={styles.reportGrid}>
+          {[...procurementReport.kpis.slice(0, 8), ...getProcurementSummaryMetrics().slice(0, 4)].map((metric) => (
+            <div className={[styles.reportMetric, styles[metric.tone]].join(' ')} key={metric.label}>
+              <small>{metric.label}</small>
+              <strong>{metric.value}</strong>
+              <span className="muted-text">{metric.helper}</span>
+            </div>
+          ))}
+        </div>
         <InventoryReportPanel report={report} />
 
         <Card>

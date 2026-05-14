@@ -8,6 +8,7 @@ import {
 } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_TIRE_TYPES = new Set(['NEW', 'RETREADED'])
 const VALID_USAGE_TYPES = new Set(['STEERING', 'TRACTION', 'TRAILER', 'SPARE'])
@@ -303,12 +304,7 @@ export class TirePerformanceService {
 }
 
 function normalizePatchPayload(payload, current, actorName) {
-  const normalized = { ...payload }
-
-  delete normalized.createdAt
-  delete normalized.createdBy
-  delete normalized.deletedBy
-  delete normalized.id
+  const normalized = stripImmutableFields(payload, ['deletedBy'])
 
   if (payload.status !== undefined) {
     normalized.status = normalizeLifecycleStatus(payload.status)

@@ -1,10 +1,7 @@
 import { env } from '../../../config/env'
 import { httpClient } from '../../../shared/services/httpClient'
+import type { ApiResponse } from '../../../shared/types/api.types'
 import type { MapAddressDetails, MapPlaceSuggestion, MapRouteResult, MapRouteWaypointInput } from '../types/maps.types'
-
-interface ApiResponse<T> {
-  data: T
-}
 
 export async function searchPlaces(query: string, sessionToken?: string) {
   const response = await httpClient.get<ApiResponse<MapPlaceSuggestion[]>>('/maps/places', {

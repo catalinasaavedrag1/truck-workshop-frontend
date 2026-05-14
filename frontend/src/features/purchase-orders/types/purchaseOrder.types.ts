@@ -1,11 +1,17 @@
 export type PurchaseOrderStatus =
   | 'DRAFT'
   | 'REQUESTED'
+  | 'PENDING_APPROVAL'
   | 'APPROVED'
   | 'ORDERED'
   | 'PARTIALLY_RECEIVED'
   | 'RECEIVED'
+  | 'CLOSED'
+  | 'OVERDUE'
   | 'CANCELLED'
+  | 'ANNULLED'
+  | 'WITH_DIFFERENCE'
+  | 'DOCUMENT_BLOCKED'
 
 export interface PurchaseOrderItem {
   partId: string

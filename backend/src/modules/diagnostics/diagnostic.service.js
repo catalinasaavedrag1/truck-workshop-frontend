@@ -1,6 +1,7 @@
 import { diagnosticResource, workshopCaseResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { stripImmutableFields } from '../../shared/utils/payload-sanitizers.js'
 
 const VALID_CATEGORIES = new Set(['engine', 'brakes', 'electric', 'transmission', 'tires', 'other'])
 const VALID_SEVERITIES = new Set(['low', 'medium', 'high'])
@@ -29,7 +30,7 @@ export class DiagnosticService {
 
   update(id, payload, actorName) {
     return this.diagnostics.update(id, {
-      ...normalizeDiagnosticPayload(stripImmutableFields(payload), { partial: true }),
+      ...normalizeDiagnosticPayload(stripImmutableFields(payload, ['deletedBy']), { partial: true }),
       updatedBy: actorName,
     })
   }
@@ -104,15 +105,4 @@ function normalizeSymptoms(symptoms) {
 
 function shouldAdvanceCase(status) {
   return ['new', 'diagnosis', 'assigned'].includes(status)
-}
-
-function stripImmutableFields(payload) {
-  const editablePayload = { ...payload }
-
-  delete editablePayload.createdAt
-  delete editablePayload.createdBy
-  delete editablePayload.deletedBy
-  delete editablePayload.id
-
-  return editablePayload
 }

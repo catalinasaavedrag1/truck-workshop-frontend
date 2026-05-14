@@ -1,9 +1,5 @@
-import { httpClient } from '../../../shared/services/httpClient'
-import {
-  getActorHeaders,
-  getCurrentActorName as resolveCurrentActorName,
-} from '../../../shared/services/sessionUser'
-import type { ApiResponse } from '../../../shared/types/api.types'
+import { createResource, deleteResource, updateResource } from '../../../shared/services/resourceApi'
+import { getCurrentActorName as resolveCurrentActorName } from '../../../shared/services/sessionUser'
 import type { PurchaseOrder, PurchaseOrderItem, PurchaseOrderStatus } from '../types/purchaseOrder.types'
 
 export interface PurchaseOrderPayload {
@@ -18,28 +14,18 @@ export interface PurchaseOrderPayload {
   expectedDeliveryDate: string
 }
 
-export async function createPurchaseOrder(payload: PurchaseOrderPayload) {
-  const response = await httpClient.post<ApiResponse<PurchaseOrder>>('/purchase-orders', payload, {
-    headers: getActorHeaders(),
-  })
+const PURCHASE_ORDERS_PATH = '/purchase-orders'
 
-  return response.data.data
+export async function createPurchaseOrder(payload: PurchaseOrderPayload) {
+  return createResource<PurchaseOrder, PurchaseOrderPayload>(PURCHASE_ORDERS_PATH, payload)
 }
 
 export async function updatePurchaseOrder(purchaseOrderId: string, payload: Partial<PurchaseOrderPayload>) {
-  const response = await httpClient.patch<ApiResponse<PurchaseOrder>>(`/purchase-orders/${purchaseOrderId}`, payload, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
+  return updateResource<PurchaseOrder, Partial<PurchaseOrderPayload>>(PURCHASE_ORDERS_PATH, purchaseOrderId, payload)
 }
 
 export async function deletePurchaseOrder(purchaseOrderId: string) {
-  const response = await httpClient.delete<ApiResponse<PurchaseOrder>>(`/purchase-orders/${purchaseOrderId}`, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
+  return deleteResource<PurchaseOrder>(PURCHASE_ORDERS_PATH, purchaseOrderId)
 }
 
 export function getCurrentActorName() {
