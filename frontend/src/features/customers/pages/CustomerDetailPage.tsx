@@ -34,11 +34,15 @@ import {
   CustomerAlertPanel,
   CustomerCommercialFinancePanel,
   CustomerDetailTabs,
+  CustomerBillingPanel,
   CustomerExecutiveHeader,
   CustomerExecutiveReports,
+  CustomerDocumentPanel,
   CustomerFreightControlTower,
   CustomerOperationalMap,
   CustomerOperationalTimelinePanel,
+  CustomerQuotationPanel,
+  CustomerRouteProfitabilityPanel,
   CustomerSummaryControlView,
 } from '../components/CustomerLogisticsControlTower'
 import type { CustomerDetailTab } from '../components/CustomerLogisticsControlTower'
@@ -59,8 +63,10 @@ const validCustomerDetailTabs = new Set<CustomerDetailTab>([
   'incidents',
   'profitability',
   'billing',
+  'documents',
   'map',
   'analytics',
+  'commercial',
 ])
 
 export function CustomerDetailPage() {
@@ -191,12 +197,15 @@ export function CustomerDetailPage() {
       {activeTab === 'profitability' ? (
         <div className="stack">
           <CustomerExecutiveReports intelligence={intelligence} />
+          <CustomerRouteProfitabilityPanel intelligence={intelligence} />
           <CustomerProfitabilityTable items={snapshot.freightProfitability} />
         </div>
       ) : null}
 
       {activeTab === 'billing' ? (
         <div className="stack">
+          <CustomerBillingPanel intelligence={intelligence} />
+          <CustomerQuotationPanel intelligence={intelligence} />
           <CustomerCommercialFinancePanel customer={customer} snapshot={snapshot} />
           <CustomerBillingSection
             customer={customer}
@@ -206,6 +215,13 @@ export function CustomerDetailPage() {
             freightQuotes={snapshot.freightQuotes}
             workshopQuotes={snapshot.workshopQuotes}
           />
+        </div>
+      ) : null}
+
+      {activeTab === 'documents' ? (
+        <div className="stack">
+          <CustomerDocumentPanel intelligence={intelligence} />
+          <CustomerBillingPanel intelligence={intelligence} />
         </div>
       ) : null}
 
@@ -219,7 +235,19 @@ export function CustomerDetailPage() {
       {activeTab === 'analytics' ? (
         <div className="stack">
           <CustomerExecutiveReports intelligence={intelligence} />
+          <CustomerRouteProfitabilityPanel intelligence={intelligence} />
           <CustomerOperationalPanels snapshot={snapshot} />
+        </div>
+      ) : null}
+
+      {activeTab === 'commercial' ? (
+        <div className="stack">
+          <CustomerCommercialFinancePanel customer={customer} snapshot={snapshot} />
+          <CustomerBillingSection
+            customer={customer}
+            creditQuoteReferences={creditQuoteReferences}
+          />
+          <CustomerQuotationPanel intelligence={intelligence} />
         </div>
       ) : null}
     </PageContainer>
