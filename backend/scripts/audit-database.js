@@ -259,6 +259,32 @@ async function auditDataConsistency(pool, actualTables, actualColumns) {
     }
   }
 
+  if (
+    actualTables.has('user_role_assignments') &&
+    actualColumns.has('user_role_assignments.password_hash') &&
+    actualColumns.has('user_role_assignments.is_active')
+  ) {
+    const result = await pool.request().query(`
+      SELECT TOP 20 [id], [email] AS value
+      FROM [dbo].[user_role_assignments]
+      WHERE [deleted_at] IS NULL
+        AND COALESCE([is_active], 1) = 1
+        AND ([password_hash] IS NULL OR [password_hash] = N'');
+    `)
+
+    for (const row of result.recordset) {
+      issues.push({
+        column: 'password_hash',
+        id: row.id,
+        referencedValue: row.value,
+        resource: 'user-role-assignments',
+        severity: 'error',
+        table: 'user_role_assignments',
+        type: 'ACTIVE_USER_WITHOUT_PASSWORD',
+      })
+    }
+  }
+
   return issues
 }
 

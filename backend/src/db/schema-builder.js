@@ -46,6 +46,18 @@ END;`
 }
 
 function buildDataBackfillStatements(resource) {
+  if (resource.table === 'user_role_assignments') {
+    return [
+      `
+IF COL_LENGTH('[dbo].[user_role_assignments]', 'is_active') IS NOT NULL
+BEGIN
+  UPDATE [dbo].[user_role_assignments]
+  SET [is_active] = COALESCE([is_active], 1)
+  WHERE [deleted_at] IS NULL;
+END;`,
+    ]
+  }
+
   if (!['alert_subscriptions', 'communication_conversations', 'communication_messages', 'communication_profiles', 'communication_provider_configs', 'communication_quote_links', 'customers', 'diagnostics', 'driver_documents', 'driver_fines', 'driver_trip_sheets', 'freight_assignments', 'mechanic_specialties', 'notifications', 'parts', 'purchase_orders', 'suppliers', 'tire_lifecycles', 'truck_documents', 'warehouse_locations'].includes(resource.table)) {
     return []
   }

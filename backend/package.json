@@ -12,7 +12,7 @@
     "seed:generate": "node scripts/generate-seed-data.js",
     "seed:from-mocks": "npm run seed:generate && npm run seed",
     "db:reset": "npm run migrate && npm run seed:from-mocks",
-    "check": "node scripts/check-syntax.js && node scripts/check-security.js && node scripts/smoke-api.js",
+    "check": "node scripts/check-syntax.js && node scripts/check-security.js && node scripts/audit-frontend-contract.js && node scripts/smoke-api.js",
     "smoke": "node scripts/smoke-api.js",
     "db:audit": "node scripts/audit-database.js"
   },
