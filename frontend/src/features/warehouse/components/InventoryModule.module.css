@@ -1000,6 +1000,292 @@
   font-size: 0.8rem;
 }
 
+.calendarOverview {
+  display: grid;
+  grid-template-columns: 1.35fr repeat(4, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+.calendarOverviewCard {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  min-height: 82px;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+
+button.calendarOverviewCard {
+  cursor: pointer;
+}
+
+button.calendarOverviewCard:hover {
+  border-color: var(--color-border-strong);
+  filter: saturate(1.05);
+}
+
+.calendarOverviewCard span,
+.calendarOverviewCard small {
+  overflow: hidden;
+  color: currentcolor;
+  font-size: 0.76rem;
+  line-height: 1.25;
+  opacity: 0.78;
+  text-overflow: ellipsis;
+}
+
+.calendarOverviewCard small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.calendarOverviewCard strong {
+  overflow-wrap: anywhere;
+  color: currentcolor;
+  font-size: 1.15rem;
+  line-height: 1.08;
+}
+
+.calendarBoard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.calendarBoardColumn {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.calendarBoardHeader {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.calendarBoardHeader span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--color-text);
+}
+
+.calendarBoardHeader strong {
+  overflow: hidden;
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendarBoardHeader small,
+.calendarBoardEmpty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+
+.calendarBoardItems {
+  display: grid;
+  gap: 6px;
+}
+
+.calendarBoardItem {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 9px 28px 9px 9px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+}
+
+.calendarBoardItem:hover {
+  border-color: rgb(15 118 110 / 0.28);
+  background: #f3faf8;
+}
+
+.calendarBoardItem span,
+.calendarBoardItem small {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendarBoardItem strong {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  line-height: 1.24;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendarBoardItem svg {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  color: var(--color-text-muted);
+  transform: translateY(-50%);
+}
+
+.calendarTimeline {
+  display: grid;
+  gap: 10px;
+}
+
+.calendarDayGroup {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.calendarDayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 26px;
+  padding: 0 4px;
+}
+
+.calendarDayHeader strong {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.calendarDayHeader span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  font-weight: 760;
+}
+
+.calendarEventList {
+  display: grid;
+  gap: 6px;
+}
+
+.calendarEvent {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.calendarTime {
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  color: currentcolor;
+}
+
+.calendarTime svg {
+  opacity: 0.72;
+}
+
+.calendarTime strong {
+  color: currentcolor;
+  font-size: 0.98rem;
+  line-height: 1.1;
+}
+
+.calendarTime span {
+  color: currentcolor;
+  font-size: 0.72rem;
+  font-weight: 820;
+  opacity: 0.75;
+}
+
+.calendarEventBody {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.calendarEventTitle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+.calendarEventTitle strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendarEventBody p {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.32;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.calendarEventMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+}
+
+.calendarEventMeta strong {
+  color: var(--color-text);
+}
+
+.calendarEventAction {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.calendarEmpty {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.calendarEmpty strong {
+  color: var(--color-text);
+}
+
 .contextSummaryGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1101,6 +1387,8 @@
   }
 
   .procurementQueue,
+  .calendarOverview,
+  .calendarBoard,
   .contextSummaryGrid,
   .activeViewGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1133,6 +1421,8 @@
   .sideQueue,
   .operationalKpiGrid,
   .procurementQueue,
+  .calendarOverview,
+  .calendarBoard,
   .activeViewGrid,
   .contextSummaryGrid,
   .drawerGrid,
@@ -1156,6 +1446,14 @@
   .bulkActionBar,
   .timelineItem {
     display: grid;
+  }
+
+  .calendarEvent {
+    grid-template-columns: 1fr;
+  }
+
+  .calendarEventAction {
+    justify-items: start;
   }
 
   .commandActions,

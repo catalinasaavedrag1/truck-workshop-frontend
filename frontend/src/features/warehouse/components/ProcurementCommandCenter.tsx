@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
+  AlertTriangle,
+  ArrowRight,
   BarChart3,
   Building2,
   CalendarDays,
+  Clock3,
   ClipboardList,
   Command,
   FileWarning,
@@ -79,6 +82,7 @@ type ProcurementTab =
 
 type ProcurementTabGroup = 'Decision' | 'Ejecucion' | 'Control'
 type OperationalTone = 'danger' | 'info' | 'success' | 'warning'
+type CalendarMode = 'Dia' | 'Semana' | 'Mes' | 'Timeline operativo'
 
 interface OperationalContext {
   action: string
@@ -123,6 +127,13 @@ const tabGroups: Array<{ helper: string; label: ProcurementTabGroup }> = [
 ]
 
 const validTabs = new Set<ProcurementTab>(tabs.map((tab) => tab.id))
+const calendarModes: CalendarMode[] = ['Dia', 'Semana', 'Mes', 'Timeline operativo']
+const calendarPriorityOrder: Record<ReplenishmentCalendarEvent['risk'], number> = {
+  critical: 0,
+  high: 1,
+  medium: 2,
+  low: 3,
+}
 
 interface ProcurementCommandCenterProps {
   isLoading?: boolean
@@ -481,28 +492,290 @@ function DocumentsTable({
   )
 }
 
-function CalendarTimeline({ rows }: { rows: ReplenishmentCalendarEvent[] }) {
+function CalendarTimeline({
+  onInspect,
+  rows,
+}: {
+  onInspect?: (event: ReplenishmentCalendarEvent) => void
+  rows: ReplenishmentCalendarEvent[]
+}) {
+  const groupedRows = groupCalendarEventsByDate(rows)
+
+  if (rows.length === 0) {
+    return (
+      <div className={styles.calendarEmpty}>
+        <strong>Sin eventos para este periodo</strong>
+        <span>Cambia el periodo o limpia la busqueda para volver a ver llegadas, quiebres y solicitudes.</span>
+      </div>
+    )
+  }
+
   return (
-    <div className={styles.timelineList}>
-      {rows.map((event) => (
-        <article className={styles.timelineItem} key={event.id}>
-          <div>
-            <span className="muted-text">{formatDate(event.date)}</span>
-            <strong>{event.title}</strong>
-            <p>{event.type} - {event.responsible}{event.provider ? ` - ${event.provider}` : ''}</p>
+    <div className={styles.calendarTimeline}>
+      {groupedRows.map((group) => (
+        <section className={styles.calendarDayGroup} key={group.label}>
+          <div className={styles.calendarDayHeader}>
+            <strong>{group.label}</strong>
+            <span>{group.events.length} eventos</span>
           </div>
-          <div className={styles.procurementTagList}>
-            <RiskBadge risk={event.risk} />
-            {event.relatedEntity ? (
-              <EntityLink id={event.relatedEntity.id} type={event.relatedEntity.type} variant="subtle">
-                {event.relatedEntity.label}
-              </EntityLink>
-            ) : null}
+          <div className={styles.calendarEventList}>
+            {group.events.map((event) => (
+              <article className={[styles.calendarEvent, styles[getCalendarEventTone(event)]].join(' ')} key={event.id}>
+                <div className={styles.calendarTime}>
+                  <Clock3 aria-hidden size={15} />
+                  <strong>{formatTime(event.date)}</strong>
+                  <span>{getCalendarUrgencyLabel(event)}</span>
+                </div>
+                <div className={styles.calendarEventBody}>
+                  <div className={styles.calendarEventTitle}>
+                    <StatusBadge>{event.type}</StatusBadge>
+                    <strong>{event.title}</strong>
+                  </div>
+                  <p>{getCalendarEventExplanation(event)}</p>
+                  <div className={styles.calendarEventMeta}>
+                    <span>Responsable: <strong>{event.responsible}</strong></span>
+                    {event.provider ? <span>Proveedor: <strong>{event.provider}</strong></span> : null}
+                    {event.purchaseOrderNumber ? (
+                      <EntityLink id={event.purchaseOrderId || event.purchaseOrderNumber} type="purchaseOrder" variant="subtle">
+                        {event.purchaseOrderNumber}
+                      </EntityLink>
+                    ) : null}
+                    {event.relatedEntity && event.relatedEntity.type !== 'purchaseOrder' ? (
+                      <EntityLink id={event.relatedEntity.id} type={event.relatedEntity.type} variant="subtle">
+                        {event.relatedEntity.label}
+                      </EntityLink>
+                    ) : null}
+                  </div>
+                </div>
+                <div className={styles.calendarEventAction}>
+                  <RiskBadge risk={event.risk} />
+                  <Button onClick={() => onInspect?.(event)} size="sm" type="button" variant={event.risk === 'critical' ? 'primary' : 'secondary'}>
+                    {getCalendarAction(event)}
+                  </Button>
+                </div>
+              </article>
+            ))}
           </div>
-        </article>
+        </section>
       ))}
     </div>
   )
+}
+
+function CalendarOverview({
+  events,
+  onInspect,
+}: {
+  events: ReplenishmentCalendarEvent[]
+  onInspect?: (event: ReplenishmentCalendarEvent) => void
+}) {
+  const sortedEvents = sortCalendarEvents(events)
+  const nextEvent = sortedEvents[0]
+  const criticalEvents = events.filter((event) => event.risk === 'critical' || event.risk === 'high')
+  const receiptEvents = events.filter((event) => event.type.includes('OC') || event.type.includes('Recepcion'))
+  const stockoutEvents = events.filter((event) => event.type === 'Quiebre proyectado' || event.type === 'Compra sugerida')
+  const responsibleCount = new Set(events.map((event) => event.responsible)).size
+
+  return (
+    <div className={styles.calendarOverview}>
+      <div className={[styles.calendarOverviewCard, styles.info].join(' ')}>
+        <span>Proximo evento</span>
+        <strong>{nextEvent ? formatTime(nextEvent.date) : 'Sin agenda'}</strong>
+        <small>{nextEvent ? nextEvent.title : 'No hay eventos visibles para este filtro.'}</small>
+      </div>
+      <button className={[styles.calendarOverviewCard, criticalEvents.length > 0 ? styles.danger : styles.success].join(' ')} onClick={() => criticalEvents[0] ? onInspect?.(criticalEvents[0]) : undefined} type="button">
+        <span>Riesgo alto</span>
+        <strong>{criticalEvents.length}</strong>
+        <small>{criticalEvents[0] ? getCalendarEventExplanation(criticalEvents[0]) : 'Sin riesgos criticos visibles.'}</small>
+      </button>
+      <div className={[styles.calendarOverviewCard, styles.warning].join(' ')}>
+        <span>OC / recepciones</span>
+        <strong>{receiptEvents.length}</strong>
+        <small>Eventos que pueden dejar stock disponible o atrasar operaciones.</small>
+      </div>
+      <div className={[styles.calendarOverviewCard, stockoutEvents.length > 0 ? styles.danger : styles.neutral].join(' ')}>
+        <span>Quiebres / decisiones</span>
+        <strong>{stockoutEvents.length}</strong>
+        <small>Compras sugeridas y quiebres proyectados que requieren decision.</small>
+      </div>
+      <div className={[styles.calendarOverviewCard, styles.neutral].join(' ')}>
+        <span>Responsables activos</span>
+        <strong>{responsibleCount}</strong>
+        <small>Compradores o receptores con eventos dentro del filtro actual.</small>
+      </div>
+    </div>
+  )
+}
+
+function CalendarPriorityBoard({
+  events,
+  onInspect,
+}: {
+  events: ReplenishmentCalendarEvent[]
+  onInspect?: (event: ReplenishmentCalendarEvent) => void
+}) {
+  const columns = [
+    {
+      description: 'Quiebres, atrasos y compras que no pueden esperar.',
+      events: events.filter((event) => event.risk === 'critical' || event.risk === 'high'),
+      icon: AlertTriangle,
+      label: 'Atender primero',
+    },
+    {
+      description: 'OC y recepciones que deben confirmarse para habilitar stock.',
+      events: events.filter((event) => event.type.includes('OC') || event.type.includes('Recepcion')),
+      icon: PackageCheck,
+      label: 'Llegadas y recepcion',
+    },
+    {
+      description: 'Solicitudes, compras sugeridas y quiebres proyectados.',
+      events: events.filter((event) => event.type === 'Compra sugerida' || event.type === 'Solicitud por vencer' || event.type === 'Quiebre proyectado'),
+      icon: ClipboardList,
+      label: 'Decision pendiente',
+    },
+  ]
+
+  return (
+    <div className={styles.calendarBoard}>
+      {columns.map((column) => {
+        const Icon = column.icon
+        const visibleEvents = sortCalendarEvents(column.events).slice(0, 3)
+
+        return (
+          <section className={styles.calendarBoardColumn} key={column.label}>
+            <div className={styles.calendarBoardHeader}>
+              <span>
+                <Icon aria-hidden size={16} />
+                <strong>{column.label}</strong>
+              </span>
+              <small>{column.description}</small>
+            </div>
+            <div className={styles.calendarBoardItems}>
+              {visibleEvents.length > 0 ? visibleEvents.map((event) => (
+                <button className={styles.calendarBoardItem} key={event.id} onClick={() => onInspect?.(event)} type="button">
+                  <span>{formatDate(event.date)} - {formatTime(event.date)}</span>
+                  <strong>{event.title}</strong>
+                  <small>{event.responsible} - {getCalendarAction(event)}</small>
+                  <ArrowRight aria-hidden size={14} />
+                </button>
+              )) : (
+                <p className={styles.calendarBoardEmpty}>Sin eventos en esta cola.</p>
+              )}
+            </div>
+          </section>
+        )
+      })}
+    </div>
+  )
+}
+
+function filterCalendarEventsByMode(events: ReplenishmentCalendarEvent[], mode: CalendarMode) {
+  if (mode === 'Timeline operativo') {
+    return sortCalendarEvents(events)
+  }
+
+  return sortCalendarEvents(events.filter((event) => event.mode === mode))
+}
+
+function getCalendarModeCount(events: ReplenishmentCalendarEvent[], mode: CalendarMode) {
+  return filterCalendarEventsByMode(events, mode).length
+}
+
+function sortCalendarEvents(events: ReplenishmentCalendarEvent[]) {
+  return [...events].sort((first, second) => {
+    const riskGap = calendarPriorityOrder[first.risk] - calendarPriorityOrder[second.risk]
+
+    if (riskGap !== 0) {
+      return riskGap
+    }
+
+    return new Date(first.date).getTime() - new Date(second.date).getTime()
+  })
+}
+
+function groupCalendarEventsByDate(events: ReplenishmentCalendarEvent[]) {
+  const groups = new Map<string, ReplenishmentCalendarEvent[]>()
+
+  sortCalendarEvents(events).forEach((event) => {
+    const label = formatDate(event.date)
+    const current = groups.get(label) || []
+    groups.set(label, [...current, event])
+  })
+
+  return Array.from(groups.entries()).map(([label, groupedEvents]) => ({
+    events: groupedEvents,
+    label,
+  }))
+}
+
+function formatTime(value: string) {
+  return new Intl.DateTimeFormat('es-CL', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(value))
+}
+
+function getCalendarEventTone(event: ReplenishmentCalendarEvent) {
+  if (event.risk === 'critical') {
+    return 'danger'
+  }
+
+  if (event.risk === 'high' || event.type === 'OC atrasada' || event.type === 'Quiebre proyectado') {
+    return 'warning'
+  }
+
+  if (event.type === 'Recepcion programada' || event.type === 'OC por llegar') {
+    return 'info'
+  }
+
+  return 'neutral'
+}
+
+function getCalendarUrgencyLabel(event: ReplenishmentCalendarEvent) {
+  if (event.risk === 'critical') {
+    return 'Critico'
+  }
+
+  if (event.risk === 'high') {
+    return 'Riesgo alto'
+  }
+
+  if (event.type === 'Recepcion programada') {
+    return 'Recibir'
+  }
+
+  if (event.type === 'OC por llegar') {
+    return 'Confirmar'
+  }
+
+  return 'Programado'
+}
+
+function getCalendarAction(event: ReplenishmentCalendarEvent) {
+  const actions: Record<ReplenishmentCalendarEvent['type'], string> = {
+    'Compra sugerida': 'Decidir compra',
+    'OC atrasada': 'Seguir OC',
+    'OC por llegar': 'Confirmar ETA',
+    'Quiebre proyectado': 'Crear solicitud',
+    'Recepcion programada': 'Recibir',
+    'Solicitud por vencer': 'Validar solicitud',
+  }
+
+  return actions[event.type]
+}
+
+function getCalendarEventExplanation(event: ReplenishmentCalendarEvent) {
+  const subject = event.purchaseOrderNumber || event.relatedEntity?.label || event.provider || 'abastecimiento'
+  const explanations: Record<ReplenishmentCalendarEvent['type'], string> = {
+    'Compra sugerida': `${subject} requiere decision antes de duplicar, esperar o comprar.`,
+    'OC atrasada': `${subject} esta atrasada y puede bloquear recepciones o casos activos.`,
+    'OC por llegar': `${subject} debe confirmarse para preparar recepcion y ubicacion.`,
+    'Quiebre proyectado': `${subject} puede quedar sin stock si no se valida reposicion.`,
+    'Recepcion programada': `${subject} debe recibirse, documentarse y ubicarse para liberar stock.`,
+    'Solicitud por vencer': `${subject} necesita aprobacion, ajuste o rechazo con motivo.`,
+  }
+
+  return explanations[event.type]
 }
 
 function ProcurementFlowNav({
@@ -834,6 +1107,7 @@ export function ProcurementCommandCenter({
   const { clearSearch, matches, query, setQuery } = useSearch()
   const [selectedSku, setSelectedSku] = useState<string | undefined>()
   const [context, setContext] = useState<OperationalContext | undefined>()
+  const [calendarMode, setCalendarMode] = useState<CalendarMode>('Timeline operativo')
   const suggestionSelection = useSelection()
   const requestSelection = useSelection()
   const orderSelection = useSelection()
@@ -923,6 +1197,7 @@ export function ProcurementCommandCenter({
   const categories = dashboard.categories.filter(matches)
   const documents = dashboard.documents.filter(matches)
   const calendar = dashboard.calendar.filter(matches)
+  const calendarEvents = filterCalendarEventsByMode(calendar, calendarMode)
   const urgentSuggestions = dashboard.suggestions.filter((item) => item.group === 'buy-now' || item.risk === 'critical' || item.risk === 'high')
   const pendingRequests = dashboard.requests.filter((item) => ['Detectada', 'En revision', 'Aprobada'].includes(item.state))
   const riskyOrders = dashboard.purchaseOrders.filter((item) => item.overdueDays > 0 || item.risk === 'critical' || item.risk === 'high')
@@ -948,7 +1223,7 @@ export function ProcurementCommandCenter({
   const visibleCounts: Record<ProcurementTab, number> = {
     audit: audit.length,
     buyers: buyers.length,
-    calendar: calendar.length,
+    calendar: calendarEvents.length,
     categories: categories.length,
     dashboard: dashboard.blockers.filter(matches).length,
     documents: documents.length,
@@ -1101,6 +1376,19 @@ export function ProcurementCommandCenter({
       status: alert.status,
       subtitle: alert.reason,
       title: alert.alert,
+    })
+  }
+  const inspectCalendarEvent = (event: ReplenishmentCalendarEvent) => {
+    setContext({
+      action: getCalendarAction(event),
+      href: event.purchaseOrderId ? ROUTES.purchaseOrderDetail(event.purchaseOrderId) : undefined,
+      impact: getCalendarEventExplanation(event),
+      kind: 'Calendario de abastecimiento',
+      links: event.relatedEntity ? [event.relatedEntity] : [],
+      risk: event.risk,
+      status: event.type,
+      subtitle: `${formatDate(event.date)} ${formatTime(event.date)} - Responsable: ${event.responsible}`,
+      title: event.title,
     })
   }
 
@@ -1440,18 +1728,26 @@ export function ProcurementCommandCenter({
         <Card>
           <div className="stack">
             <SectionHeader
-              description="Timeline operativo de OC por llegar, atrasadas, recepciones, quiebres proyectados y solicitudes por vencer."
+              description="Muestra que llega, que se atrasa, que puede quebrar stock y quien debe actuar. Primero atiende riesgo, despues confirma recepcion."
               title="Calendario de abastecimiento"
             />
+            <CalendarOverview events={calendarEvents} onInspect={inspectCalendarEvent} />
             <div className={styles.statusSegment}>
-              {['Dia', 'Semana', 'Mes', 'Timeline operativo'].map((mode) => (
-                <button className={mode === 'Timeline operativo' ? styles.statusSegmentActive : undefined} key={mode} type="button">
+              {calendarModes.map((mode) => (
+                <button
+                  aria-pressed={calendarMode === mode}
+                  className={calendarMode === mode ? styles.statusSegmentActive : undefined}
+                  key={mode}
+                  onClick={() => setCalendarMode(mode)}
+                  type="button"
+                >
                   <span>{mode}</span>
-                  <strong>{mode === 'Timeline operativo' ? calendar.length : calendar.filter((event) => event.mode === mode).length}</strong>
+                  <strong>{getCalendarModeCount(calendar, mode)}</strong>
                 </button>
               ))}
             </div>
-            <CalendarTimeline rows={calendar} />
+            <CalendarPriorityBoard events={calendarEvents} onInspect={inspectCalendarEvent} />
+            <CalendarTimeline onInspect={inspectCalendarEvent} rows={calendarEvents} />
           </div>
         </Card>
       ) : null}
