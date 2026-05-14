@@ -153,7 +153,7 @@ export function CustomerDetailPage() {
       render: (quote) => (
         <Link to={ROUTES.freightQuoteDetail(quote.id)}>
           <Button size="sm" variant="secondary">
-            Ver
+            Abrir cotizacion
           </Button>
         </Link>
       ),
@@ -183,7 +183,7 @@ export function CustomerDetailPage() {
       render: (quote) => (
         <Link to={ROUTES.quoteDetail(quote.id)}>
           <Button size="sm" variant="secondary">
-            Ver
+            Abrir presupuesto
           </Button>
         </Link>
       ),

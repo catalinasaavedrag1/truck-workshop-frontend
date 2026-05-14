@@ -15,6 +15,7 @@ export interface AppNavigationGroup {
 }
 
 const warehouseView = (view: string) => `${ROUTES.warehouse}?view=${view}`
+const customerView = (view: string) => `${ROUTES.customers}?view=${view}`
 
 const navigationGroups: AppNavigationGroup[] = [
   {
@@ -85,11 +86,25 @@ const navigationGroups: AppNavigationGroup[] = [
         ],
       },
       {
+        label: 'Clientes',
+        path: ROUTES.customers,
+        icon: 'building-2',
+        children: [
+          { label: 'Panel clientes', path: ROUTES.customers, icon: 'layout-dashboard', section: 'Control clientes' },
+          { label: 'Cartera', path: customerView('portfolio'), icon: 'building-2', section: 'Gestion' },
+          { label: 'Credito y riesgo', path: customerView('credit'), icon: 'shield-check', section: 'Control comercial' },
+          { label: 'Tarifas', path: customerView('pricing'), icon: 'circle-dollar-sign', section: 'Comercial' },
+          { label: 'Operaciones', path: customerView('operations'), icon: 'route', section: 'Operacion' },
+          { label: 'Comunicaciones', path: customerView('communications'), icon: 'message-circle', section: 'Relacion cliente' },
+          { label: 'Rentabilidad', path: customerView('profitability'), icon: 'trending-up', section: 'Analisis' },
+          { label: 'Nuevo cliente', path: customerView('create'), icon: 'circle-plus', section: 'Gestion', showInSidebar: false },
+        ],
+      },
+      {
         label: 'Logistica',
         path: ROUTES.freightRequests,
         icon: 'route',
         children: [
-          { label: 'Clientes', path: ROUTES.customers, icon: 'building-2', section: 'Clientes' },
           { label: 'Solicitudes', path: ROUTES.freightRequests, icon: 'clipboard-list', section: 'Solicitudes' },
           { label: 'Nueva solicitud', path: ROUTES.freightRequestNew, icon: 'circle-plus', section: 'Solicitudes', showInSidebar: false },
           { label: 'Portal cliente', path: ROUTES.freightClientPortal, icon: 'send', section: 'Solicitudes' },

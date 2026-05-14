@@ -16,14 +16,14 @@ export function CustomerSummaryCards({ customers }: CustomerSummaryCardsProps) {
 
   return (
     <div className="metric-grid">
-      <MetricCard helper="Disponibles para nuevas solicitudes" label="Clientes activos" to={`${ROUTES.customers}?status=active`} value={activeCustomers} />
-      <MetricCard helper={`${creditCustomers} con cuenta corriente`} label="Credito usado" to={ROUTES.customers} value={formatCurrency(creditExposure)} />
-      <MetricCard helper="Tarifas comerciales configuradas" label="Listas de precio" to={ROUTES.customers} value={customers.reduce((total, customer) => total + customer.priceList.length, 0)} />
+      <MetricCard helper="Disponibles para nuevas solicitudes" label="Clientes activos" to={`${ROUTES.customers}?view=portfolio&status=active`} value={activeCustomers} />
+      <MetricCard helper={`${creditCustomers} con cuenta corriente`} label="Credito usado" to={`${ROUTES.customers}?view=credit`} value={formatCurrency(creditExposure)} />
+      <MetricCard helper="Tarifas comerciales configuradas" label="Listas de precio" to={`${ROUTES.customers}?view=pricing`} value={customers.reduce((total, customer) => total + customer.priceList.length, 0)} />
       <MetricCard
         helper={highRiskCustomers > 0 ? 'Revisar antes de aprobar' : 'Sin alertas comerciales'}
         label="Riesgo comercial"
         tone={highRiskCustomers > 0 ? 'warning' : 'neutral'}
-        to={ROUTES.customers}
+        to={`${ROUTES.customers}?view=credit`}
         value={highRiskCustomers}
       />
     </div>

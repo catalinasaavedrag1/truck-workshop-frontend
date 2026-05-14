@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Edit, Trash2 } from 'lucide-react'
+import { Edit, UserX } from 'lucide-react'
 import { ROUTES } from '../../../config/routes'
 import { Badge } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
@@ -88,7 +88,7 @@ export function CustomerTable({
         <div className="inline-actions">
           <Link to={ROUTES.customerDetail(item.id)}>
             <Button size="sm" variant="secondary">
-              Ver
+              Ficha 360
             </Button>
           </Link>
           {onEdit ? (
@@ -96,15 +96,15 @@ export function CustomerTable({
           ) : null}
           {onDelete ? (
             <Button
-              aria-label={`Eliminar ${item.name}`}
+              aria-label={`Desactivar ${item.name}`}
               disabled={deletingId === item.id}
-              icon={<Trash2 size={15} />}
+              icon={<UserX size={15} />}
               onClick={() => onDelete(item)}
               size="sm"
               type="button"
               variant="danger"
             >
-              {deletingId === item.id ? '...' : ''}
+              {deletingId === item.id ? '...' : 'Desactivar'}
             </Button>
           ) : null}
         </div>
