@@ -44,6 +44,33 @@
   cursor: pointer;
 }
 
+.shortcutFeedback {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 80;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 9px 12px;
+  color: #fff;
+  background: #0f1b2a;
+  border: 1px solid rgb(94 234 212 / 0.32);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: 0.82rem;
+  font-weight: 760;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.shortcutFeedback:not(:empty) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (max-width: 880px) {
   .shell,
   .pinned,
@@ -53,6 +80,11 @@
 
   .content {
     padding: 10px;
+  }
+
+  .shortcutFeedback {
+    right: 10px;
+    bottom: 10px;
   }
 }
 

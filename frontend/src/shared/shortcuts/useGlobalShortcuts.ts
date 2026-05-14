@@ -21,6 +21,7 @@ interface UseGlobalShortcutsOptions {
   onFocusMenuSearch: () => void
   onOpenCommandPalette?: () => void
   onOpenHelp: () => void
+  onShortcutFeedback?: (message: string) => void
 }
 
 const SPACE_SEQUENCE_TIMEOUT_MS = 900
@@ -31,6 +32,7 @@ export function useGlobalShortcuts({
   onFocusMenuSearch,
   onOpenCommandPalette,
   onOpenHelp,
+  onShortcutFeedback,
   pathname,
   preferences,
 }: UseGlobalShortcutsOptions) {
@@ -40,9 +42,10 @@ export function useGlobalShortcuts({
     const handleKeyDown = (event: KeyboardEvent) => {
       const targetIsEditable = isEditableTarget(event.target)
 
-      if (isMenuSearchShortcut(event, preferences)) {
+      if (!targetIsEditable && isMenuSearchShortcut(event, preferences)) {
         event.preventDefault()
         onFocusMenuSearch()
+        onShortcutFeedback?.('Busqueda del menu enfocada')
         return
       }
 
@@ -50,8 +53,10 @@ export function useGlobalShortcuts({
         event.preventDefault()
         if (onOpenCommandPalette) {
           onOpenCommandPalette()
+          onShortcutFeedback?.('Paleta de comandos abierta')
         } else {
           onFocusGlobalSearch()
+          onShortcutFeedback?.('Busqueda global enfocada')
         }
         return
       }
@@ -59,6 +64,7 @@ export function useGlobalShortcuts({
       if (!targetIsEditable && isShortcutHelpShortcut(event, preferences)) {
         event.preventDefault()
         onOpenHelp()
+        onShortcutFeedback?.('Ayuda de atajos abierta')
         return
       }
 
@@ -82,6 +88,7 @@ export function useGlobalShortcuts({
 
         if (nextModule) {
           navigate(nextModule.path)
+          onShortcutFeedback?.(`Modulo abierto: ${nextModule.label}`)
         }
 
         return
@@ -93,11 +100,21 @@ export function useGlobalShortcuts({
       if (quickAction) {
         event.preventDefault()
         navigate(quickAction.path)
+        onShortcutFeedback?.(`Accion rapida: ${quickAction.label}`)
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
 
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [navigate, onFocusGlobalSearch, onFocusMenuSearch, onOpenCommandPalette, onOpenHelp, pathname, preferences])
+  }, [
+    navigate,
+    onFocusGlobalSearch,
+    onFocusMenuSearch,
+    onOpenCommandPalette,
+    onOpenHelp,
+    onShortcutFeedback,
+    pathname,
+    preferences,
+  ])
 }

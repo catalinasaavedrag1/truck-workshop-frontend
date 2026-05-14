@@ -25,6 +25,7 @@ export function MainLayout() {
   const [globalSearchFocusSignal, setGlobalSearchFocusSignal] = useState(0)
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false)
   const [shortcutHelpOpen, setShortcutHelpOpen] = useState(false)
+  const [shortcutFeedback, setShortcutFeedback] = useState('')
   const [shortcutPreferences, setShortcutPreferences] = useState<ShortcutPreferences>(() =>
     getDefaultShortcutPreferences(getCurrentSessionUser().id),
   )
@@ -107,6 +108,10 @@ export function MainLayout() {
     setIsCommandPaletteOpen(true)
   }, [])
 
+  const announceShortcutFeedback = useCallback((message: string) => {
+    setShortcutFeedback(message)
+  }, [])
+
   useEffect(() => {
     const loadPreferences = async () => {
       const sessionUser = getCurrentSessionUser()
@@ -130,12 +135,23 @@ export function MainLayout() {
     return () => window.removeEventListener(SHORTCUT_PREFERENCES_EVENT, handlePreferencesUpdate)
   }, [])
 
+  useEffect(() => {
+    if (!shortcutFeedback) {
+      return undefined
+    }
+
+    const timeoutId = window.setTimeout(() => setShortcutFeedback(''), 1800)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [shortcutFeedback])
+
   useGlobalShortcuts({
     navigate,
     onFocusGlobalSearch: focusGlobalSearch,
     onFocusMenuSearch: focusMenuSearch,
     onOpenCommandPalette: openCommandPalette,
     onOpenHelp: openShortcutHelp,
+    onShortcutFeedback: announceShortcutFeedback,
     pathname: location.pathname,
     preferences: shortcutPreferences,
   })
@@ -183,6 +199,9 @@ export function MainLayout() {
         <main className={styles.content}>
           <Outlet />
         </main>
+      </div>
+      <div aria-live="polite" className={styles.shortcutFeedback} role="status">
+        {shortcutFeedback}
       </div>
       <CommandPalette
         onClose={() => setIsCommandPaletteOpen(false)}

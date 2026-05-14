@@ -302,3 +302,42 @@ Inventario tecnico observado:
 - La visibilidad por permisos aun no filtra el arbol de navegacion; hoy se conserva compatibilidad y se evita ocultar rutas hasta que backend entregue permisos completos por modulo.
 - No se agregaron badges dinamicos de pendientes al sidebar para no hardcodear conteos operacionales; deberian venir de endpoints resumidos por modulo.
 - Una siguiente iteracion puede persistir preferencias de expansion por usuario si el equipo operativo lo necesita.
+
+## Iteracion headers operacionales 2026-05-14
+
+### Problemas encontrados
+
+- `PageHeader` era consistente visualmente, pero no derivaba contexto desde la navegacion global; muchas vistas dependian de breadcrumbs manuales o quedaban sin ubicacion operacional.
+- Los breadcrumbs usaban anchors nativos, lo que podia provocar navegacion completa en vez de transicion SPA.
+- Los headers no mostraban ayudas de productividad, aunque la plataforma ya tiene shortcuts globales.
+- Las acciones del header no tenian una zona lateral clara para separar accion primaria, acciones secundarias y ayudas.
+- `SectionHeader` era simple, pero no tenia soporte para eyebrow/meta y podia quebrar jerarquia cuando las acciones crecian.
+- Los shortcuts globales navegaban correctamente, pero no dejaban feedback visual/aria-live al usuario.
+- `Ctrl K` para menu lateral podia interceptar foco aun dentro de inputs editables.
+
+### Cambios aplicados
+
+- Se creo `shared/navigation/navigationContext.ts` para centralizar contexto de navegacion, breadcrumbs y vistas relacionadas.
+- `ContextBar` reutiliza la misma fuente de contexto que `PageHeader`, reduciendo duplicacion.
+- `PageHeader` ahora puede derivar breadcrumbs automaticos desde `appConfig` y la ruta actual.
+- `PageHeader` usa `Link` de React Router para breadcrumbs internos.
+- `PageHeader` soporta `eyebrow`, `status`, `meta`, `shortcuts`, `showContext` y `showShortcutHints` sin romper usos existentes.
+- Los headers muestran chips contextuales como seccion y descripcion del dominio operativo.
+- Se agregaron hints discretos de atajos globales en el header: menu, busqueda y ayuda.
+- `SectionHeader` ahora soporta eyebrow y meta, con mejor responsive y limite de acciones.
+- `useGlobalShortcuts` evita robar foco de inputs editables para el atajo de menu.
+- `MainLayout` muestra feedback visual y accesible cuando un shortcut abre busqueda, ayuda, cambia modulo o ejecuta accion rapida.
+
+### Criterio UX aplicado
+
+- Cada vista debe responder donde estoy antes de obligar al usuario a leer el sidebar.
+- Breadcrumbs y contexto deben venir desde la arquitectura de navegacion, no desde texto duplicado por pantalla.
+- Los atajos deben sentirse visibles y confirmar que hicieron algo.
+- Acciones del header deben quedar separadas de contexto y ayudas.
+- Los headers deben reducir altura y mantener densidad operacional en notebooks.
+
+### Riesgos pendientes
+
+- Algunas vistas tienen headers especificos fuera de `PageHeader`; conviene migrarlas gradualmente si necesitan la misma estructura.
+- La jerarquia primaria/secundaria de acciones todavia depende del orden que cada pagina pasa en `actions`.
+- Cuando backend entregue permisos completos por modulo, los headers deben ocultar o explicar acciones bloqueadas segun rol.

@@ -1,48 +1,12 @@
 import { createElement } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import type { AppNavigationGroup, AppNavigationItem } from '../../../config/app.config'
-import { appConfig } from '../../../config/app.config'
+import { findNavigationContext, getRelatedNavigationItems } from '../../navigation/navigationContext'
 import { getSidebarIcon } from '../Sidebar/sidebarIcons'
-import { isNavigationPathActive } from '../Sidebar/sidebarUtils'
 import styles from './ContextBar.module.css'
-
-interface NavigationMatch {
-  group: AppNavigationGroup
-  item: AppNavigationItem
-  parent: AppNavigationItem
-}
-
-function findNavigationMatch(pathname: string): NavigationMatch | undefined {
-  const matches: NavigationMatch[] = []
-
-  appConfig.navigationGroups.forEach((group) => {
-    group.items.forEach((parent) => {
-      if (isNavigationPathActive(pathname, parent.path)) {
-        matches.push({
-          group,
-          item: parent,
-          parent,
-        })
-      }
-
-      parent.children?.forEach((child) => {
-        if (isNavigationPathActive(pathname, child.path)) {
-          matches.push({
-            group,
-            item: child,
-            parent,
-          })
-        }
-      })
-    })
-  })
-
-  return matches.sort((first, second) => second.item.path.length - first.item.path.length)[0]
-}
 
 export function ContextBar() {
   const location = useLocation()
-  const match = findNavigationMatch(`${location.pathname}${location.search}`)
+  const match = findNavigationContext(`${location.pathname}${location.search}`)
 
   if (!match) {
     return null
@@ -87,16 +51,4 @@ export function ContextBar() {
       ) : null}
     </section>
   )
-}
-
-function getRelatedNavigationItems(match: NavigationMatch) {
-  const siblings = match.parent.children || []
-  const activeSection = match.item.section
-  const visibleSiblings = siblings.filter((item) => item.showInSidebar !== false && item.path !== match.item.path)
-  const sameSection = activeSection
-    ? visibleSiblings.filter((item) => item.section === activeSection)
-    : []
-  const contextualItems = sameSection.length > 0 ? sameSection : visibleSiblings
-
-  return contextualItems.slice(0, 4)
 }
