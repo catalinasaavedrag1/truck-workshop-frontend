@@ -1,0 +1,213 @@
+.filterBar {
+  display: grid;
+  grid-template-columns: minmax(112px, 184px) minmax(0, 1fr) max-content;
+  grid-template-areas:
+    "summary primary actions"
+    "chips chips chips"
+    "secondary secondary secondary";
+  align-items: start;
+  gap: 8px 10px;
+  padding: 9px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.noSummary {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  grid-template-areas:
+    "primary actions"
+    "chips chips"
+    "secondary secondary";
+}
+
+.noActions {
+  grid-template-columns: minmax(112px, 184px) minmax(0, 1fr);
+  grid-template-areas:
+    "summary primary"
+    "chips chips"
+    "secondary secondary";
+}
+
+.noSummary.noActions {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "primary"
+    "chips"
+    "secondary";
+}
+
+.summary {
+  grid-area: summary;
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  padding-top: 5px;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleRow h2 {
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.summary p {
+  max-width: 184px;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.chips {
+  grid-area: chips;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border: 1px solid rgb(15 118 110 / 0.18);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+button.chip {
+  cursor: pointer;
+}
+
+button.chip:hover {
+  border-color: rgb(15 118 110 / 0.36);
+  background: #c8ece7;
+}
+
+.chip strong {
+  color: var(--color-text);
+}
+
+.primary,
+.secondary {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(155px, 100%), 1fr));
+  gap: 7px;
+}
+
+.primary {
+  grid-area: primary;
+  align-self: stretch;
+}
+
+.secondary {
+  grid-area: secondary;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.chevron {
+  transition: transform 140ms ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 1080px) {
+  .filterBar {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-areas:
+      "summary actions"
+      "primary primary"
+      "chips chips"
+      "secondary secondary";
+  }
+
+  .noSummary {
+    grid-template-areas:
+      "primary actions"
+      "chips chips"
+      "secondary secondary";
+  }
+
+  .noActions {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "summary"
+      "primary"
+      "chips"
+      "secondary";
+  }
+
+  .noSummary.noActions {
+    grid-template-areas:
+      "primary"
+      "chips"
+      "secondary";
+  }
+
+  .summary p {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 720px) {
+  .filterBar {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "summary"
+      "primary"
+      "actions"
+      "chips"
+      "secondary";
+  }
+
+  .noSummary {
+    grid-template-areas:
+      "primary"
+      "actions"
+      "chips"
+      "secondary";
+  }
+
+  .noSummary.noActions {
+    grid-template-areas:
+      "primary"
+      "chips"
+      "secondary";
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .primary,
+  .secondary {
+    grid-template-columns: 1fr;
+  }
+}

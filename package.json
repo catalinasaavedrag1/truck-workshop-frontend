@@ -1,79 +1,26 @@
 {
-  "name": "truck-workshop-frontend",
+  "name": "truck-workshop",
   "private": true,
   "version": "0.0.0",
-  "description": "Frontend de escritorio para gestion operativa de taller y flota de camiones.",
-  "author": "Truck Workshop",
-  "type": "module",
-  "main": "electron/main.cjs",
+  "description": "Workspace para la plataforma Truck Workshop, con frontend instalable y backend API.",
   "scripts": {
-    "dev": "vite",
-    "dev:all": "node scripts/dev-fullstack.js",
-    "db:up": "docker compose up -d sqlserver",
-    "db:down": "docker compose down",
-    "build": "tsc -b && vite build",
-    "desktop:preview": "npm run build && electron .",
-    "desktop:pack": "npm run build && electron-builder --dir",
-    "desktop:dist": "npm run build && electron-builder",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "check": "npm run lint && npm run typecheck && npm run backend:check",
-    "typecheck": "tsc -b",
+    "dev": "npm --prefix frontend run dev",
+    "dev:all": "npm --prefix frontend run dev:all",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "typecheck": "npm --prefix frontend run typecheck",
+    "check": "npm --prefix frontend run check",
+    "preview": "npm --prefix frontend run preview",
+    "desktop:preview": "npm --prefix frontend run desktop:preview",
+    "desktop:pack": "npm --prefix frontend run desktop:pack",
+    "desktop:dist": "npm --prefix frontend run desktop:dist",
     "backend:dev": "npm --prefix backend run dev",
     "backend:start": "npm --prefix backend run start",
     "backend:migrate": "npm --prefix backend run migrate",
     "backend:seed": "npm --prefix backend run seed:from-mocks",
     "backend:db:reset": "npm --prefix backend run db:reset",
     "backend:db:audit": "npm --prefix backend run db:audit",
-    "backend:check": "npm --prefix backend run check"
-  },
-  "dependencies": {
-    "axios": "^1.16.0",
-    "lucide-react": "^1.14.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.2"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@types/node": "^22.15.3",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^4.4.1",
-    "electron": "^41.5.0",
-    "electron-builder": "^26.8.1",
-    "eslint": "^9.39.2",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.5.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.46.3",
-    "vite": "^6.4.2"
-  },
-  "build": {
-    "appId": "cl.truckworkshop.frontend",
-    "productName": "Truck Workshop",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/**/*",
-      "electron/**/*",
-      "package.json"
-    ],
-    "win": {
-      "signAndEditExecutable": false,
-      "target": [
-        "nsis"
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Truck Workshop"
-    }
+    "db:up": "docker compose up -d sqlserver",
+    "db:down": "docker compose down"
   }
 }

@@ -1,15 +1,12 @@
 import { ApprovalService } from './approval.service.js'
 import { asyncHandler } from '../../shared/http/async-handler.js'
+import { getActorName } from '../../shared/http/request-actor.js'
 import { sendResponse } from '../../shared/http/send-response.js'
 
 const service = new ApprovalService()
 
 export const resolveApproval = asyncHandler(async (request, response) => {
-  const approval = await service.resolve(request.params.id, request.body, getActorName(request))
+  const approval = await service.resolve(request.params.id, request.body, getActorName(request, ['resolvedBy', 'approvedBy', 'updatedBy']))
 
   sendResponse(response, { data: approval })
 })
-
-function getActorName(request) {
-  return request.get('x-user-name') || request.body.resolvedBy || request.body.approvedBy || request.body.updatedBy || 'Sistema'
-}

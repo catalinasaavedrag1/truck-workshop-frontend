@@ -1,5 +1,6 @@
 import { WorkshopCaseService } from './workshop-case.service.js'
 import { asyncHandler } from '../../shared/http/async-handler.js'
+import { getActorName } from '../../shared/http/request-actor.js'
 import { sendResponse } from '../../shared/http/send-response.js'
 
 const service = new WorkshopCaseService()
@@ -13,7 +14,7 @@ export const getWorkshopCase = asyncHandler(async (request, response) => {
 })
 
 export const createWorkshopCase = asyncHandler(async (request, response) => {
-  sendResponse(response, { data: await service.create(request.body, request.headers['x-user-name']) }, 201)
+  sendResponse(response, { data: await service.create(request.body, getActorName(request)) }, 201)
 })
 
 export const updateWorkshopCase = asyncHandler(async (request, response) => {
@@ -37,5 +38,5 @@ export const assignWorkshopCase = asyncHandler(async (request, response) => {
 })
 
 export const closeWorkshopCase = asyncHandler(async (request, response) => {
-  sendResponse(response, { data: await service.close(request.params.id, request.body, request.headers['x-user-name']) })
+  sendResponse(response, { data: await service.close(request.params.id, request.body, getActorName(request)) })
 })

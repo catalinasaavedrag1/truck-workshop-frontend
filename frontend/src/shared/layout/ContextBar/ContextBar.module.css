@@ -1,0 +1,79 @@
+.contextBar {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 5px 14px;
+  background: rgb(255 255 255 / 0.92);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 740;
+  white-space: nowrap;
+}
+
+.moduleIcon {
+  display: inline-grid;
+  width: 23px;
+  height: 23px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-sm);
+}
+
+.group,
+.parentLink,
+.current {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group {
+  max-width: 150px;
+  color: var(--color-text-muted);
+}
+
+.parentLink {
+  max-width: 180px;
+  color: var(--color-text);
+}
+
+.parentLink:hover {
+  color: var(--color-primary-dark);
+}
+
+.current {
+  max-width: 190px;
+  color: var(--color-text);
+  font-weight: 820;
+}
+
+.separator {
+  color: var(--color-border-strong);
+}
+
+@media (max-width: 880px) {
+  .contextBar {
+    padding: 6px 10px;
+  }
+
+  .identity {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .group,
+  .separator:first-of-type {
+    display: none;
+  }
+}

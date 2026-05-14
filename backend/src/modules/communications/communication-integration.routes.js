@@ -1,9 +1,10 @@
 import { randomUUID } from 'node:crypto'
 import { Router } from 'express'
-import { resources } from '../../config/resources.js'
+import { resourceByName } from '../../config/resource-lookup.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
 import { asyncHandler } from '../../shared/http/async-handler.js'
+import { getActorName } from '../../shared/http/request-actor.js'
 import { sendResponse } from '../../shared/http/send-response.js'
 
 const MASKED_SECRET = '********'
@@ -60,7 +61,7 @@ communicationIntegrationRouter.post('/provider-configs/:id/test', asyncHandler(a
     lastError: testResult.ok ? '' : testResult.status,
     lastTestAt: new Date().toISOString(),
     lastTestStatus: testResult.status,
-    updatedBy: actorName(request),
+    updatedBy: getActorName(request),
   })
 
   sendResponse(response, {
@@ -115,7 +116,7 @@ async function sendCommunicationMessage(payload, request) {
     body: String(payload.body || '').trim(),
     channel: conversation.channel,
     conversationId: conversation.id,
-    createdBy: payload.createdBy || actorName(request),
+    createdBy: payload.createdBy || getActorName(request),
     direction: 'outbound',
     errorMessage: providerResult.errorMessage,
     fromAddress: providerResult.fromAddress || config?.fromAddress || profile.address,
@@ -131,14 +132,14 @@ async function sendCommunicationMessage(payload, request) {
     subject: conversation.channel === 'email' ? payload.subject || conversation.subject : undefined,
     toAddress: conversation.contactAddress,
     toName: conversation.contactName,
-    updatedBy: payload.updatedBy || actorName(request),
+    updatedBy: payload.updatedBy || getActorName(request),
   })
   const updatedConversation = await repositories.conversations.update(conversation.id, {
     lastMessageAt: sentAt,
     lastMessagePreview: message.status === 'failed' ? `Error envio: ${message.body}` : message.body,
     status: 'open',
     unreadCount: 0,
-    updatedBy: payload.updatedBy || actorName(request),
+    updatedBy: payload.updatedBy || getActorName(request),
   })
 
   return {
@@ -515,10 +516,10 @@ function normalizeProviderPayload(payload, request, partial = false) {
     cleanPayload.isActive = cleanPayload.isActive ?? false
     cleanPayload.outlookSaveToSentItems = cleanPayload.outlookSaveToSentItems ?? true
     cleanPayload.whatsappApiVersion = cleanPayload.whatsappApiVersion || 'v25.0'
-    cleanPayload.createdBy = cleanPayload.createdBy || actorName(request)
+    cleanPayload.createdBy = cleanPayload.createdBy || getActorName(request)
   }
 
-  cleanPayload.updatedBy = actorName(request)
+  cleanPayload.updatedBy = getActorName(request)
 
   return cleanPayload
 }
@@ -599,12 +600,4 @@ function isoFromUnix(value) {
   }
 
   return new Date(timestamp * 1000).toISOString()
-}
-
-function actorName(request) {
-  return request.get('x-user-name') || 'Sistema'
-}
-
-function resourceByName(name) {
-  return resources.find((resource) => resource.name === name)
 }

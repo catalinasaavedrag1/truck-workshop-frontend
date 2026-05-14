@@ -1,4 +1,4 @@
-import { resources } from '../../config/resources.js'
+import { resourceByName } from '../../config/resource-lookup.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 
 const COST_LABELS = {
@@ -250,7 +250,7 @@ function buildPeriod(query) {
 
   return {
     endDate: end.toISOString(),
-    label: mode === 'annual' ? `Año ${year}` : `${String(month).padStart(2, '0')}/${year}`,
+    label: mode === 'annual' ? `Ano ${year}` : `${String(month).padStart(2, '0')}/${year}`,
     mode,
     month: mode === 'monthly' ? month : undefined,
     startDate: start.toISOString(),
@@ -304,16 +304,6 @@ function profitabilityStatus(costPerKm, netMargin, revenue) {
   }
 
   return 'PROFITABLE'
-}
-
-function resourceByName(name) {
-  const resource = resources.find((item) => item.name === name)
-
-  if (!resource) {
-    throw new Error(`Resource ${name} no configurado`)
-  }
-
-  return resource
 }
 
 function sum(items, key) {

@@ -1,4 +1,4 @@
-import { customerResource, freightRequestResource } from '../../config/resources.js'
+import { customerResource, freightQuoteResource, freightRequestResource, quoteResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
 
@@ -6,11 +6,14 @@ const customerStatuses = new Set(['active', 'inactive', 'suspended'])
 const customerRiskLevels = new Set(['low', 'medium', 'high'])
 const cargoTypes = new Set(['GENERAL', 'PALLETIZED', 'BULK', 'FRAGILE', 'REFRIGERATED', 'HAZARDOUS', 'OVERSIZED'])
 const activeFreightStatuses = new Set(['NEW', 'QUOTING', 'QUOTE_SENT', 'APPROVED', 'ASSIGNED', 'IN_TRANSIT'])
+const quoteStatusesUsingCredit = new Set(['DRAFT', 'SENT', 'APPROVED'])
 
 export class CustomerService {
   constructor() {
     this.customers = createRepository(customerResource)
+    this.freightQuotes = createRepository(freightQuoteResource)
     this.freightRequests = createRepository(freightRequestResource)
+    this.workshopQuotes = createRepository(quoteResource)
   }
 
   list(query) {
@@ -74,6 +77,111 @@ export class CustomerService {
       return matchesCustomer && activeFreightStatuses.has(request.status)
     })
   }
+
+  async getCreditSummary(id) {
+    const customer = await this.get(id)
+    const [freightQuotesResult, workshopQuotesResult] = await Promise.all([
+      this.freightQuotes.findAll({ limit: 100, order: 'desc', sort: 'createdAt' }),
+      this.workshopQuotes.findAll({ limit: 100, order: 'desc', sort: 'createdAt' }),
+    ])
+    const freightQuotes = freightQuotesResult.data
+      .filter((quote) => matchesCustomerReference(customer, quote))
+      .map((quote) => toCreditQuoteReference(quote, 'freight'))
+    const workshopQuotes = workshopQuotesResult.data
+      .filter((quote) => matchesCustomerReference(customer, quote))
+      .map((quote) => toCreditQuoteReference(quote, 'workshop'))
+    const activeQuotes = [...freightQuotes, ...workshopQuotes].filter((quote) => quoteStatusesUsingCredit.has(quote.status))
+    const quoteExposure = activeQuotes.reduce((total, quote) => total + normalizeAmount(quote.total), 0)
+    const creditLimit = normalizeAmount(customer.creditLimit)
+    const creditUsed = normalizeAmount(customer.creditUsed)
+    const projectedUsed = creditUsed + quoteExposure
+    const usagePercent = creditLimit > 0 ? Math.round((creditUsed / creditLimit) * 100) : 0
+    const projectedUsagePercent = creditLimit > 0 ? Math.round((projectedUsed / creditLimit) * 100) : 0
+    const decision = buildCreditDecision(customer, projectedUsed, projectedUsagePercent)
+
+    return {
+      customerId: customer.id,
+      customerName: customer.name,
+      creditEnabled: Boolean(customer.creditEnabled),
+      creditLimit,
+      creditUsed,
+      quoteExposure,
+      projectedUsed,
+      availableCredit: Math.max(0, creditLimit - projectedUsed),
+      usagePercent,
+      projectedUsagePercent,
+      paymentTermsDays: normalizeAmount(customer.paymentTermsDays),
+      riskLevel: customer.riskLevel,
+      status: customer.status,
+      decision,
+      freightQuotes,
+      workshopQuotes,
+    }
+  }
+}
+
+function matchesCustomerReference(customer, record) {
+  if (record.customerId && record.customerId === customer.id) {
+    return true
+  }
+
+  return normalizeText(record.customerName) === normalizeText(customer.name)
+}
+
+function toCreditQuoteReference(quote, source) {
+  return {
+    customerId: quote.customerId,
+    customerName: quote.customerName,
+    id: quote.id,
+    quoteNumber: quote.quoteNumber,
+    source,
+    status: quote.status,
+    total: normalizeAmount(quote.total),
+  }
+}
+
+function buildCreditDecision(customer, projectedUsed, projectedUsagePercent) {
+  if (customer.status === 'suspended') {
+    return {
+      label: 'Credito suspendido',
+      message: 'El cliente esta suspendido. Solicita regularizacion antes de aprobar nuevas cotizaciones.',
+      status: 'blocked',
+    }
+  }
+
+  if (!customer.creditEnabled || normalizeAmount(customer.creditLimit) <= 0) {
+    return {
+      label: 'Pago contado',
+      message: 'El cliente no tiene linea de credito activa. Usa pago anticipado o aprobacion manual.',
+      status: 'cash-only',
+    }
+  }
+
+  if (projectedUsed > normalizeAmount(customer.creditLimit)) {
+    return {
+      label: 'Credito excedido',
+      message: 'Las cotizaciones vigentes superan el cupo disponible del cliente.',
+      status: 'blocked',
+    }
+  }
+
+  if (projectedUsagePercent >= 90 || customer.riskLevel === 'high' || customer.status === 'inactive') {
+    return {
+      label: 'Validar credito',
+      message: 'El cliente requiere revision comercial antes de comprometer nuevas aprobaciones.',
+      status: 'attention',
+    }
+  }
+
+  return {
+    label: 'Credito disponible',
+    message: 'La linea de credito soporta las cotizaciones vigentes del cliente.',
+    status: 'ok',
+  }
+}
+
+function normalizeText(value) {
+  return String(value || '').trim().toLowerCase()
 }
 
 function normalizeCustomerPayload(payload, options = {}) {

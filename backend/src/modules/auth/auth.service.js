@@ -1,15 +1,23 @@
 import { randomUUID } from 'node:crypto'
+import { env } from '../../config/env.js'
 import { roleResource, userRoleAssignmentResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { signJwt } from '../../shared/security/jwt.js'
+import { verifyPassword } from '../../shared/security/password.js'
+
+const defaultDevelopmentPasswordHash =
+  'pbkdf2-sha256$210000$truck-workshop-dev$3U-e7YzJ6hv9dqURDvjHuWh1IYjePGhumCRKcD7TaDI'
 
 const developmentUsers = [
   {
-    email: 'admin@truckworkshop.cl',
+    email: env.auth.devLoginEmail,
     id: 'user-001',
     name: 'Admin Taller',
-    password: 'truckworkshop',
+    passwordHash: env.auth.devLoginPasswordHash || defaultDevelopmentPasswordHash,
+    permissions: ['*'],
     role: 'ADMIN',
+    roleName: 'Administrador',
   },
 ]
 
@@ -22,17 +30,33 @@ export class AuthService {
   async login(credentials) {
     const email = String(credentials.email || '').trim().toLowerCase()
     const password = String(credentials.password || '')
-    const expectedPassword = process.env.DEV_LOGIN_PASSWORD || 'truckworkshop'
     const dbUser = await this.findDatabaseUser(email)
-    const fallbackUser = developmentUsers.find((item) => item.email.toLowerCase() === email)
+    const fallbackUser = env.auth.allowDevelopmentLogin
+      ? developmentUsers.find((item) => item.email.toLowerCase() === email)
+      : null
     const user = dbUser || fallbackUser
 
-    if (!user || password !== (user.password || expectedPassword)) {
+    if (!user || user.isActive === false || !this.verifyUserPassword(user, password)) {
       throw new AppError('Credenciales invalidas', 401)
     }
 
+    const tokenPayload = {
+      email: user.email,
+      jti: randomUUID(),
+      name: user.name,
+      permissions: user.permissions || [],
+      role: user.role,
+      roleName: user.roleName || user.role,
+      sub: user.id,
+    }
+    const token = signJwt(tokenPayload, {
+      expiresInSeconds: env.auth.jwtExpiresInSeconds,
+      secret: env.jwtSecret,
+    })
+
     return {
-      token: `session-${randomUUID()}`,
+      expiresAt: new Date(Date.now() + env.auth.jwtExpiresInSeconds * 1000).toISOString(),
+      token,
       user: {
         email: user.email,
         id: user.id,
@@ -44,9 +68,17 @@ export class AuthService {
     }
   }
 
+  verifyUserPassword(user, password) {
+    if (verifyPassword(password, user.passwordHash)) {
+      return true
+    }
+
+    return false
+  }
+
   async findDatabaseUser(email) {
     const usersResult = await this.userRoles.findAll({ limit: 100, search: email })
-    const userRole = usersResult.data.find((item) => item.email.toLowerCase() === email)
+    const userRole = usersResult.data.find((item) => String(item.email || '').toLowerCase() === email)
 
     if (!userRole) {
       return null
@@ -58,7 +90,9 @@ export class AuthService {
     return {
       email: userRole.email,
       id: userRole.userId,
+      isActive: userRole.isActive,
       name: userRole.userName,
+      passwordHash: userRole.passwordHash,
       permissions: role?.permissions || [],
       role: userRole.roleCode,
       roleName: role?.name || userRole.roleCode,

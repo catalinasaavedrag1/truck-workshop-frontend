@@ -12,7 +12,8 @@
     "seed:generate": "node scripts/generate-seed-data.js",
     "seed:from-mocks": "npm run seed:generate && npm run seed",
     "db:reset": "npm run migrate && npm run seed:from-mocks",
-    "check": "node scripts/check-syntax.js",
+    "check": "node scripts/check-syntax.js && node scripts/check-security.js && node scripts/smoke-api.js",
+    "smoke": "node scripts/smoke-api.js",
     "db:audit": "node scripts/audit-database.js"
   },
   "dependencies": {
@@ -23,10 +24,12 @@
     "morgan": "^1.10.1",
     "msnodesqlv8": "^5.1.9",
     "mssql": "^12.2.0",
-    "truck-workshop-frontend": "file:..",
+    "truck-workshop": "file:..",
+    "truck-workshop-frontend": "file:../frontend",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "esbuild": "^0.25.12",
     "nodemon": "^3.1.11"
   }
 }

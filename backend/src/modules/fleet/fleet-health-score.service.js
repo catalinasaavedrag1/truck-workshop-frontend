@@ -1,4 +1,4 @@
-import { resources } from '../../config/resources.js'
+import { resourceByName } from '../../config/resource-lookup.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 
 const HEALTH_STATUS_LABELS = {
@@ -565,16 +565,6 @@ function groupFirstBy(items, key) {
   })
 
   return map
-}
-
-function resourceByName(name) {
-  const resource = resources.find((item) => item.name === name)
-
-  if (!resource) {
-    throw new Error(`Resource ${name} no configurado`)
-  }
-
-  return resource
 }
 
 function formatNumber(value) {

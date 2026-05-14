@@ -1,0 +1,60 @@
+.entityLink {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--color-primary-dark);
+  font-weight: 750;
+  text-decoration: none;
+  text-underline-offset: 3px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.entityLink:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+  background: color-mix(in srgb, var(--color-primary-soft) 45%, transparent);
+}
+
+.entityLink:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.inline {
+  vertical-align: baseline;
+}
+
+.subtle {
+  color: inherit;
+}
+
+.block {
+  display: inline-grid;
+  gap: 2px;
+  align-items: start;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fallback {
+  color: inherit;
+}

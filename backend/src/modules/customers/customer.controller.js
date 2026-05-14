@@ -1,12 +1,13 @@
 import { CustomerService } from './customer.service.js'
 import { asyncHandler } from '../../shared/http/async-handler.js'
+import { getActorName } from '../../shared/http/request-actor.js'
 import { sendResponse } from '../../shared/http/send-response.js'
 
 const service = new CustomerService()
 
 export const customerController = {
   create: asyncHandler(async (request, response) => {
-    const customer = await service.create(request.body, getActorName(request))
+    const customer = await service.create(request.body, getActorName(request, ['updatedBy', 'createdBy']))
 
     sendResponse(response, { data: customer }, 201)
   }),
@@ -17,6 +18,12 @@ export const customerController = {
     sendResponse(response, { data: customer })
   }),
 
+  getCreditSummary: asyncHandler(async (request, response) => {
+    const summary = await service.getCreditSummary(request.params.id)
+
+    sendResponse(response, { data: summary })
+  }),
+
   list: asyncHandler(async (request, response) => {
     const result = await service.list(request.query)
 
@@ -24,18 +31,14 @@ export const customerController = {
   }),
 
   remove: asyncHandler(async (request, response) => {
-    const customer = await service.remove(request.params.id, getActorName(request))
+    const customer = await service.remove(request.params.id, getActorName(request, ['updatedBy', 'createdBy']))
 
     sendResponse(response, { data: customer })
   }),
 
   update: asyncHandler(async (request, response) => {
-    const customer = await service.update(request.params.id, request.body, getActorName(request))
+    const customer = await service.update(request.params.id, request.body, getActorName(request, ['updatedBy', 'createdBy']))
 
     sendResponse(response, { data: customer })
   }),
-}
-
-function getActorName(request) {
-  return request.get('x-user-name') || request.body.updatedBy || request.body.createdBy || 'Sistema'
 }

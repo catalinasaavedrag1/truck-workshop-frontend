@@ -1,4 +1,5 @@
-import { resources, workshopCaseResource } from '../../config/resources.js'
+import { resourceByName } from '../../config/resource-lookup.js'
+import { workshopCaseResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 
 const MAX_FETCH_PAGES = 20
@@ -754,16 +755,6 @@ function inRange(value, period) {
   const timestamp = dateValue(value)
 
   return timestamp >= period.from.getTime() && timestamp <= period.to.getTime()
-}
-
-function resourceByName(name) {
-  const resource = resources.find((item) => item.name === name)
-
-  if (!resource) {
-    throw new Error(`Resource ${name} not configured`)
-  }
-
-  return resource
 }
 
 function parseDate(value) {

@@ -7,12 +7,15 @@ export function errorHandler(error, request, response, next) {
   }
 
   const isKnownError = error instanceof AppError
-  const statusCode = isKnownError ? error.statusCode : 500
+  const explicitStatusCode = Number(error.statusCode || error.status)
+  const isExplicitClientError =
+    Number.isInteger(explicitStatusCode) && explicitStatusCode >= 400 && explicitStatusCode < 500
+  const statusCode = isKnownError ? error.statusCode : isExplicitClientError ? explicitStatusCode : 500
   const requestId = response.locals.requestId || request.requestId
   const payload = {
     error: {
       details: isKnownError ? error.details : undefined,
-      message: isKnownError ? error.message : 'Error interno del servidor',
+      message: isKnownError || isExplicitClientError ? error.message : 'Error interno del servidor',
       path: request.originalUrl,
       requestId,
       statusCode,

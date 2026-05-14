@@ -106,6 +106,10 @@ export class QuoteService {
       normalized.customerName = String(payload.customerName || options.workshopCase.customerName || options.workshopCase.customer || '').trim()
     }
 
+    if (!options.partial || payload.customerId !== undefined) {
+      normalized.customerId = String(payload.customerId || options.workshopCase.customerId || '').trim()
+    }
+
     if (!options.partial || payload.diagnosisSummary !== undefined) {
       normalized.diagnosisSummary = String(
         payload.diagnosisSummary ||
@@ -367,6 +371,7 @@ function stripImmutableFields(payload) {
   const editablePayload = { ...payload }
 
   delete editablePayload.createdAt
+  delete editablePayload.customerId
   delete editablePayload.id
   delete editablePayload.quoteNumber
   delete editablePayload.updatedAt

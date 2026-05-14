@@ -1,0 +1,338 @@
+.portalShell {
+  min-height: 100vh;
+  padding: 22px;
+  background: linear-gradient(180deg, #f7fafc 0%, #eef4f7 100%);
+}
+
+.portalContent {
+  display: grid;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  gap: 12px;
+}
+
+.portalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.portalHeader h1 {
+  color: var(--color-text);
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.05;
+}
+
+.portalHeader p {
+  margin-top: 5px;
+  color: var(--color-text-muted);
+}
+
+.portalActionLink {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.portalActionLink:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.portalActionLink:focus-visible,
+.routeCardLink:focus-visible {
+  outline: 3px solid var(--color-primary-soft);
+  outline-offset: 2px;
+}
+
+.wizardLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 12px;
+  align-items: start;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.stepButton {
+  display: grid;
+  min-height: 74px;
+  gap: 5px;
+  padding: 10px;
+  color: var(--color-text-muted);
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.stepButton strong {
+  color: var(--color-text);
+  font-size: 0.86rem;
+}
+
+.stepButton span {
+  font-size: 0.76rem;
+}
+
+.stepButton::before {
+  content: '';
+  width: 24px;
+  height: 3px;
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+
+.stepActive {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+}
+
+.stepActive::before,
+.stepComplete::before {
+  background: var(--color-primary);
+}
+
+.stepComplete {
+  border-color: rgb(15 118 110 / 0.22);
+}
+
+.summaryPanel {
+  position: sticky;
+  top: 14px;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.summaryItem {
+  display: grid;
+  gap: 3px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.summaryItem:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.summaryItem span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 780;
+}
+
+.summaryItem strong {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.sectionCard {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionHeader h2 {
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.sectionHeader p {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+}
+
+.insightGrid,
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.insightCard,
+.optionCard,
+.routeCard,
+.timelineItem {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.routeCardLink {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  color: inherit;
+  text-decoration: none;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.routeCardLink:hover {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px rgb(15 118 110 / 0.12);
+}
+
+.optionCard {
+  text-align: left;
+  cursor: pointer;
+}
+
+.optionSelected {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px rgb(15 118 110 / 0.12);
+}
+
+.optionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.costList {
+  display: grid;
+  gap: 8px;
+}
+
+.costRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.costRow:last-child {
+  border-bottom: 0;
+}
+
+.costTotal {
+  font-size: 1.35rem;
+}
+
+.successPanel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+  border-radius: var(--radius-sm);
+}
+
+.trackingHero {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background: #0f172a;
+  border-radius: var(--radius-sm);
+  color: #f8fafc;
+}
+
+.trackingHero p,
+.trackingHero span {
+  color: #cbd5e1;
+}
+
+.trackingNumber {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  line-height: 1;
+}
+
+.timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.timelineItem {
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: start;
+}
+
+.timelineDot {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  color: #fff;
+  background: var(--color-border-strong);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.timelineDone {
+  background: var(--color-primary);
+}
+
+.timelineCurrent {
+  background: #d97706;
+}
+
+@media (max-width: 980px) {
+  .portalShell {
+    padding: 12px;
+  }
+
+  .portalHeader,
+  .wizardLayout,
+  .sectionHeader {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .wizardLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryPanel {
+    position: static;
+  }
+
+  .insightGrid,
+  .optionGrid {
+    grid-template-columns: 1fr;
+  }
+}

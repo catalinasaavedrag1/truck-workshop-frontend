@@ -1,0 +1,561 @@
+.pageStack {
+  display: grid;
+  gap: 10px;
+}
+
+.moduleNav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  align-items: center;
+  padding: 0 0 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.moduleNav::-webkit-scrollbar {
+  display: none;
+}
+
+.moduleNav a {
+  display: inline-flex;
+  min-height: 32px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  padding: 0 8px;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid transparent;
+  font-size: 0.86rem;
+  font-weight: 780;
+}
+
+.moduleNav a:hover,
+.moduleNav .active {
+  color: var(--color-primary-dark);
+  background: transparent;
+  border-bottom-color: var(--color-primary);
+}
+
+.inventoryControlPanel {
+  display: grid;
+  gap: 8px;
+}
+
+.actionRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.actionItem {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.actionItem:hover {
+  border-color: rgb(15 118 110 / 0.32);
+  background: #f3faf8;
+}
+
+.actionItem strong,
+.actionItem span {
+  min-width: 0;
+}
+
+.actionItem > span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.inventoryMetricStrip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(128px, 1fr));
+  gap: 8px;
+}
+
+.inventoryMetric {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  min-width: 0;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.inventoryMetric small,
+.inventoryMetric span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.22;
+}
+
+.inventoryMetric strong {
+  display: block;
+  margin: 1px 0 2px;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+.metricIcon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.success {
+  color: #027a48;
+  background: #ecfdf3;
+  border-color: #abefc6;
+}
+
+.warning {
+  color: #b54708;
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.danger {
+  color: #b42318;
+  background: #fff1f0;
+  border-color: #fecdca;
+}
+
+.info {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.22);
+}
+
+.neutral {
+  color: #475467;
+  background: #f8fafc;
+  border-color: var(--color-border);
+}
+
+.inventoryWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.72fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.inventoryEditorLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.44fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.primaryQueue,
+.sidePanel {
+  min-width: 0;
+}
+
+.primaryQueue {
+  overflow: hidden;
+}
+
+.sideQueue {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.sidePanel {
+  overflow: hidden;
+}
+
+.editorPanel {
+  position: sticky;
+  top: 96px;
+  min-width: 0;
+}
+
+.sidePanel :global(.stack) {
+  gap: 9px;
+}
+
+.movementTimeline {
+  display: grid;
+  gap: 7px;
+}
+
+.movementItem {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  min-width: 0;
+  padding: 8px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.movementDelta {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.inbound {
+  color: #027a48;
+  background: #dcfae6;
+}
+
+.outbound {
+  color: #b42318;
+  background: #fee4e2;
+}
+
+.movementCopy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.movementCopy strong,
+.movementCopy p {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movementCopy strong {
+  color: var(--color-text);
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.movementCopy p {
+  display: -webkit-box;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.inventorySummaryStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.inventorySummaryItem {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.inventorySummaryItem span,
+.inventorySummaryItem small {
+  overflow: hidden;
+  color: currentcolor;
+  font-size: 0.76rem;
+  line-height: 1.25;
+  opacity: 0.78;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inventorySummaryItem strong {
+  overflow-wrap: anywhere;
+  color: currentcolor;
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+.managerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.statusSegment {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(90px, 1fr));
+  gap: 6px;
+  min-width: 0;
+}
+
+.statusSegment button {
+  display: flex;
+  min-width: 0;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.statusSegment button:hover,
+.statusSegmentActive {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.28);
+}
+
+.statusSegment button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusSegment button strong {
+  flex: 0 0 auto;
+  color: currentcolor;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.summaryItem,
+.actionCard,
+.reportMetric {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.summaryItem small,
+.actionCard span,
+.reportMetric small,
+.muted,
+.sectionHeader p,
+.rowMeta,
+.flowStep span {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.summaryItem strong,
+.reportMetric strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.actionCard {
+  color: var(--color-text);
+}
+
+.actionCard:hover {
+  border-color: var(--color-border-strong);
+  background: #f9fbfc;
+}
+
+.actionHeader,
+.sectionHeader,
+.reportRow,
+.flowHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.actionHeader strong,
+.sectionHeader h2,
+.flowHeader h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.flowGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.flowStep {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.flowStep strong {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.reportPanel {
+  display: grid;
+  gap: 14px;
+}
+
+.reportGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.reportColumns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.reportList {
+  display: grid;
+  gap: 8px;
+}
+
+.reportRow {
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.rowMain {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rowMain strong,
+.rowMain span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reportValue {
+  display: grid;
+  gap: 3px;
+  min-width: 100px;
+  text-align: right;
+}
+
+.reportValue strong {
+  color: var(--color-text);
+}
+
+.quickLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+@media (max-width: 1120px) {
+  .actionRail,
+  .inventoryMetricStrip,
+  .inventorySummaryStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .inventoryWorkspace,
+  .inventoryEditorLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .editorPanel {
+    position: static;
+  }
+
+  .sideQueue {
+    position: static;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .summaryGrid,
+  .actionGrid,
+  .flowGrid,
+  .reportGrid,
+  .statusSegment,
+  .reportColumns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .actionRail,
+  .inventoryMetricStrip,
+  .inventorySummaryStrip,
+  .sideQueue {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryGrid,
+  .actionGrid,
+  .flowGrid,
+  .reportGrid,
+  .statusSegment,
+  .reportColumns {
+    grid-template-columns: 1fr;
+  }
+
+  .actionHeader,
+  .sectionHeader,
+  .reportRow,
+  .flowHeader {
+    display: grid;
+  }
+
+  .reportValue {
+    text-align: left;
+  }
+}

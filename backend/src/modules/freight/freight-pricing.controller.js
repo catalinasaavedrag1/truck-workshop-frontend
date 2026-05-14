@@ -1,4 +1,5 @@
 import { asyncHandler } from '../../shared/http/async-handler.js'
+import { getActorName } from '../../shared/http/request-actor.js'
 import { sendResponse } from '../../shared/http/send-response.js'
 import { FreightPricingService } from './freight-pricing.service.js'
 
@@ -18,12 +19,8 @@ export const freightPricingController = {
   }),
 
   updateActiveSettings: asyncHandler(async (request, response) => {
-    const settings = await service.updateActiveSettings(request.body, getActorName(request))
+    const settings = await service.updateActiveSettings(request.body, getActorName(request, ['updatedBy', 'createdBy']))
 
     sendResponse(response, { data: settings })
   }),
-}
-
-function getActorName(request) {
-  return request.get('x-user-name') || request.body.updatedBy || request.body.createdBy || 'Sistema'
 }

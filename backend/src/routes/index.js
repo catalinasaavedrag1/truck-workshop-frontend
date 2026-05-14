@@ -28,6 +28,7 @@ import { warehouseLocationRouter } from '../modules/warehouse/warehouse-location
 import { workshopCaseRouter } from '../modules/workshop-cases/workshop-case.routes.js'
 import { createCrudRouter } from '../shared/http/crud-router.js'
 import { env } from '../config/env.js'
+import { authenticateRequest, authorizeRequest } from '../shared/middleware/authentication.js'
 import { sendResponse } from '../shared/http/send-response.js'
 
 const resourceRouteAliases = {
@@ -49,6 +50,8 @@ export function registerRoutes(app) {
   })
 
   api.use('/auth', authRouter)
+  api.use(authenticateRequest)
+  api.use(authorizeRequest)
   api.use('/approvals', approvalRouter)
   api.use('/communications', communicationIntegrationRouter)
   api.use('/customers', customerRouter)

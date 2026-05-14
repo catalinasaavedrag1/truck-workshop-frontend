@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { mechanicResource, roleResource, userRoleAssignmentResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
 import { AppError } from '../../shared/errors/app-error.js'
+import { hashPassword, isPasswordHash } from '../../shared/security/password.js'
 
 const VALID_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -209,6 +210,8 @@ function normalizeUserRolePayload(payload) {
   const email = String(payload.email || '').trim().toLowerCase()
   const roleCode = normalizeCode(payload.roleCode)
   const userId = String(payload.userId || slugFromUser(userName) || `user-${randomUUID().slice(0, 8)}`).trim()
+  const password = String(payload.password || '').trim()
+  const passwordHash = String(payload.passwordHash || '').trim()
 
   if (!userId || !userName || !email || !roleCode) {
     throw new AppError('Usuario, correo y perfil son obligatorios', 400)
@@ -218,7 +221,23 @@ function normalizeUserRolePayload(payload) {
     throw new AppError('El correo del usuario no es valido', 400)
   }
 
-  return { email, roleCode, userId, userName }
+  const normalized = {
+    email,
+    isActive: payload.isActive !== false,
+    roleCode,
+    userId,
+    userName,
+  }
+
+  if (password) {
+    normalized.passwordHash = hashPassword(password)
+    normalized.passwordUpdatedAt = new Date().toISOString()
+  } else if (isPasswordHash(passwordHash)) {
+    normalized.passwordHash = passwordHash
+    normalized.passwordUpdatedAt = payload.passwordUpdatedAt || new Date().toISOString()
+  }
+
+  return normalized
 }
 
 function enrichRole(role, users) {
@@ -230,9 +249,11 @@ function enrichRole(role, users) {
 
 function enrichUserRole(userRole, roles) {
   const role = roles.find((item) => item.code === userRole.roleCode)
+  const { passwordHash, ...safeUserRole } = userRole
 
   return {
-    ...userRole,
+    ...safeUserRole,
+    hasPassword: Boolean(passwordHash),
     permissionsCount: role?.permissions?.length || 0,
     roleName: role?.name || userRole.roleCode,
   }

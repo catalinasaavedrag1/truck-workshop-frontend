@@ -1,0 +1,56 @@
+import type { Quote } from '../types/quote.types'
+
+export const quotesMock: Quote[] = [
+  {
+    id: 'quote-001',
+    quoteNumber: 'COT-2026-0012',
+    caseId: 'case-001',
+    caseNumber: 'TW-2026-001',
+    customerId: 'customer-ruta-norte',
+    customerName: 'Ruta Norte SpA',
+    diagnosisSummary: 'Sistema de combustible con filtro saturado y valvula de freno con stock bajo.',
+    status: 'SENT',
+    items: [
+      { id: 'ql-001', type: 'part', description: 'Filtro combustible alto flujo', quantity: 2, unitPrice: 48900 },
+      { id: 'ql-002', type: 'labor', description: 'Diagnostico y recambio sistema combustible', quantity: 3, unitPrice: 42000 },
+    ],
+    total: 223800,
+    createdAt: '2026-05-05T10:30:00.000Z',
+    expiresAt: '2026-05-08T18:00:00.000Z',
+  },
+  {
+    id: 'quote-002',
+    quoteNumber: 'COT-2026-0013',
+    caseId: 'case-002',
+    caseNumber: 'TW-2026-002',
+    customerId: 'customer-maipo',
+    customerName: 'Transportes Maipo',
+    diagnosisSummary: 'Reparacion critica de frenos con cambio de valvula moduladora.',
+    status: 'APPROVED',
+    items: [
+      { id: 'ql-003', type: 'part', description: 'Valvula moduladora freno', quantity: 2, unitPrice: 315000 },
+      { id: 'ql-004', type: 'labor', description: 'Reparacion sistema de frenos', quantity: 6, unitPrice: 48000 },
+    ],
+    total: 918000,
+    createdAt: '2026-05-04T16:40:00.000Z',
+    expiresAt: '2026-05-06T18:00:00.000Z',
+    approvedBy: 'Jefe de taller',
+  },
+  {
+    id: 'quote-003',
+    quoteNumber: 'COT-2026-0014',
+    caseId: 'case-004',
+    caseNumber: 'TW-2026-004',
+    customerId: 'customer-ruta-norte',
+    customerName: 'Ruta Norte SpA',
+    diagnosisSummary: 'Kit de embrague y prueba final de entrega.',
+    status: 'DRAFT',
+    items: [
+      { id: 'ql-005', type: 'part', description: 'Kit embrague pesado', quantity: 1, unitPrice: 790000 },
+      { id: 'ql-006', type: 'labor', description: 'Prueba final y ajuste de transmision', quantity: 2, unitPrice: 52000 },
+    ],
+    total: 894000,
+    createdAt: '2026-05-05T09:00:00.000Z',
+    expiresAt: '2026-05-07T18:00:00.000Z',
+  },
+]

@@ -1,55 +1,56 @@
-import { casesMock } from '../../src/mocks/cases.mock'
-import { mechanicsMock } from '../../src/mocks/mechanics.mock'
-import { partsMock } from '../../src/mocks/parts.mock'
-import { trucksMock } from '../../src/mocks/trucks.mock'
-import { approvalsMock } from '../../src/features/approvals/mocks/approvals.mock'
+import { casesMock } from '../../frontend/src/mocks/cases.mock'
+import { mechanicsMock } from '../../frontend/src/mocks/mechanics.mock'
+import { partsMock } from '../../frontend/src/mocks/parts.mock'
+import { trucksMock } from '../../frontend/src/mocks/trucks.mock'
+import { approvalsMock } from '../../frontend/src/features/approvals/mocks/approvals.mock'
 import {
   communicationConversationsMock,
   communicationMessagesMock,
   communicationProviderConfigsMock,
   communicationProfilesMock,
   communicationQuoteLinksMock,
-} from '../../src/features/communications/mocks/communications.mock'
-import { customersMock } from '../../src/features/customers/mocks/customers.mock'
-import { diagnosticChecklistsMock } from '../../src/features/diagnostic-checklists/mocks/diagnosticChecklists.mock'
-import { driverDocumentsMock, driverFinesMock } from '../../src/features/drivers/mocks/driverDocuments.mock'
-import { driversMock } from '../../src/features/drivers/mocks/drivers.mock'
-import { driverTripSheetsMock } from '../../src/features/driver-trip-sheets/mocks/driverTripSheets.mock'
-import { escalationHistoryMock } from '../../src/features/escalation/mocks/escalation.mock'
+} from '../../frontend/src/features/communications/mocks/communications.mock'
+import { customersMock } from '../../frontend/src/features/customers/mocks/customers.mock'
+import { diagnosticChecklistsMock } from '../../frontend/src/features/diagnostic-checklists/mocks/diagnosticChecklists.mock'
+import { driverDocumentsMock, driverFinesMock } from '../../frontend/src/features/drivers/mocks/driverDocuments.mock'
+import { driversMock } from '../../frontend/src/features/drivers/mocks/drivers.mock'
+import { driverTripSheetsMock } from '../../frontend/src/features/driver-trip-sheets/mocks/driverTripSheets.mock'
+import { escalationHistoryMock } from '../../frontend/src/features/escalation/mocks/escalation.mock'
 import {
   fleetAvailabilityMock,
   fleetTrucksMock,
   truckHealthScoresMock,
   truckTimelineMock,
-} from '../../src/features/fleet/mocks/fleet.mock'
-import { freightAssignmentsMock, freightQuotesMock, freightRequestsMock } from '../../src/features/freight/mocks/freight.mock'
-import { freightProfitabilityMock } from '../../src/features/freight-profitability/mocks/freightProfitability.mock'
-import { fuelRecordsMock } from '../../src/features/fuel/mocks/fuel.mock'
-import { incidentsMock } from '../../src/features/incidents/mocks/incidents.mock'
-import { laborTasksMock } from '../../src/features/labor/mocks/labor.mock'
-import { mechanicSpecialtiesMock } from '../../src/features/mechanics/mocks/mechanicSpecialties.mock'
-import { alertSubscriptionsMock, notificationsMock } from '../../src/features/notifications/mocks/notifications.mock'
-import { rolesMock, userRoleAssignmentsMock } from '../../src/features/permissions/mocks/permissions.mock'
-import { preventiveMaintenanceMock } from '../../src/features/preventive-maintenance/mocks/preventiveMaintenance.mock'
-import { purchaseOrdersMock, purchaseRequestsMock } from '../../src/features/purchase-orders/mocks/purchaseOrders.mock'
-import { quotesMock } from '../../src/features/quotes/mocks/quotes.mock'
-import { scheduleEventsMock, waitingQueueMock } from '../../src/features/schedule/mocks/schedule.mock'
-import { slaConfigsMock } from '../../src/features/sla/mocks/sla.mock'
-import { suppliersMock } from '../../src/features/suppliers/mocks/suppliers.mock'
-import { telematicsMock } from '../../src/features/telematics/mocks/telematics.mock'
-import { tirePerformanceMock } from '../../src/features/tire-performance/mocks/tirePerformance.mock'
-import { arrivalChecklistsMock, departureChecklistsMock } from '../../src/features/trip-checklists/mocks/tripChecklists.mock'
-import { truckCostsMock, truckCostSummariesMock } from '../../src/features/truck-costs/mocks/truckCosts.mock'
-import { truckDocumentsMock } from '../../src/features/truck-documents/mocks/truckDocuments.mock'
+} from '../../frontend/src/features/fleet/mocks/fleet.mock'
+import { freightAssignmentsMock, freightQuotesMock, freightRequestsMock } from '../../frontend/src/features/freight/mocks/freight.mock'
+import { freightProfitabilityMock } from '../../frontend/src/features/freight-profitability/mocks/freightProfitability.mock'
+import { fuelRecordsMock } from '../../frontend/src/features/fuel/mocks/fuel.mock'
+import { incidentsMock } from '../../frontend/src/features/incidents/mocks/incidents.mock'
+import { laborTasksMock } from '../../frontend/src/features/labor/mocks/labor.mock'
+import { mechanicSpecialtiesMock } from '../../frontend/src/features/mechanics/mocks/mechanicSpecialties.mock'
+import { alertSubscriptionsMock, notificationsMock } from '../../frontend/src/features/notifications/mocks/notifications.mock'
+import { rolesMock, userRoleAssignmentsMock } from '../../frontend/src/features/permissions/mocks/permissions.mock'
+import { preventiveMaintenanceMock } from '../../frontend/src/features/preventive-maintenance/mocks/preventiveMaintenance.mock'
+import { purchaseOrdersMock, purchaseRequestsMock } from '../../frontend/src/features/purchase-orders/mocks/purchaseOrders.mock'
+import { quotesMock } from '../../frontend/src/features/quotes/mocks/quotes.mock'
+import { scheduleEventsMock, waitingQueueMock } from '../../frontend/src/features/schedule/mocks/schedule.mock'
+import { slaConfigsMock } from '../../frontend/src/features/sla/mocks/sla.mock'
+import { suppliersMock } from '../../frontend/src/features/suppliers/mocks/suppliers.mock'
+import { telematicsMock } from '../../frontend/src/features/telematics/mocks/telematics.mock'
+import { tirePerformanceMock } from '../../frontend/src/features/tire-performance/mocks/tirePerformance.mock'
+import { arrivalChecklistsMock, departureChecklistsMock } from '../../frontend/src/features/trip-checklists/mocks/tripChecklists.mock'
+import { truckCostsMock, truckCostSummariesMock } from '../../frontend/src/features/truck-costs/mocks/truckCosts.mock'
+import { truckDocumentsMock } from '../../frontend/src/features/truck-documents/mocks/truckDocuments.mock'
 import {
   warehouseLocationsMock,
   warehouseManagersMock,
   warehouseMovementsMock,
   warehouseStockMock,
-} from '../../src/features/warehouse/mocks/warehouse.mock'
-import { workshopBaysMock } from '../../src/features/workshop-bays/mocks/workshopBays.mock'
+} from '../../frontend/src/features/warehouse/mocks/warehouse.mock'
+import { workshopBaysMock } from '../../frontend/src/features/workshop-bays/mocks/workshopBays.mock'
 
 const now = '2026-05-06T12:00:00.000Z'
+const developmentPasswordHash = 'pbkdf2-sha256$210000$truck-workshop-dev$3U-e7YzJ6hv9dqURDvjHuWh1IYjePGhumCRKcD7TaDI'
 
 function withTimestamps<T extends Record<string, unknown>>(record: T) {
   return {
@@ -159,7 +160,13 @@ export const seedRecordsByResource = {
   'truck-timeline-events': truckTimelineMock.map(withTimestamps),
   trucks: trucksMock.map(withTimestamps),
   'user-role-assignments': userRoleAssignmentsMock.map((assignment) =>
-    withTimestamps({ ...assignment, id: `user-role-${assignment.userId}` }),
+    withTimestamps({
+      ...assignment,
+      id: `user-role-${assignment.userId}`,
+      isActive: true,
+      passwordHash: developmentPasswordHash,
+      passwordUpdatedAt: '2026-05-13T00:00:00.000Z',
+    }),
   ),
   'waiting-queue': waitingQueueMock.map(withTimestamps),
   'warehouse-locations': warehouseLocationsMock.map(withTimestamps),

@@ -1,4 +1,5 @@
 import { asyncHandler } from '../../shared/http/async-handler.js'
+import { getActorName } from '../../shared/http/request-actor.js'
 import { sendResponse } from '../../shared/http/send-response.js'
 import { fuelPriceService } from './fuel-price.service.js'
 
@@ -20,14 +21,10 @@ export const fuelPriceController = {
 
   sync: asyncHandler(async (request, response) => {
     const result = await fuelPriceService.sync({
-      actorName: getActorName(request),
+      actorName: getActorName(request, ['updatedBy', 'createdBy']),
       force: true,
     })
 
     sendResponse(response, { data: result })
   }),
-}
-
-function getActorName(request) {
-  return request.get('x-user-name') || request.body?.updatedBy || request.body?.createdBy || 'Sistema'
 }

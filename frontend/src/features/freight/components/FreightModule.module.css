@@ -1,0 +1,1416 @@
+.flowPanel {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.flowHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.flowHeader h2 {
+  color: var(--color-text);
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
+.flowHeader p {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.flowSteps {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(92px, 1fr));
+  gap: 6px;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.flowSteps::-webkit-scrollbar {
+  display: none;
+}
+
+.flowStep {
+  position: relative;
+  display: grid;
+  min-height: 64px;
+  align-content: start;
+  gap: 5px;
+  padding: 9px;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.flowStep strong {
+  color: var(--color-text);
+  font-size: 0.82rem;
+}
+
+.flowStep span {
+  font-size: 0.74rem;
+  line-height: 1.25;
+}
+
+.flowStep::before {
+  content: '';
+  width: 20px;
+  height: 3px;
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+
+.flowStepCompleted {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.22);
+}
+
+.flowStepCompleted::before {
+  background: var(--color-primary);
+}
+
+.flowStepActive {
+  color: var(--color-text);
+  background: #fff;
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px rgb(15 118 110 / 0.12);
+}
+
+.flowStepActive::before {
+  background: var(--color-primary);
+}
+
+.flowStepStopped {
+  background: #fff8f7;
+  border-color: #fecdca;
+}
+
+.flowStepCount {
+  display: inline-flex;
+  width: max-content;
+  min-height: 22px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.opsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.opsItem {
+  display: grid;
+  min-height: 78px;
+  gap: 5px;
+  padding: 10px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.opsItem:hover {
+  border-color: var(--color-border-strong);
+  background: #f9fbfc;
+}
+
+.opsItem small {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 760;
+}
+
+.opsItem strong {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.opsItem span {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.alertRail {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.alertCard {
+  display: grid;
+  min-height: 104px;
+  gap: 5px;
+  padding: 11px;
+  color: var(--color-text);
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.alertCard:hover {
+  background: #f9fbfc;
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px);
+}
+
+.alertCardActive {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px rgb(15 118 110 / 0.12);
+}
+
+.alertCardHasSignal:not(.alertCardActive) {
+  border-color: rgb(217 119 6 / 0.28);
+}
+
+.alertIcon {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: #eefdf8;
+  border-radius: var(--radius-sm);
+}
+
+.alertCard small {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 820;
+}
+
+.alertCard strong {
+  color: var(--color-text);
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.alertCard span:last-child {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.stagePipeline {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.stagePipelineHeader,
+.workQueueHeader,
+.timelineHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stagePipelineHeader h2,
+.workQueueHeader h2,
+.timelineHeader h3 {
+  color: var(--color-text);
+  font-size: 0.96rem;
+  font-weight: 850;
+}
+
+.stagePipelineHeader p,
+.workQueueHeader p {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.stageReset {
+  min-height: 32px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 820;
+}
+
+.stageResetActive {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+}
+
+.stageGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(150px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.stageGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.stageCard {
+  display: grid;
+  min-height: 156px;
+  gap: 7px;
+  padding: 10px;
+  color: var(--color-text);
+  text-align: left;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.stageCard:hover {
+  background: #fff;
+  border-color: var(--color-border-strong);
+}
+
+.stageCardActive {
+  background: #fff;
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px rgb(15 118 110 / 0.12);
+}
+
+.stageIndex {
+  color: var(--color-primary-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.stageTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.stageTitleRow strong {
+  font-size: 0.86rem;
+}
+
+.stageCard p,
+.stageCard small {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.28;
+}
+
+.stageSignals {
+  display: grid;
+  gap: 4px;
+}
+
+.stageSignals span {
+  color: var(--color-text);
+  font-size: 0.74rem;
+  font-weight: 760;
+}
+
+.filterPanel {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.freightSearch {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.freightSearch span {
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.freightSearch input {
+  width: 100%;
+  min-width: 0;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+}
+
+.freightSearch button {
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.filterControls {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.filterControls label {
+  display: grid;
+  gap: 4px;
+}
+
+.filterControls span {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 820;
+}
+
+.filterControls select {
+  min-height: 36px;
+  padding: 0 9px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+
+.filterFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.filterResult {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.filterResult strong {
+  color: var(--color-text);
+}
+
+.controlTowerLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.42fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.workQueuePanel,
+.requestDrawer {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.requestDrawer {
+  position: sticky;
+  top: calc(var(--topbar-height) + 12px);
+  max-height: calc(100vh - var(--topbar-height) - 24px);
+  overflow: auto;
+}
+
+.viewSwitch {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.viewSwitch button {
+  min-height: 32px;
+  padding: 0 10px;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 0;
+  border-right: 1px solid var(--color-border);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 820;
+}
+
+.viewSwitch button:last-child {
+  border-right: 0;
+}
+
+.viewSwitchActive {
+  color: var(--color-primary-dark) !important;
+  background: var(--color-primary-soft) !important;
+}
+
+.nextStepCell {
+  display: grid;
+  min-width: 190px;
+  gap: 3px;
+}
+
+.nextStepCell strong {
+  color: var(--color-text);
+  font-size: 0.82rem;
+}
+
+.nextStepCell span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.28;
+}
+
+.inlineActionStack {
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+}
+
+.secondaryAction {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  font-weight: 780;
+}
+
+.flowPanelSticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.flowStepMeta {
+  display: grid;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.flowStepMeta small {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.drawerHeader h2 {
+  margin-top: 3px;
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.drawerHeader p {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.drawerBadges,
+.drawerActionBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.drawerActionBar {
+  justify-content: flex-start;
+}
+
+.nextStepPanel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  padding: 11px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.panelIcon {
+  display: inline-grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-sm);
+}
+
+.nextStepPanel small,
+.quoteStrip small {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 820;
+}
+
+.nextStepPanel strong {
+  display: block;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.nextStepPanel p {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.drawerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.controlSummary,
+.routeSummaryPanel,
+.timelinePanel,
+.drawerQuickActions {
+  display: grid;
+  gap: 10px;
+  padding: 11px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.controlSummary h3,
+.routeSummaryPanel h3,
+.drawerQuickActions h3 {
+  color: var(--color-text);
+  font-size: 0.88rem;
+}
+
+.routeMiniMap {
+  position: relative;
+  min-height: 86px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgb(15 23 42 / 0.04) 1px, transparent 1px),
+    linear-gradient(rgb(15 23 42 / 0.04) 1px, transparent 1px),
+    #fff;
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.routeMiniMap::before {
+  content: '';
+  position: absolute;
+  inset: 20px 26px;
+  border-top: 4px solid var(--color-primary);
+  border-right: 4px solid #0284c7;
+  border-radius: 999px;
+  transform: skewX(-18deg);
+}
+
+.routeMiniMap span {
+  position: absolute;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 3px solid var(--color-primary);
+  border-radius: 999px;
+}
+
+.routeMiniMap span:first-child {
+  top: 20px;
+  left: 22px;
+}
+
+.routeMiniMap span:last-child {
+  right: 22px;
+  bottom: 20px;
+  border-color: #0284c7;
+}
+
+.quoteStrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 11px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.quoteStrip div {
+  display: grid;
+  gap: 3px;
+}
+
+.quoteStrip strong {
+  color: var(--color-text);
+}
+
+.freightTimeline {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.freightTimeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 8px;
+  padding: 0 0 12px;
+}
+
+.freightTimeline li::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  bottom: 0;
+  left: 6px;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.freightTimeline li:last-child {
+  padding-bottom: 0;
+}
+
+.freightTimeline li:last-child::before {
+  display: none;
+}
+
+.timelineDot {
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  background: #fff;
+  border: 2px solid var(--color-border-strong);
+  border-radius: 999px;
+}
+
+.timelineDone .timelineDot {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.freightTimeline strong {
+  color: var(--color-text);
+  font-size: 0.82rem;
+}
+
+.freightTimeline p,
+.freightTimeline small,
+.timelineHeader span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.32;
+}
+
+.drawerQuickActions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.drawerQuickActions a {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 820;
+}
+
+.kanbanBoard {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(230px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.kanbanColumn {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 420px;
+  padding: 8px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.kanbanHeader,
+.kanbanCardTop,
+.kanbanFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kanbanHeader strong {
+  color: var(--color-text);
+  font-size: 0.84rem;
+}
+
+.kanbanCards {
+  display: grid;
+  gap: 8px;
+}
+
+.kanbanCard {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.kanbanCard:hover,
+.kanbanCardActive {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px rgb(15 118 110 / 0.12);
+}
+
+.kanbanCard > strong {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kanbanRoute,
+.kanbanMeta span,
+.kanbanFooter span,
+.kanbanEmpty {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.28;
+}
+
+.kanbanRoute,
+.kanbanMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.kanbanMeta {
+  display: grid;
+  gap: 4px;
+}
+
+.kanbanEmpty {
+  padding: 10px;
+  background: #fff;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.controlPanel {
+  display: grid;
+  gap: 10px;
+}
+
+.controlGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.controlMetric {
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.controlMetric strong {
+  font-size: 1.25rem;
+}
+
+.controlMetric span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+}
+
+.dispatchTimeline {
+  display: grid;
+  gap: 8px;
+}
+
+.dispatchItem {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dispatchItem:last-child {
+  border-bottom: 0;
+}
+
+.dispatchTime {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.dispatchItem p {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.requestMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.routeCell {
+  display: grid;
+  gap: 3px;
+  min-width: 260px;
+}
+
+.routeCell span {
+  display: block;
+  overflow: hidden;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.routeArrow {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  font-weight: 760;
+}
+
+.miniRouteCell {
+  display: grid;
+  min-width: 240px;
+  gap: 7px;
+}
+
+.miniRouteLine {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-primary-dark);
+}
+
+.miniRouteLine::before {
+  content: '';
+  position: absolute;
+  right: 10px;
+  left: 10px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary), #38bdf8);
+  border-radius: 999px;
+}
+
+.miniRouteDot {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+}
+
+.miniRouteMeta {
+  display: grid;
+  gap: 2px;
+}
+
+.miniRouteMeta strong,
+.miniRouteMeta span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miniRouteMeta strong {
+  font-size: 0.82rem;
+}
+
+.miniRouteMeta span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+}
+
+.routeMapCard {
+  display: grid;
+  gap: 12px;
+}
+
+.routeMapHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.routeMapTitle {
+  display: grid;
+  gap: 4px;
+}
+
+.routeMapTitle h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.routeMapTitle p {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.routeKpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.routeKpi {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.routeKpi svg {
+  color: var(--color-primary);
+}
+
+.gpsCanvas {
+  position: relative;
+  display: grid;
+  min-height: 280px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(90deg, rgb(15 23 42 / 0.04) 1px, transparent 1px),
+    linear-gradient(rgb(15 23 42 / 0.04) 1px, transparent 1px),
+    linear-gradient(135deg, #f8fafc 0%, #eefdf8 46%, #f8fbff 100%);
+  background-size: 42px 42px, 42px 42px, 100% 100%;
+}
+
+.gpsSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gpsMapImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.86;
+}
+
+.gpsTraceShadow {
+  fill: none;
+  stroke: rgb(15 23 42 / 0.12);
+  stroke-linecap: round;
+  stroke-width: 18;
+}
+
+.gpsTrace {
+  fill: none;
+  stroke: url('#routeGradient');
+  stroke-linecap: round;
+  stroke-width: 8;
+}
+
+.gpsTraceDash {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.85);
+  stroke-dasharray: 8 14;
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.gpsPoint {
+  position: absolute;
+  display: grid;
+  width: min(260px, 38%);
+  gap: 7px;
+  padding: 10px;
+  background: rgb(255 255 255 / 0.94);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 30px rgb(15 23 42 / 0.08);
+}
+
+.gpsPointStart {
+  top: 20px;
+  left: 18px;
+}
+
+.gpsPointMiddle {
+  right: 24px;
+  bottom: 100px;
+}
+
+.gpsPointEnd {
+  right: 18px;
+  bottom: 18px;
+}
+
+.gpsPointHeader {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-text);
+  font-weight: 850;
+}
+
+.gpsPointIcon {
+  display: inline-grid;
+  width: 27px;
+  height: 27px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+.gpsPointEnd .gpsPointIcon {
+  background: #0284c7;
+}
+
+.gpsPointMiddle .gpsPointIcon {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+}
+
+.gpsAddress {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.32;
+  text-overflow: ellipsis;
+}
+
+.freightFrontendMap {
+  min-height: 360px;
+}
+
+.routeControlStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+}
+
+.routeControlStrip strong {
+  color: var(--color-text);
+}
+
+.routeInsights {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.routeInsight {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.routeInsight span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 780;
+}
+
+.routeInsight strong {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.cargoCell {
+  display: grid;
+  gap: 3px;
+}
+
+.nextAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-primary-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.quoteComparison {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.commercialPanel {
+  display: grid;
+  gap: 10px;
+}
+
+.priceHero {
+  display: grid;
+  gap: 3px;
+  padding: 12px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.priceHero strong {
+  font-size: 1.45rem;
+  line-height: 1.1;
+}
+
+.formSectionTitle {
+  grid-column: span 2;
+  margin-top: 2px;
+  padding-top: 8px;
+  color: var(--color-text);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.82rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.formSectionTitle:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+@media (max-width: 1180px) {
+  .alertRail {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
+
+  .opsGrid {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
+
+  .workbench,
+  .quoteComparison,
+  .controlTowerLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .requestDrawer {
+    position: static;
+    max-height: none;
+  }
+
+  .filterControls {
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .flowPanel,
+  .opsItem,
+  .controlMetric {
+    padding: 9px;
+  }
+
+  .alertRail,
+  .opsGrid,
+  .controlGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stagePipelineHeader,
+  .workQueueHeader,
+  .filterFooter,
+  .drawerHeader {
+    display: grid;
+  }
+
+  .filterControls,
+  .drawerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .freightSearch {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .freightSearch span {
+    display: none;
+  }
+
+  .dispatchItem {
+    grid-template-columns: 1fr;
+  }
+
+  .routeMapHeader {
+    display: grid;
+  }
+
+  .routeKpis {
+    justify-content: flex-start;
+  }
+
+  .gpsCanvas {
+    min-height: 470px;
+  }
+
+  .gpsPoint {
+    width: auto;
+    right: 12px;
+    left: 12px;
+  }
+
+  .gpsPointStart {
+    top: 12px;
+  }
+
+  .gpsPointMiddle {
+    top: 190px;
+    bottom: auto;
+  }
+
+  .gpsPointEnd {
+    bottom: 12px;
+  }
+
+  .routeInsights {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .alertRail,
+  .opsGrid,
+  .controlGrid,
+  .routeInsights {
+    grid-template-columns: 1fr;
+  }
+
+  .viewSwitch,
+  .viewSwitch button,
+  .drawerActionBar a {
+    width: 100%;
+  }
+
+  .viewSwitch {
+    display: grid;
+  }
+
+  .viewSwitch button {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .viewSwitch button:last-child {
+    border-bottom: 0;
+  }
+}

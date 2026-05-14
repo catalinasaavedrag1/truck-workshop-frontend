@@ -1,0 +1,388 @@
+.pageStack {
+  display: grid;
+  gap: 10px;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.metricCard {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+}
+
+.metricIcon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border: 1px solid rgb(15 118 110 / 0.18);
+  border-radius: var(--radius-sm);
+}
+
+.metricCopy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.metricCopy span,
+.metricCopy small,
+.rowMeta,
+.breakdownMeta,
+.legend,
+.comparison small {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.metricCopy strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1.24rem;
+  line-height: 1.08;
+}
+
+.metricCopy small {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.chartPanel,
+.breakdownPanel {
+  display: grid;
+  gap: 11px;
+}
+
+.chartHeader,
+.breakdownHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chartHeader h2,
+.breakdownHeader h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.chartHeader p,
+.breakdownHeader p {
+  margin-top: 3px;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend span::before {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  content: '';
+}
+
+.legendCost::before {
+  background: #fed7aa;
+}
+
+.legendMargin::before {
+  background: #99f6e4;
+}
+
+.chartRows {
+  display: grid;
+  gap: 7px;
+}
+
+.chartRow {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.42fr) minmax(0, 1fr) minmax(78px, 0.2fr);
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+}
+
+.chartRow:hover,
+.chartRowActive {
+  background: #f3faf8;
+  border-color: rgb(15 118 110 / 0.28);
+}
+
+.rowTitle {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rowTitle strong,
+.rowTitle span,
+.rowMeta span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowTitle strong {
+  font-size: 0.9rem;
+}
+
+.rowTitle span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.barArea {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.barTrack {
+  display: flex;
+  width: 100%;
+  height: 16px;
+  overflow: hidden;
+  background: #eef2f6;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.costSegment {
+  min-width: 2px;
+  background: #fed7aa;
+}
+
+.marginSegment {
+  min-width: 2px;
+  background: #99f6e4;
+}
+
+.negativeSegment {
+  background: #fecdca;
+}
+
+.rowMeta {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.marginValue {
+  display: grid;
+  gap: 3px;
+  justify-items: end;
+}
+
+.marginValue strong {
+  color: var(--color-text);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.7fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.tablePanel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tableShell {
+  display: grid;
+  gap: 10px;
+}
+
+.freightCell,
+.unitCell,
+.moneyCell,
+.kmCell,
+.actionCell {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.freightCell strong,
+.freightCell span,
+.unitCell strong,
+.unitCell span,
+.actionCell strong,
+.actionCell span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selectedMark {
+  width: max-content;
+}
+
+.moneyCell {
+  justify-items: end;
+}
+
+.moneyCell span,
+.kmCell span,
+.actionCell span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.breakdownPanel {
+  position: sticky;
+  top: 96px;
+}
+
+.breakdownKpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.breakdownKpi {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.breakdownKpi strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 0.96rem;
+  line-height: 1.1;
+}
+
+.breakdownList {
+  display: grid;
+  gap: 8px;
+}
+
+.breakdownRow {
+  display: grid;
+  gap: 5px;
+}
+
+.breakdownTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--color-text);
+  font-size: 0.86rem;
+}
+
+.breakdownTop span,
+.breakdownTop strong {
+  min-width: 0;
+}
+
+.breakdownBar {
+  height: 8px;
+  overflow: hidden;
+  background: #eef2f6;
+  border-radius: 999px;
+}
+
+.breakdownBar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #0f766e, #14b8a6);
+  border-radius: inherit;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.comparisonItem {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.comparison strong {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1180px) {
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .breakdownPanel {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .metricGrid,
+  .breakdownKpis,
+  .comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .chartHeader,
+  .breakdownHeader,
+  .chartRow {
+    display: grid;
+  }
+
+  .chartRow {
+    grid-template-columns: 1fr;
+  }
+
+  .marginValue {
+    justify-items: start;
+  }
+}

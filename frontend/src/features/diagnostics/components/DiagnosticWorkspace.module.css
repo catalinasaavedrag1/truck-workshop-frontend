@@ -1,0 +1,510 @@
+.page {
+  display: grid;
+  gap: 12px;
+  padding-bottom: 82px;
+}
+
+.contextBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.contextItem {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.83rem;
+  font-weight: 760;
+}
+
+.contextItem svg {
+  color: var(--color-text-muted);
+}
+
+.contextLabel {
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(96px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 6px;
+  overflow-x: auto;
+  list-style: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.step {
+  display: grid;
+  min-width: 96px;
+  min-height: 44px;
+  align-content: center;
+  gap: 3px;
+  padding: 7px 9px;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.step strong {
+  color: inherit;
+  font-size: 0.88rem;
+  line-height: 1.1;
+}
+
+.step span {
+  font-size: 0.72rem;
+  font-weight: 720;
+}
+
+.stepDone {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+}
+
+.stepActive {
+  color: var(--color-text);
+  background: #fff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(15 118 110 / 0.1);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(280px, 0.72fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.mainColumn,
+.sideColumn {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.sideColumn {
+  position: sticky;
+  top: 76px;
+}
+
+.sidePanel {
+  display: grid;
+  gap: 12px;
+}
+
+.technicalForm {
+  display: grid;
+  gap: 12px;
+}
+
+.formHeader,
+.panelHeader,
+.checklistHeader,
+.footerActions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.formHeader h2,
+.panelHeader h2,
+.checklistHeader h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.formHeader p,
+.panelHeader p,
+.checklistHeader p,
+.muted {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wideField {
+  grid-column: 1 / -1;
+}
+
+.textField {
+  display: grid;
+  gap: 6px;
+  font-weight: 740;
+}
+
+.textField span {
+  color: var(--color-text);
+  font-size: 0.83rem;
+}
+
+.textField textarea {
+  width: 100%;
+  min-height: 86px;
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 500;
+  resize: vertical;
+}
+
+.textField textarea:focus {
+  border-color: var(--color-primary);
+  outline: 3px solid var(--color-primary-soft);
+}
+
+.severityField {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.fieldLabel {
+  color: var(--color-text);
+  font-size: 0.83rem;
+  font-weight: 740;
+}
+
+.severityOptions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.severityOption {
+  display: grid;
+  min-height: 40px;
+  place-items: center;
+  color: var(--color-text-muted);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.severityOption input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.severityOption:has(input:focus-visible) {
+  outline: 3px solid var(--color-primary-soft);
+  outline-offset: 2px;
+}
+
+.severityLow:has(input:checked) {
+  color: var(--color-success);
+  background: #dcfae6;
+  border-color: rgb(22 163 74 / 0.3);
+}
+
+.severityMedium:has(input:checked) {
+  color: var(--color-warning);
+  background: #fef0c7;
+  border-color: rgb(217 119 6 / 0.3);
+}
+
+.severityHigh:has(input:checked) {
+  color: var(--color-danger);
+  background: #fee4e2;
+  border-color: rgb(220 38 38 / 0.3);
+}
+
+.savedMessage {
+  margin: 0;
+  color: var(--color-success);
+  font-size: 0.84rem;
+  font-weight: 760;
+}
+
+.summaryList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.summaryList div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 30px;
+}
+
+.summaryList dt {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.summaryList dd {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+.summaryList dd span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progressBlock {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.progressMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.progressBar {
+  height: 8px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+  border-radius: 999px;
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: inherit;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.quickActions a,
+.quickActions button {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.quickActions a:hover,
+.quickActions button:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-muted);
+}
+
+.quickActions button:disabled {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.resultPreview {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+}
+
+.resultPreview strong {
+  font-size: 0.86rem;
+}
+
+.resultPreview p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+}
+
+.checklistCard {
+  display: grid;
+  gap: 12px;
+}
+
+.checklistStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.checklistGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.checklistGroup {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.checklistGroupHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.checklistGroupHeader strong {
+  color: var(--color-text);
+}
+
+.checklistItems {
+  display: grid;
+  gap: 6px;
+}
+
+.checklistItem {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) max-content;
+  gap: 8px;
+  align-items: center;
+  min-height: 36px;
+  padding: 6px 8px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.checklistItem:hover {
+  border-color: var(--color-border);
+  background: #fff;
+}
+
+.checklistItem input {
+  width: 18px;
+  height: 18px;
+}
+
+.checklistItem span {
+  min-width: 0;
+}
+
+.stickyActions {
+  position: sticky;
+  bottom: 0;
+  z-index: 6;
+  padding: 10px 0 0;
+  background: linear-gradient(180deg, rgb(245 247 251 / 0), var(--color-bg) 28%);
+}
+
+.footerActions {
+  align-items: center;
+  padding: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.footerActions small {
+  color: var(--color-text-muted);
+  font-weight: 740;
+}
+
+.footerButtonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 1100px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .sideColumn {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .stepper,
+  .formGrid,
+  .checklistGrid,
+  .quickActions {
+    grid-template-columns: 1fr;
+  }
+
+  .contextItem {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .formHeader,
+  .panelHeader,
+  .checklistHeader,
+  .footerActions {
+    display: grid;
+  }
+
+  .severityOptions {
+    grid-template-columns: 1fr;
+  }
+}
