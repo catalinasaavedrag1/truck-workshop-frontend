@@ -15,6 +15,8 @@ import {
 import styles from './Sidebar.module.css'
 
 interface FlatNavigationItem extends AppNavigationItem {
+  groupLabel: string
+  groupDescription?: string
   parentLabel: string
   sectionLabel: string
 }
@@ -27,6 +29,7 @@ interface SidebarProps {
   onBlur?: FocusEventHandler<HTMLElement>
   onMouseEnter?: MouseEventHandler<HTMLElement>
   onMouseLeave?: MouseEventHandler<HTMLElement>
+  onNavigate?: () => void
 }
 
 export function Sidebar({
@@ -37,6 +40,7 @@ export function Sidebar({
   onBlur,
   onMouseEnter,
   onMouseLeave,
+  onNavigate,
 }: SidebarProps) {
   const location = useLocation()
   const sessionUser = getCurrentSessionUser()
@@ -73,6 +77,10 @@ export function Sidebar({
     .map((part) => part[0]?.toUpperCase())
     .join('') || 'U'
   const searchIsActive = normalizedQuery.length > 0
+  const handleNavigate = () => {
+    setQuery('')
+    onNavigate?.()
+  }
 
   const toggleGroup = (group: AppNavigationGroup) => {
     setExpandedGroupLabels((current) => ({
@@ -109,10 +117,11 @@ export function Sidebar({
                     aria-label={`${group.label}: ${item.label}`}
                     className={[styles.railLink, itemActive ? styles.active : ''].filter(Boolean).join(' ')}
                     key={item.path}
+                    onClick={onNavigate}
                     title={`${group.label} / ${item.label}`}
                     to={item.path}
                   >
-                    {createElement(Icon, { 'aria-hidden': true, size: 24 })}
+                    {createElement(Icon, { 'aria-hidden': true, size: 22 })}
                     <span className={styles.srOnly}>{item.label}</span>
                   </NavLink>
                 )
@@ -146,7 +155,7 @@ export function Sidebar({
         <input
           id="sidebar-search"
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Buscar modulo"
+          placeholder="Buscar modulo, ruta o proceso"
           ref={searchInputRef}
           type="search"
           value={query}
@@ -175,7 +184,7 @@ export function Sidebar({
                   <NavLink
                     className={[styles.flatLink, isItemActive(item) ? styles.active : ''].filter(Boolean).join(' ')}
                     key={`${item.parentLabel}-${item.path}`}
-                    onClick={() => setQuery('')}
+                    onClick={handleNavigate}
                     title={`${item.parentLabel} / ${item.label}`}
                     to={item.path}
                   >
@@ -194,12 +203,13 @@ export function Sidebar({
           <div className={styles.menuTree}>
             {appConfig.navigationGroups.map((group) => (
               <SidebarSection
-                collapsible={appConfig.navigationGroups.length > 1}
+                collapsible={isNavigationGroupCollapsible(group)}
                 expanded={expandedGroupLabels[group.label] ?? true}
                 expandedItemPaths={expandedItemPaths}
                 forceExpandNested={false}
                 group={group}
                 key={group.label}
+                onNavigate={onNavigate}
                 onToggle={() => toggleGroup(group)}
                 onToggleItem={toggleItem}
                 pathname={currentNavigationPath}
@@ -208,7 +218,7 @@ export function Sidebar({
           </div>
         )}
       </nav>
-      <Link className={styles.userDock} to={ROUTES.shortcutSettings}>
+      <Link className={styles.userDock} onClick={onNavigate} to={ROUTES.shortcutSettings}>
         <span className={styles.userAvatar}>{userInitials}</span>
         <span className={styles.userCopy}>
           <strong>{sessionUser.name}</strong>
@@ -221,14 +231,20 @@ export function Sidebar({
 }
 
 function getInitialExpandedGroupLabels(groups: AppNavigationGroup[]) {
-  return Object.fromEntries(groups.map((group) => [group.label, false]))
+  return Object.fromEntries(groups.map((group) => [group.label, !isNavigationGroupCollapsible(group)]))
 }
 
 function flattenNavigationItems(groups: AppNavigationGroup[]) {
   const flattenedItems: FlatNavigationItem[] = []
   const seenPaths = new Set<string>()
 
-  const addItem = (item: AppNavigationItem, parentLabel: string, sectionLabel: string) => {
+  const addItem = (
+    item: AppNavigationItem,
+    groupLabel: string,
+    groupDescription: string | undefined,
+    parentLabel: string,
+    sectionLabel: string,
+  ) => {
     if (seenPaths.has(item.path)) {
       return
     }
@@ -237,6 +253,8 @@ function flattenNavigationItems(groups: AppNavigationGroup[]) {
     flattenedItems.push({
       ...item,
       children: undefined,
+      groupDescription,
+      groupLabel,
       parentLabel,
       sectionLabel,
     })
@@ -245,11 +263,13 @@ function flattenNavigationItems(groups: AppNavigationGroup[]) {
   groups.forEach((group) => {
     group.items.forEach((item) => {
       if (item.children?.length) {
-        item.children.forEach((child) => addItem(child, item.label, child.section || group.label))
+        item.children.forEach((child) =>
+          addItem(child, group.label, group.description, item.label, child.section || group.label),
+        )
         return
       }
 
-      addItem(item, group.label, item.section || group.label)
+      addItem(item, group.label, group.description, group.label, item.section || group.label)
     })
   })
 
@@ -261,5 +281,11 @@ function matchesFlatNavigationItem(item: FlatNavigationItem, query: string) {
     return true
   }
 
-  return [item.label, item.parentLabel, item.sectionLabel].some((value) => matchesNavigationQuery(value, query))
+  return [item.label, item.groupLabel, item.groupDescription || '', item.parentLabel, item.sectionLabel].some((value) =>
+    matchesNavigationQuery(value, query),
+  )
+}
+
+function isNavigationGroupCollapsible(group: AppNavigationGroup) {
+  return group.items.length > 1 || group.items.some((item) => Boolean(item.children?.length))
 }

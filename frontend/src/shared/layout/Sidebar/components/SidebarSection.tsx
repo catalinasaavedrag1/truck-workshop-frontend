@@ -13,6 +13,7 @@ interface SidebarSectionProps {
   expandedItemPaths: Record<string, boolean>
   forceExpandNested: boolean
   pathname: string
+  onNavigate?: () => void
   onToggle: () => void
   onToggleItem: (item: AppNavigationItem) => void
 }
@@ -23,21 +24,23 @@ export function SidebarSection({
   expandedItemPaths,
   forceExpandNested,
   group,
+  onNavigate,
   onToggle,
   onToggleItem,
   pathname,
 }: SidebarSectionProps) {
   const groupActive = group.items.some((item) => isNavigationItemActive(item, pathname))
   const visibleItems = group.items.filter((item) => item.showInSidebar !== false)
-  const sectionExpanded = expanded || groupActive
+  const sectionExpanded = !collapsible || expanded || groupActive
 
   return (
-    <section className={styles.group}>
+    <section className={[styles.group, groupActive ? styles.groupActive : ''].filter(Boolean).join(' ')}>
       {collapsible ? (
         <button
           aria-expanded={sectionExpanded}
           className={styles.groupButton}
           onClick={onToggle}
+          title={group.description || group.label}
           type="button"
         >
           <span>{group.label}</span>
@@ -51,7 +54,7 @@ export function SidebarSection({
           </span>
         </button>
       ) : (
-        <div className={styles.groupHeading}>
+        <div className={styles.groupHeading} title={group.description || group.label}>
           <span>{group.label}</span>
           <span>{group.items.length}</span>
         </div>
@@ -67,6 +70,7 @@ export function SidebarSection({
                 expanded={itemExpanded}
                 item={item}
                 key={item.path}
+                onNavigate={onNavigate}
                 onToggle={() => onToggleItem(item)}
                 pathname={pathname}
               />
@@ -75,6 +79,7 @@ export function SidebarSection({
                 active={itemActive}
                 item={item}
                 key={item.path}
+                onNavigate={onNavigate}
               />
             )
           })

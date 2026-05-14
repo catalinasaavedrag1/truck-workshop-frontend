@@ -244,7 +244,7 @@ Inventario tecnico observado:
 - `ContextBar` muestra la seccion operacional de la vista actual y hasta cuatro accesos relacionados del mismo modulo/seccion.
 - Se mantiene oculto el grupo raiz `Plataforma` para no ensuciar rutas como `Logistica / Solicitudes`.
 - La busqueda global ahora permite abrir SKUs, proveedores, mecanicos y cotizaciones, con estados y contexto operativo.
-- Se agrego una vista `NotFoundPage` dentro del router autenticado con accion clara para volver al dashboard.
+- Se agrego una vista `RouteNotFound` dentro del router autenticado con accion clara para volver al dashboard.
 
 ### Criterio UX aplicado
 
@@ -259,3 +259,46 @@ Inventario tecnico observado:
 - Algunos formularios largos aun necesitan `StickyActions` y prevencion de perdida de cambios.
 - La auditoria de permisos debe conectarse a reglas reales de backend cuando el modelo de roles este completo.
 - La busqueda global sigue alimentandose desde mocks controlados para entidades transversales; cuando existan endpoints de busqueda unificada, debe migrar a servicio backend.
+
+## Iteracion sidebar operacional 2026-05-14
+
+### Problemas encontrados
+
+- El sidebar tenia todos los modulos bajo un unico grupo raiz, lo que lo hacia sentirse como una lista larga y no como arquitectura operacional.
+- El grupo raiz `Plataforma` no agregaba significado de negocio y aumentaba ruido cognitivo.
+- Los modulos padres con rutas propias solo expandian/cerraban submenus; para entrar al panel del modulo habia que hacer un click adicional en un hijo.
+- En pantallas pequenas, al navegar desde el sidebar el overlay podia quedar abierto sobre la vista destino.
+- La densidad visual era baja: sidebar de 400px, textos grandes y filas altas para una herramienta que se usa todo el dia.
+- La busqueda lateral encontraba rutas, pero no aprovechaba la nueva agrupacion por dominio para coincidir con terminos como comercial, trafico o abastecimiento.
+
+### Cambios aplicados
+
+- La navegacion se reorganizo en grupos de negocio:
+  - `Inicio`
+  - `Operacion taller`
+  - `Flota y logistica`
+  - `Clientes y comercial`
+  - `Abastecimiento`
+  - `Finanzas y control`
+  - `Administracion`
+- Cada grupo conserva las rutas existentes y no cambia contratos frontend-backend.
+- El grupo activo se abre automaticamente y los grupos no activos quedan compactos para reducir carga visual.
+- Los modulos padre ahora navegan directamente a su ruta principal, con un boton separado para expandir/cerrar secciones internas.
+- El sidebar mobile se cierra despues de seleccionar una ruta.
+- Se redujo el ancho expandido del sidebar y se compacto la tipografia, alto de filas, espaciados y rail colapsado.
+- La busqueda del sidebar ahora considera grupo, descripcion, modulo padre y seccion operacional.
+- Se agrego estado visual para el grupo activo sin depender solo del submenu abierto.
+
+### Criterio UX aplicado
+
+- Sidebar como mapa operativo: primero dominio, luego modulo, luego seccion.
+- Menos clics para entrar a modulos principales.
+- Submenus solo como exploracion contextual, no como requisito para navegar.
+- Mayor densidad para notebooks operacionales y uso intensivo.
+- Mobile sin overlay persistente despues de navegar.
+
+### Riesgos pendientes
+
+- La visibilidad por permisos aun no filtra el arbol de navegacion; hoy se conserva compatibilidad y se evita ocultar rutas hasta que backend entregue permisos completos por modulo.
+- No se agregaron badges dinamicos de pendientes al sidebar para no hardcodear conteos operacionales; deberian venir de endpoints resumidos por modulo.
+- Una siguiente iteracion puede persistir preferencias de expansion por usuario si el equipo operativo lo necesita.

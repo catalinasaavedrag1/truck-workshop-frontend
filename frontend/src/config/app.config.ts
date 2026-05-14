@@ -11,6 +11,7 @@ export interface AppNavigationItem {
 
 export interface AppNavigationGroup {
   label: string
+  description?: string
   items: AppNavigationItem[]
 }
 
@@ -19,9 +20,16 @@ const customerView = (view: string) => `${ROUTES.customers}?view=${view}`
 
 const navigationGroups: AppNavigationGroup[] = [
   {
-    label: 'Plataforma',
+    label: 'Inicio',
+    description: 'Vista ejecutiva y foco operacional global',
     items: [
       { label: 'Dashboard operativo', path: ROUTES.dashboard, icon: 'layout-dashboard' },
+    ],
+  },
+  {
+    label: 'Operacion taller',
+    description: 'Casos, agenda, mecanicos y capacidad del taller',
+    items: [
       {
         label: 'Taller',
         path: ROUTES.cases,
@@ -35,6 +43,12 @@ const navigationGroups: AppNavigationGroup[] = [
           { label: 'Reportes', path: ROUTES.reports, icon: 'bar-chart-3', section: 'Analisis' },
         ],
       },
+    ],
+  },
+  {
+    label: 'Flota y logistica',
+    description: 'Activos, disponibilidad, viajes, fletes y trafico',
+    items: [
       {
         label: 'Flota',
         path: ROUTES.fleet,
@@ -63,6 +77,47 @@ const navigationGroups: AppNavigationGroup[] = [
         ],
       },
       {
+        label: 'Logistica',
+        path: ROUTES.freightRequests,
+        icon: 'route',
+        children: [
+          { label: 'Solicitudes', path: ROUTES.freightRequests, icon: 'clipboard-list', section: 'Solicitudes' },
+          { label: 'Nueva solicitud', path: ROUTES.freightRequestNew, icon: 'circle-plus', section: 'Solicitudes', showInSidebar: false },
+          { label: 'Portal cliente', path: ROUTES.freightClientPortal, icon: 'send', section: 'Solicitudes' },
+          { label: 'Cotizaciones flete', path: ROUTES.freightQuotes, icon: 'file-text', section: 'Cotizacion' },
+          { label: 'Asignacion flete', path: ROUTES.freightAssignments, icon: 'calendar-check', section: 'Ejecucion' },
+          { label: 'Planillas choferes', path: ROUTES.driverTripSheets, icon: 'receipt-text', section: 'Viajes' },
+          { label: 'Rentabilidad fletes', path: ROUTES.freightProfitability, icon: 'trending-up', section: 'Analisis' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Clientes y comercial',
+    description: 'Clientes, cartera, tarifas, riesgo y rentabilidad',
+    items: [
+      {
+        label: 'Clientes',
+        path: ROUTES.customers,
+        icon: 'building-2',
+        children: [
+          { label: 'Panel clientes', path: ROUTES.customers, icon: 'layout-dashboard', section: 'Control clientes' },
+          { label: 'Cartera', path: customerView('portfolio'), icon: 'building-2', section: 'Gestion' },
+          { label: 'Credito y riesgo', path: customerView('credit'), icon: 'shield-check', section: 'Control comercial' },
+          { label: 'Tarifas', path: customerView('pricing'), icon: 'circle-dollar-sign', section: 'Comercial' },
+          { label: 'Operaciones', path: customerView('operations'), icon: 'route', section: 'Operacion' },
+          { label: 'Comunicaciones', path: customerView('communications'), icon: 'message-circle', section: 'Relacion cliente' },
+          { label: 'Rentabilidad', path: customerView('profitability'), icon: 'trending-up', section: 'Analisis' },
+          { label: 'Nuevo cliente', path: customerView('create'), icon: 'circle-plus', section: 'Gestion', showInSidebar: false },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Abastecimiento',
+    description: 'Compras, inventario, proveedores y auditoria',
+    items: [
+      {
         label: 'Compras y abastecimiento',
         path: ROUTES.warehouse,
         icon: 'shopping-cart',
@@ -85,35 +140,12 @@ const navigationGroups: AppNavigationGroup[] = [
           { label: 'Reportes abastecimiento', path: ROUTES.inventoryReport, icon: 'bar-chart-3', section: 'Auditoria' },
         ],
       },
-      {
-        label: 'Clientes',
-        path: ROUTES.customers,
-        icon: 'building-2',
-        children: [
-          { label: 'Panel clientes', path: ROUTES.customers, icon: 'layout-dashboard', section: 'Control clientes' },
-          { label: 'Cartera', path: customerView('portfolio'), icon: 'building-2', section: 'Gestion' },
-          { label: 'Credito y riesgo', path: customerView('credit'), icon: 'shield-check', section: 'Control comercial' },
-          { label: 'Tarifas', path: customerView('pricing'), icon: 'circle-dollar-sign', section: 'Comercial' },
-          { label: 'Operaciones', path: customerView('operations'), icon: 'route', section: 'Operacion' },
-          { label: 'Comunicaciones', path: customerView('communications'), icon: 'message-circle', section: 'Relacion cliente' },
-          { label: 'Rentabilidad', path: customerView('profitability'), icon: 'trending-up', section: 'Analisis' },
-          { label: 'Nuevo cliente', path: customerView('create'), icon: 'circle-plus', section: 'Gestion', showInSidebar: false },
-        ],
-      },
-      {
-        label: 'Logistica',
-        path: ROUTES.freightRequests,
-        icon: 'route',
-        children: [
-          { label: 'Solicitudes', path: ROUTES.freightRequests, icon: 'clipboard-list', section: 'Solicitudes' },
-          { label: 'Nueva solicitud', path: ROUTES.freightRequestNew, icon: 'circle-plus', section: 'Solicitudes', showInSidebar: false },
-          { label: 'Portal cliente', path: ROUTES.freightClientPortal, icon: 'send', section: 'Solicitudes' },
-          { label: 'Cotizaciones flete', path: ROUTES.freightQuotes, icon: 'file-text', section: 'Cotizacion' },
-          { label: 'Asignacion flete', path: ROUTES.freightAssignments, icon: 'calendar-check', section: 'Ejecucion' },
-          { label: 'Planillas choferes', path: ROUTES.driverTripSheets, icon: 'receipt-text', section: 'Viajes' },
-          { label: 'Rentabilidad fletes', path: ROUTES.freightProfitability, icon: 'trending-up', section: 'Analisis' },
-        ],
-      },
+    ],
+  },
+  {
+    label: 'Finanzas y control',
+    description: 'Costos, combustible y reporterias de gestion',
+    items: [
       {
         label: 'Finanzas',
         path: ROUTES.truckCosts,
@@ -128,6 +160,12 @@ const navigationGroups: AppNavigationGroup[] = [
           { label: 'Rendimiento choferes', path: ROUTES.driverPerformanceReport, icon: 'gauge', section: 'Reportes' },
         ],
       },
+    ],
+  },
+  {
+    label: 'Administracion',
+    description: 'Permisos, preferencias, comunicaciones e incidentes',
+    items: [
       {
         label: 'Configuracion',
         path: ROUTES.permissions,

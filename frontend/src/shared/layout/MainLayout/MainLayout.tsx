@@ -89,6 +89,12 @@ export function MainLayout() {
     setIsSidebarKeyboardExpanded(false)
   }
 
+  const closeSidebarAfterNavigation = useCallback(() => {
+    if (!isDesktop) {
+      setIsSidebarOpen(false)
+    }
+  }, [isDesktop])
+
   const focusGlobalSearch = useCallback(() => {
     setGlobalSearchFocusSignal((current) => current + 1)
   }, [])
@@ -152,6 +158,7 @@ export function MainLayout() {
         onBlur={collapseSidebarOnBlur}
         onMouseEnter={expandSidebarOnHover}
         onMouseLeave={collapseSidebarOnLeave}
+        onNavigate={closeSidebarAfterNavigation}
       />
       {!isSidebarPinned && isSidebarOpen ? (
         <button
