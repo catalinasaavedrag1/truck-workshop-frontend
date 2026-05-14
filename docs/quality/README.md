@@ -1,6 +1,6 @@
 # Calidad Frontend/Backend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Revision tecnica del proyecto separada por capa.
 

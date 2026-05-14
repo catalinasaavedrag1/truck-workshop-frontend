@@ -1,6 +1,6 @@
 # Frontend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Documentacion de la aplicacion React/Electron ubicada en `frontend/`.
 
@@ -8,6 +8,7 @@ Documentacion de la aplicacion React/Electron ubicada en `frontend/`.
 
 | Documento | Para que sirve |
 |---|---|
+| [Documentacion integral](../project-architecture.md) | Vision completa del monorepo, frontend, backend, contratos, rutas, recursos y checklists. |
 | [Arquitectura](overview.md) | Stack, estructura real, entrypoints, configuracion y flujo de render. |
 | [Rutas](routes.md) | Mapa completo de rutas por area operacional. |
 | [Datos, layout y UI compartida](data-layout.md) | HTTP, hooks, shell, sidebar, topbar, componentes, RUT, atajos y estilos. |
@@ -19,7 +20,8 @@ Documentacion de la aplicacion React/Electron ubicada en `frontend/`.
 
 - La app usa `RouterProvider` y rutas lazy.
 - `/login` no usa shell; el resto corre dentro de `MainLayout`.
-- El menu lateral combina barra compacta de iconos, submenus expandibles y busqueda plana de accesos.
+- El menu lateral organiza la plataforma por Inicio, Operacion taller, Flota y logistica, Clientes y comercial, Abastecimiento, Finanzas y control, y Administracion.
+- `PageHeader` y `ContextBar` derivan breadcrumbs/contexto desde `shared/navigation/navigationContext.ts`.
 - La busqueda del menu lateral permite encontrar modulos, submodulos y secciones visibles.
 - El usuario queda fijo abajo del sidebar.
 - El topbar mantiene busqueda global, atajos, notificaciones y acceso a ayuda de teclado.

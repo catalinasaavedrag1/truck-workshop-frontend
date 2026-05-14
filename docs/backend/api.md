@@ -1,6 +1,6 @@
 # Backend - API y recursos
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 La API vive bajo el prefijo configurado en `API_PREFIX`, por defecto `/api`. Este documento se basa en `backend/src/routes/index.js` y `backend/src/config/resources.js`. Para una lectura por dominio, tablas y proposito de cada entidad, ver [catalogo de recursos y modulos](resources.md).
 
@@ -160,7 +160,7 @@ El repositorio SQL usa soft delete con `deleted_at`; el repositorio en memoria e
 | assignments | `GET /api/assignments`, `POST /api/assignments` | Asignacion de mecanicos a casos. |
 | approvals | `PATCH /api/approvals/:id`, `POST /:id/approve`, `POST /:id/reject` | Resuelve aprobaciones y sincroniza entidad relacionada. |
 | diagnostics | `POST/PATCH/DELETE /api/diagnostics` | Diagnosticos vinculados a caso. |
-| customers | CRUD especializado | Valida relaciones de fletes activos antes de borrar. |
+| customers | CRUD especializado, `GET /:id/credit` | Valida relaciones de fletes activos antes de borrar y expone resumen de credito. |
 | communications | `provider-configs`, `send`, `webhooks/whatsapp` | Configuracion y envio simulado/live de WhatsApp Cloud y Microsoft Graph. |
 | driver-trip-sheets | CRUD, `POST /preview` | Planillas de viaje, calculo de gastos y rendimiento. |
 | fleet health | `GET /overview`, `POST /recalculate` | Health score de camiones desde documentos, costos, incidentes y telemetria. |
@@ -180,3 +180,18 @@ El repositorio SQL usa soft delete con `deleted_at`; el repositorio en memoria e
 | truck-costs | `GET /api/truck-costs/analytics` | Analitica de costos por camion. |
 | truck-documents | `POST/PATCH/DELETE /truck-documents` | Vencimientos, bloqueo de flota, health score y timeline. |
 | warehouse locations | `POST/PATCH/DELETE /warehouse/locations` | Ubicaciones de bodega con auditoria. |
+
+## Verificacion de contrato frontend/backend
+
+`backend/scripts/audit-frontend-contract.js` revisa endpoints usados por servicios frontend contra rutas backend montadas. La validacion se ejecuta dentro de:
+
+```bash
+npm run backend:check
+npm run check
+```
+
+Ultima validacion conocida:
+
+```text
+Frontend/backend contract OK. 56 frontend endpoints covered by 77 backend routes.
+```

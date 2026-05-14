@@ -1,6 +1,6 @@
 # Frontend - demo y mantenimiento
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 ## Modo demo y mocks
 

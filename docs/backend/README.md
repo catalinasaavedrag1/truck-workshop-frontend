@@ -1,6 +1,6 @@
 # Backend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Documentacion de la API ubicada en `backend/`.
 
@@ -8,6 +8,7 @@ Documentacion de la API ubicada en `backend/`.
 
 | Documento | Para que sirve |
 |---|---|
+| [Documentacion integral](../project-architecture.md) | Vision completa del monorepo, frontend, backend, contratos, rutas, recursos y checklists. |
 | [Arquitectura](overview.md) | Stack, arranque, estructura y piezas internas. |
 | [Configuracion y comandos](setup.md) | Variables de entorno, SQL Server, modo memoria y scripts. |
 | [API y recursos](api.md) | Contrato HTTP, CRUD generico, recursos, alias y rutas especializadas. |

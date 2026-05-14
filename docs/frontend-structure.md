@@ -1,6 +1,6 @@
 # Estructura Frontend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Este documento se movio y se dividio en secciones mas pequenas.
 

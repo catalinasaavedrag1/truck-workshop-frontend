@@ -1,6 +1,6 @@
 # Calidad frontend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 ## Patrones correctos
 

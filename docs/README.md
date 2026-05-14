@@ -1,6 +1,6 @@
 # Documentacion Truck Workshop
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Esta carpeta documenta el proyecto completo por capas. La idea es que puedas entrar por el tema que necesitas sin leer un documento gigante.
 
@@ -9,6 +9,7 @@ Esta carpeta documenta el proyecto completo por capas. La idea es que puedas ent
 | Area | Documento | Contenido |
 |---|---|---|
 | Proyecto | [README raiz](../README.md) | Arranque, scripts, stack, modulos y reglas generales. |
+| Proyecto | [Documentacion integral](project-architecture.md) | Arquitectura completa frontend/backend, rutas, recursos, seguridad, scripts, integraciones y checklists. |
 | Proyecto | [Mapa general](project-map.md) | Arquitectura monorepo, contratos, flujos y donde tocar segun el cambio. |
 | Backend | [Backend](backend/README.md) | Arquitectura, configuracion, API, recursos y operaciones. |
 | Frontend | [Frontend](frontend/README.md) | Arquitectura, rutas, layout, datos, features y mantenimiento. |
@@ -19,8 +20,8 @@ Esta carpeta documenta el proyecto completo por capas. La idea es que puedas ent
 
 | Rol | Leer primero |
 |---|---|
-| Desarrollo frontend | `project-map.md`, `frontend/overview.md`, `frontend/modules.md`, `frontend/routes.md`, `frontend/data-layout.md`, `frontend/maintenance.md`. |
-| Desarrollo backend | `project-map.md`, `backend/overview.md`, `backend/setup.md`, `backend/api.md`, `backend/resources.md`, `backend/operations.md`. |
+| Desarrollo frontend | `project-architecture.md`, `project-map.md`, `frontend/overview.md`, `frontend/modules.md`, `frontend/routes.md`, `frontend/data-layout.md`, `frontend/maintenance.md`. |
+| Desarrollo backend | `project-architecture.md`, `project-map.md`, `backend/overview.md`, `backend/setup.md`, `backend/api.md`, `backend/resources.md`, `backend/operations.md`. |
 | QA o soporte | `quality/module-matrix.md`, `backend/api.md`, `frontend/routes.md`. |
 | Producto/UX | `ux/platform-review.md`, `frontend/features.md`, `quality/practices-checklist.md`. |
 | DevOps/local setup | `README.md` raiz, `backend/setup.md`, `frontend/maintenance.md`. |
@@ -37,7 +38,8 @@ Estos archivos se mantienen para compatibilidad con enlaces anteriores y redirig
 
 - Frontend dentro de `frontend/`.
 - Backend dentro de `backend/`.
-- Menu lateral frontend con barra compacta, submenus expandibles y busqueda plana para navegar modulos y subflujos.
+- Menu lateral frontend organizado por Inicio, Operacion taller, Flota y logistica, Clientes y comercial, Abastecimiento, Finanzas y control, y Administracion.
+- Headers y barra de contexto derivan breadcrumbs y contexto desde la misma taxonomia de navegacion.
 - Topbar con busqueda global, atajos y notificaciones.
 - API backend bajo `/api`, con `X-Request-Id`, `data`, `meta` y errores estandarizados.
 - SQL Server opcional para persistencia; modo `DATA_DRIVER=memory` para demo local.

@@ -1,6 +1,6 @@
 # Frontend - rutas
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Las rutas publicas viven en `frontend/src/config/routes.ts` y se montan en `frontend/src/router.tsx`. `/login` queda fuera de `MainLayout`; el resto de vistas usa sidebar, topbar y barra de contexto.
 
@@ -31,9 +31,9 @@ Las rutas publicas viven en `frontend/src/config/routes.ts` y se montan en `fron
 | Neumaticos | `/tire-performance`, `/tire-performance/intake`, `/tire-performance/install`, `/tire-performance/remove`, `/tire-performance/comparison` |
 | Checklists viaje | `/trip-checklists`, `/trip-checklists/departure`, `/trip-checklists/arrival` |
 | Telematica | `/telematics` |
-| Inventario | `/warehouse`, `/warehouse/report`, `/warehouse/locations`, `/warehouse/managers`, `/warehouse/stock`, `/parts`, `/parts/:partId` |
-| Compras | `/purchase-orders`, `/purchase-orders/new`, `/purchase-orders/:purchaseOrderId`, `/suppliers`, `/suppliers/new`, `/suppliers/:supplierId` |
-| Fletes clientes | `/customers`, `/customers/:customerId` |
+| Clientes y comercial | `/customers`, `/customers/:customerId` y vistas query `/customers?view=portfolio`, `credit`, `pricing`, `operations`, `communications`, `profitability`, `create` |
+| Abastecimiento e inventario | `/warehouse`, `/warehouse/report`, `/warehouse/locations`, `/warehouse/managers`, `/warehouse/stock`, `/parts`, `/parts/:partId` y vistas query `/warehouse?view=suggestions`, `requests`, `receipts`, `documents`, `audit`, `calendar` |
+| Compras y proveedores | `/purchase-orders`, `/purchase-orders/new`, `/purchase-orders/:purchaseOrderId`, `/suppliers`, `/suppliers/new`, `/suppliers/:supplierId` |
 | Fletes operacion | `/freight/requests`, `/freight/requests/new`, `/freight/requests/:requestId`, `/freight/client-portal`, `/freight/client-portal/requests`, `/freight/client-portal/history`, `/freight/client-portal/tracking/:trackingNumber`, `/freight/quotes`, `/freight/quotes/:quoteId`, `/freight/assignments`, `/freight/driver-trip-sheets`, `/freight-profitability` |
 | Incidencias y control | `/incidents`, `/incidents/new`, `/incidents/:incidentId`, `/communications`, `/notifications` |
 | Reportes | `/reports`, `/reports/driver-performance` |
@@ -49,6 +49,8 @@ El menu lateral usa los items de `app.config.ts`, no lee automaticamente todas l
 - Accesos secundarios: botones, tablas o acciones dentro de una vista.
 
 Ejemplo: `/cases/:caseId/close` existe como ruta, pero normalmente se alcanza desde la ficha del caso, no como item principal de menu.
+
+Las vistas query como `/warehouse?view=calendar` o `/customers?view=credit` comparten pagina base y cambian seccion interna sin crear rutas fisicas adicionales. Deben documentarse en `app.config.ts` si aparecen en sidebar/contexto.
 
 ## Rutas con fallback desktop
 

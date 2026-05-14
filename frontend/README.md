@@ -1,6 +1,6 @@
 # Truck Workshop Frontend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Aplicacion web y desktop de Truck Workshop. Vive completa dentro de `frontend/` y consume la API configurada en `VITE_API_BASE_URL`.
 
@@ -63,6 +63,7 @@ frontend/
 
 ## Documentacion detallada
 
+- [Documentacion integral del proyecto](../docs/project-architecture.md)
 - [Indice frontend](../docs/frontend/README.md)
 - [Arquitectura](../docs/frontend/overview.md)
 - [Rutas](../docs/frontend/routes.md)

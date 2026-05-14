@@ -1,6 +1,6 @@
 # Truck Workshop
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Truck Workshop es una plataforma operacional para taller, flota, fletes, inventario, compras, comunicaciones, incidencias, reporteria y administracion. El repositorio esta organizado como monorepo: la raiz coordina scripts, `frontend/` contiene la aplicacion React/Electron, `backend/` contiene la API Express y `docs/` contiene la documentacion tecnica.
 
@@ -19,6 +19,7 @@ Truck Workshop es una plataforma operacional para taller, flota, fletes, inventa
 Empieza por el indice general:
 
 - [Indice de documentacion](docs/README.md)
+- [Documentacion integral del proyecto](docs/project-architecture.md)
 - [Mapa general del proyecto](docs/project-map.md)
 - [Backend](docs/backend/README.md)
 - [Catalogo backend de recursos y modulos](docs/backend/resources.md)
@@ -173,11 +174,13 @@ npm run desktop:dist
 
 | Area | Incluye |
 |---|---|
-| Taller | Casos, agenda, diagnosticos, asignaciones, checklists, mecanicos, bahias, cotizaciones, aprobaciones, mano de obra y mantenimiento preventivo. |
-| Fletes | Clientes, solicitudes, cotizaciones, asignacion, planillas de chofer y rentabilidad. |
-| Flota | Centro de flota, disponibilidad, health score, fichas de camiones, documentos, choferes, combustible, neumaticos, checklists de viaje, telemetria. |
-| Inventario | Centro inventario, repuestos/SKUs, stock fisico, ubicaciones, encargados, ordenes de compra, proveedores y reporte de inventario. |
-| Control | Incidencias, comunicaciones, notificaciones, costos por camion, reportes, rendimiento de choferes, permisos y atajos. |
+| Inicio | Dashboard operativo global y foco de urgencias. |
+| Operacion taller | Casos, agenda, diagnosticos, asignaciones, checklists, mecanicos, bahias, cotizaciones, aprobaciones y mano de obra. |
+| Flota y logistica | Centro de flota, disponibilidad, health score, camiones, documentos, choferes, mantenimiento, neumaticos, checklists de viaje, telemetria, solicitudes, cotizaciones, asignacion y rentabilidad de fletes. |
+| Clientes y comercial | Modulo de clientes, cartera, credito, riesgo, tarifas, operaciones, comunicaciones y rentabilidad. |
+| Abastecimiento | Compras, inventario, reposicion sugerida, solicitudes, OC, recepcion, documentos, SKUs, stock, ubicaciones, compradores, proveedores, auditoria, calendario y reportes. |
+| Finanzas y control | Costos por camion, combustible, reportes operativos y rendimiento de choferes. |
+| Administracion | Permisos, atajos, comunicaciones, notificaciones e incidentes. |
 
 ## Rutas frontend clave
 
@@ -191,7 +194,8 @@ Rutas principales:
 - `/diagnostics`, `/diagnostics/:caseId`
 - `/freight/requests`, `/freight/quotes`, `/freight/assignments`
 - `/fleet`, `/fleet/trucks`, `/fleet/availability`, `/fleet/health-score`
-- `/warehouse`, `/warehouse/stock`, `/warehouse/locations`
+- `/customers`, `/customers/:customerId`
+- `/warehouse`, `/warehouse?view=suggestions`, `/warehouse?view=calendar`, `/warehouse/stock`, `/warehouse/locations`
 - `/incidents`, `/incidents/new`, `/incidents/:incidentId`
 - `/reports`
 

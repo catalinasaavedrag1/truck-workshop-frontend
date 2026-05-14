@@ -1,6 +1,6 @@
 # Backend - configuracion y comandos
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 El backend carga variables desde `.env` de la raiz y desde `backend/.env`. La forma recomendada es copiar `backend/.env.example` a `backend/.env`.
 
@@ -10,7 +10,7 @@ El backend carga variables desde `.env` de la raiz y desde `backend/.env`. La fo
 NODE_ENV=development
 PORT=4000
 API_PREFIX=/api
-CORS_ORIGIN=http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5181,http://localhost:5181
+CORS_ORIGIN=http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5181,http://localhost:5181,http://127.0.0.1:5183,http://localhost:5183
 DATA_DRIVER=sqlserver
 
 SQL_SERVER=.\CATA
@@ -40,6 +40,12 @@ CNE_REQUEST_TIMEOUT_MS=12000
 CNE_FALLBACK_DIESEL_PRICE_PER_LITER=1050
 
 JWT_SECRET=replace-with-a-long-secret
+JWT_EXPIRES_IN=8h
+AUTH_REQUIRED=false
+AUTH_ENFORCE_PERMISSIONS=false
+AUTH_ALLOW_DEVELOPMENT_LOGIN=true
+DEV_LOGIN_EMAIL=admin@truckworkshop.cl
+DEV_LOGIN_PASSWORD_HASH=123
 ```
 
 ## DATA_DRIVER

@@ -1,6 +1,6 @@
 # Backend - catalogo de recursos y modulos
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Este documento complementa [API y recursos](api.md). Aca se explica el catalogo por dominio: que entidad representa cada recurso, que ruta expone, que tabla usa y cuando existe logica especializada por encima del CRUD generico.
 
@@ -53,7 +53,7 @@ DELETE /api/<ruta>/:id
 
 | Recurso | Ruta | Tabla | JSON | Uso |
 |---|---|---|---|---|
-| `customers` | `/customers` | `customers` | `preferredOrigins`, `preferredDestinations`, `freightTypes`, `priceList` | Maestro de clientes: contacto, RUT, credito, riesgo, preferencias y tarifas. |
+| `customers` | `/customers` | `customers` | `preferredOrigins`, `preferredDestinations`, `freightTypes`, `priceList` | Maestro de clientes: contacto, RUT, credito, riesgo, preferencias, tarifas y base de cliente 360. |
 | `freight-requests` | `/freight/requests` | `freight_requests` | - | Solicitudes de flete, tracking, origen/destino, carga y estado. |
 | `freight-quotes` | `/freight/quotes` | `freight_quotes` | `pricingSnapshot`, `routePricingSnapshot` | Cotizaciones de flete, costos, margen, impuestos y vencimiento. |
 | `freight-pricing-settings` | `/freight/pricing-settings` | `freight_pricing_settings` | `cargoSurcharges` | Configuracion activa de pricing: base, km, combustible, peajes, margen e impuestos. |
@@ -91,8 +91,8 @@ DELETE /api/<ruta>/:id
 | `warehouse-stock` | `/warehouse/stock` | `warehouse_stock` | - | Stock fisico por SKU y ubicacion. |
 | `warehouse-managers` | `/warehouse/managers` | `warehouse_managers` | `assignedLocationIds` | Encargados de bodega y ubicaciones asignadas. |
 | `warehouse-movements` | `/warehouse/movements` | `warehouse_movements` | - | Movimientos de inventario por SKU, cantidad y caso relacionado. |
-| `purchase-orders` | `/purchase-orders` | `purchase_orders` | `items` | Ordenes de compra, proveedor, items, total y entrega esperada. |
-| `purchase-requests` | `/purchase-requests` | `purchase_requests` | - | Solicitudes de compra desde casos/repuestos. |
+| `purchase-orders` | `/purchase-orders` | `purchase_orders` | `items` | Ordenes de compra, proveedor, items, total, estado, auditoria y entrega esperada. |
+| `purchase-requests` | `/purchase-requests` | `purchase_requests` | - | Solicitudes de compra desde casos, quiebres, reposicion o repuestos. |
 | `suppliers` | `/suppliers` | `suppliers` | `categories`, `activePurchaseOrderIds` | Proveedores, RUT, categorias, rating y OC activas. |
 
 ## Finanzas, combustible y control operacional
@@ -141,7 +141,7 @@ Estos routers se montan antes o junto al CRUD generico cuando hay reglas adicion
 | `assignments` | `/api/assignments` | Validar mecanico/caso y registrar asignacion. |
 | `approvals` | `/api/approvals` | Aprobar/rechazar y actualizar entidad relacionada. |
 | `diagnostics` | `/api/diagnostics` | Crear diagnostico y avanzar flujo del caso. |
-| `customers` | `/api/customers` | CRUD de clientes y validacion de fletes activos antes de eliminar. |
+| `customers` | `/api/customers` | CRUD de clientes, credito y validacion de fletes activos antes de eliminar. |
 | `freight/pricing` | `/api/freight/pricing` | Config activa y calculo de cotizacion. |
 | `freight/assignments` | `/api/freight/assignments` | Asignacion de camion/chofer con validaciones. |
 | `driver-trip-sheets` | `/api/driver-trip-sheets` | Planilla, preview y calculos de margen/performance. |
@@ -187,4 +187,3 @@ Cuando se agrega o cambia un recurso, el orden recomendado es:
 4. Ejecutar `npm run backend:migrate`.
 5. Ejecutar `npm run backend:db:audit`.
 6. Actualizar esta documentacion si cambia la superficie API.
-

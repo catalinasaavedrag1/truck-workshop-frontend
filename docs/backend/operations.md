@@ -1,6 +1,6 @@
 # Backend - operaciones y mantenimiento
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 ## Modulos backend
 
@@ -31,6 +31,13 @@ Actualizado: 2026-05-13
 | `truck-documents` | Vencimientos, bloqueo de flota, timeline y score. |
 | `warehouse` | Ubicaciones de bodega y auditoria. |
 | `workshop-cases` | Ciclo principal de caso de taller. |
+
+## Relacion con frontend
+
+- Los endpoints consumidos por frontend se revisan con `scripts/audit-frontend-contract.js`.
+- El frontend usa `resourceApi.ts` para CRUD simple y servicios por feature para flujos especializados.
+- Rutas query como `/warehouse?view=calendar` y `/customers?view=credit` son vistas internas frontend; no necesariamente implican endpoints nuevos.
+- Cuando una vista avanzada usa mock/adapters, debe quedar preparada para reemplazar la fuente por API sin cambiar la UI.
 
 ## CRUD generico vs modulo especializado
 
@@ -137,6 +144,7 @@ Los servicios auditables reciben actor desde headers:
 - No exponer secretos en frontend ni seeds.
 - Si una operacion toca varias tablas, preferir transaccion explicita.
 - Ejecutar `npm run backend:check`.
+- Ejecutar `npm run check` desde la raiz cuando el cambio impacta frontend/backend.
 - Si cambia SQL, ejecutar `npm run backend:db:audit`.
 
 ## Checklist para agregar un recurso CRUD

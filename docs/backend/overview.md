@@ -1,6 +1,6 @@
 # Backend - arquitectura
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Backend monolitico modular en JavaScript para Truck Workshop. Expone una API Express bajo `/api`, puede trabajar contra SQL Server o contra un repositorio en memoria para demo local, y reutiliza un registry declarativo de recursos para generar CRUD, migraciones, seed y auditoria de base de datos.
 
@@ -39,14 +39,17 @@ src/app.js
 backend/
   .env.example
   package.json
-  scripts/
-    audit-database.js
-    check-syntax.js
-    frontend-mock-seed.source.ts
-    generate-seed-data.js
-    migrate.js
-    seed.js
-    seed-data.js
+    scripts/
+      audit-database.js
+      audit-frontend-contract.js
+      check-security.js
+      check-syntax.js
+      frontend-mock-seed.source.ts
+      generate-seed-data.js
+      migrate.js
+      seed.js
+      seed-data.js
+      smoke-api.js
   src/
     app.js
     server.js
@@ -71,6 +74,7 @@ backend/
       errors/
       http/
       middleware/
+      security/
       utils/
 ```
 
@@ -129,3 +133,12 @@ Se usan cuando hay reglas de negocio, transiciones o integraciones. Ejemplos:
 - `reports`: reporteria agregada.
 - `truck-documents`: vencimientos, disponibilidad, timeline y health score.
 - `tire-performance`: ciclo de vida de neumaticos.
+- `fuel-prices`: precio diesel actual, historico, sync y scheduler CNE.
+
+## Seguridad
+
+- `GET /api/health` y `/api/auth/*` son publicos.
+- El resto de rutas pasa por `authenticateRequest`.
+- `AUTH_REQUIRED=true` exige JWT valido.
+- `AUTH_ENFORCE_PERMISSIONS=true` activa reglas de `shared/security/permission-rules.js`.
+- El usuario `ADMIN` y el permiso `*` actuan como bypass controlado de permisos.

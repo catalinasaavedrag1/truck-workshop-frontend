@@ -1,6 +1,6 @@
 # Frontend - mapa de modulos
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Este documento describe la aplicacion React por modulos funcionales. Complementa [rutas](routes.md), [datos/layout](data-layout.md) e [inventario de features](features.md).
 
@@ -13,6 +13,7 @@ Este documento describe la aplicacion React por modulos funcionales. Complementa
 | Lazy routing | `frontend/src/router.tsx` | Declara paginas lazy, rutas publicas, rutas privadas y fallback de carga. |
 | Paths | `frontend/src/config/routes.ts` | Fuente unica de paths y helpers con parametros. |
 | Navegacion | `frontend/src/config/app.config.ts` | Grupos padre, children, iconos, secciones y visibilidad en sidebar. |
+| Contexto de navegacion | `frontend/src/shared/navigation/navigationContext.ts` | Match de ruta activa, breadcrumbs automaticos y accesos relacionados. |
 | Layout | `frontend/src/shared/layout/MainLayout` | Sidebar, topbar, context bar, contenido y ayuda de atajos. |
 
 Rutas publicas:
@@ -44,16 +45,18 @@ El sidebar no es una lista plana simple. La navegacion se declara como arbol en 
 | Ruta activa | Expande automaticamente el padre activo y marca el hijo mas especifico. |
 | `showInSidebar=false` | Oculta flujos secundarios como formularios de creacion, pero las rutas siguen existiendo. |
 
-Submenus visibles principales:
+Grupos y submenus visibles principales:
 
-| Padre | Hijos visibles |
-|---|---|
-| Taller | Casos, Agenda taller, Mecanicos, Estaciones taller, Reportes. |
-| Flota | Centro de flota, Disponibilidad, Health Score, Ficha camiones, Documentos, Choferes, Mantenimiento preventivo, Rendimiento neumaticos, Checklists viaje, Telemetria/GPS. |
-| Compras | Inventario taller, Repuestos/SKUs, Stock fisico, Ubicaciones, Encargados bodega, Ordenes de compra, Proveedores. |
-| Logistica | Clientes, Solicitudes, Portal cliente, Cotizaciones flete, Asignacion flete, Planillas choferes, Rentabilidad fletes. |
-| Finanzas | Costos por camion, Combustible, Reportes operativos, Rendimiento choferes. |
-| Configuracion | Permisos, Atajos y teclado, Comunicaciones, Notificaciones, Incidentes. |
+| Grupo | Padre | Hijos visibles |
+|---|---|---|
+| Inicio | Dashboard operativo | Dashboard operativo. |
+| Operacion taller | Taller | Casos, Agenda taller, Mecanicos, Estaciones taller, Reportes. |
+| Flota y logistica | Flota | Centro de flota, Disponibilidad, Health Score, Ficha camiones, Documentos, Choferes, Mantenimiento preventivo, Rendimiento neumaticos, Checklists viaje, Telemetria/GPS. |
+| Flota y logistica | Logistica | Solicitudes, Portal cliente, Cotizaciones flete, Asignacion flete, Planillas choferes, Rentabilidad fletes. |
+| Clientes y comercial | Clientes | Panel clientes, Cartera, Credito y riesgo, Tarifas, Operaciones, Comunicaciones, Rentabilidad. |
+| Abastecimiento | Compras y abastecimiento | Panel de control, Reposicion sugerida, Solicitudes de compra, Ordenes de compra, Recepcion, Control documentos, Repuestos/SKUs, Stock fisico, Ubicaciones, Compradores/responsables, Proveedores, Auditoria, Calendario y Reportes. |
+| Finanzas y control | Finanzas | Costos por camion, Combustible, Reportes operativos, Rendimiento choferes. |
+| Administracion | Configuracion | Permisos, Atajos y teclado, Comunicaciones, Notificaciones, Incidentes. |
 
 ## Capa compartida de datos
 
@@ -94,7 +97,7 @@ Regla practica:
 
 | Feature | Rutas | API principal | Que contiene |
 |---|---|---|---|
-| `customers` | `/customers`, `/customers/:customerId` | `/customers`, `/customers/:id/credit` | Maestro de clientes y vista 360: credito, riesgo, actividad, fletes, casos, cotizaciones, cartera y preferencias. |
+| `customers` | `/customers`, `/customers/:customerId` | `/customers`, `/customers/:id/credit` | Modulo de clientes y vista 360 logistica/comercial: cartera, credito, riesgo, actividad, fletes, casos, cotizaciones, operaciones, tarifas y rentabilidad. |
 | `freight` | `/freight/requests`, `/freight/requests/new`, `/freight/requests/:requestId`, `/freight/quotes`, `/freight/quotes/:quoteId`, `/freight/assignments`, `/freight/client-portal/*` | `/freight/requests`, `/freight/quotes`, `/freight/assignments`, `/freight/pricing`, `/maps` | Solicitudes, portal cliente, cotizacion, pricing, ruta, tracking y asignacion. |
 | `driver-trip-sheets` | `/freight/driver-trip-sheets` | `/driver-trip-sheets` | Planillas de chofer, gastos, margen y performance. |
 | `freight-profitability` | `/freight-profitability` | `/freight-profitability` | Lectura de rentabilidad por flete, chofer y camion. |
@@ -124,12 +127,12 @@ Notas del modulo clientes:
 
 | Feature | Rutas | API principal | Que contiene |
 |---|---|---|---|
-| `warehouse` | `/warehouse`, `/warehouse/report`, `/warehouse/locations`, `/warehouse/managers`, `/warehouse/stock` | `/warehouse/locations`, `/warehouse/stock`, `/warehouse/managers`, `/warehouse/movements` | Dashboard de inventario, reporte, ubicaciones, stock fisico y encargados. |
+| `warehouse` | `/warehouse`, `/warehouse?view=suggestions`, `/warehouse?view=requests`, `/warehouse?view=receipts`, `/warehouse?view=documents`, `/warehouse?view=audit`, `/warehouse?view=calendar`, `/warehouse/report`, `/warehouse/locations`, `/warehouse/managers`, `/warehouse/stock` | `/warehouse/locations`, `/warehouse/stock`, `/warehouse/managers`, `/warehouse/movements` | Centro de compras y abastecimiento: decision de compra, solicitudes, recepcion, documentos, auditoria, calendario, reporte, ubicaciones, stock fisico y responsables. |
 | `parts` | `/parts`, `/parts/:partId` | `/parts` | Catalogo de repuestos/SKUs, stock, costo y detalle. |
 | `purchase-orders` | `/purchase-orders`, `/purchase-orders/new`, `/purchase-orders/:purchaseOrderId` | `/purchase-orders`, `/purchase-requests` | Ordenes de compra, items, proveedor, estado y entrega esperada. |
 | `suppliers` | `/suppliers`, `/suppliers/new`, `/suppliers/:supplierId` | `/suppliers` | Proveedores, RUT, categorias, rating, OC activas y detalle. |
 
-El submenu `Compras` debe mostrar accesos a inventario, repuestos, stock, ubicaciones, encargados, ordenes de compra y proveedores. Las rutas de creacion `Nueva OC` y `Nuevo proveedor` quedan ocultas en sidebar por `showInSidebar=false`.
+El submenu `Compras y abastecimiento` debe mostrar el flujo operativo completo: decision, solicitudes, OC, recepcion, documentos, catalogo/stock, responsables, proveedores, auditoria, calendario y reportes. Las rutas de creacion `Nueva OC` y `Nuevo proveedor` quedan ocultas en sidebar por `showInSidebar=false`.
 
 ## Finanzas y reporteria
 
@@ -158,6 +161,7 @@ El submenu `Compras` debe mostrar accesos a inventario, repuestos, stock, ubicac
 | `shared/components/Table` | Tablas con loading, error, paginacion, ordenamiento y filas navegables. |
 | `shared/components/FilterBar` | Filtros compactos con busqueda, selects y limpieza. |
 | `shared/components/PageHeader` | Titulo, descripcion y acciones de pagina. |
+| `shared/navigation/navigationContext.ts` | Breadcrumbs y contexto operacional derivados desde `app.config.ts`. |
 | `shared/components/Modal` | Dialogos base. |
 | `shared/components/RutInput` | Campo RUT con formato `20.007.759-8`. |
 | `shared/layout/Topbar` | Busqueda global, atajos, notificaciones y ayuda de teclado. |
@@ -177,4 +181,3 @@ El submenu `Compras` debe mostrar accesos a inventario, repuestos, stock, ubicac
 8. Registrar lazy import y ruta en `router.tsx`.
 9. Registrar acceso visible u oculto en `app.config.ts`.
 10. Actualizar docs, ejecutar `npm run check` y `npm run build`.
-

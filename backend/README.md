@@ -1,12 +1,13 @@
 # Truck Workshop Backend
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 API Express de Truck Workshop. Expone `/api`, soporta SQL Server y modo memoria, y usa un registry declarativo para CRUD, migracion, seed y auditoria.
 Incluye login con JWT, hashes PBKDF2 para usuarios y middleware opcional de permisos por modulo para produccion.
 
 ## Documentacion
 
+- [Documentacion integral del proyecto](../docs/project-architecture.md)
 - [Indice backend](../docs/backend/README.md)
 - [Arquitectura](../docs/backend/overview.md)
 - [Configuracion y comandos](../docs/backend/setup.md)

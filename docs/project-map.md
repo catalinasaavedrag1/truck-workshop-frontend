@@ -1,8 +1,10 @@
 # Truck Workshop - mapa general del proyecto
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Este documento es la puerta de entrada tecnica al monorepo. Resume que hay en cada carpeta, como se conectan frontend y backend, y que archivos se deben tocar cuando aparece un modulo nuevo o cambia un flujo de negocio.
+
+Para la lectura mas completa del sistema, revisar tambien [documentacion integral del proyecto](project-architecture.md).
 
 ## Estructura raiz
 
@@ -57,6 +59,7 @@ Usuario
 |---|---|---|
 | Paths frontend | `frontend/src/config/routes.ts` | `router.tsx`, `app.config.ts`, links y navegacion. |
 | Taxonomia de sidebar | `frontend/src/config/app.config.ts` | `Sidebar`, `ContextBar`, busqueda y accesos relacionados. |
+| Contexto de navegacion | `frontend/src/shared/navigation/navigationContext.ts` | `PageHeader`, `ContextBar` y breadcrumbs operacionales. |
 | Cliente HTTP | `frontend/src/shared/services/httpClient.ts` | Servicios de features y `resourceApi.ts`. |
 | CRUD frontend | `frontend/src/shared/services/resourceApi.ts` | Hooks `useResourceList` y `useResourceItem`. |
 | Recursos backend | `backend/src/config/resources.js` | CRUD generico, migracion, seed y auditoria. |
@@ -71,9 +74,9 @@ Usuario
 | Auth y permisos | `auth`, `permissions`, `settings` | `auth`, `permissions`, `shortcut-preferences` | Login, roles, permisos y atajos. |
 | Dashboard | `dashboard` | `dashboard`, `reports` | Vista ejecutiva de estado operacional. |
 | Taller | `workshop-cases`, `diagnostics`, `diagnostic-checklists`, `repair-solutions`, `assignments`, `schedule`, `workshop-bays`, `mechanics`, `quotes`, `approvals`, `labor`, `sla` | Modulos equivalentes y CRUD asociado | Caso de taller desde ingreso hasta cierre. |
-| Clientes y fletes | `customers`, `freight`, `driver-trip-sheets`, `freight-profitability`, `maps` | `customers`, `freight`, `driver-trip-sheets`, `freight-profitability`, `maps` | Cliente 360, solicitud, cotizacion, ruta, asignacion y margen. |
+| Clientes y fletes | `customers`, `freight`, `driver-trip-sheets`, `freight-profitability`, `maps` | `customers`, `freight`, `driver-trip-sheets`, `freight-profitability`, `maps` | Cliente 360, cartera, credito, torre de control logistica, solicitud, cotizacion, ruta, asignacion y margen. |
 | Flota | `fleet`, `trucks`, `drivers`, `truck-documents`, `preventive-maintenance`, `tire-performance`, `trip-checklists`, `telematics` | Recursos de flota, documentos, choferes, neumaticos y telemetria | Disponibilidad, activos, vencimientos, salud y viajes. |
-| Compras e inventario | `warehouse`, `parts`, `purchase-orders`, `suppliers` | `warehouse`, `parts`, `purchase-orders`, `suppliers`, `purchase-requests` | Stock, SKUs, ubicaciones, OC y proveedores. |
+| Compras e inventario | `warehouse`, `parts`, `purchase-orders`, `suppliers` | `warehouse`, `parts`, `purchase-orders`, `suppliers`, `purchase-requests` | Decision de compra, stock, SKUs, ubicaciones, solicitudes, OC, recepcion, auditoria, calendario y proveedores. |
 | Finanzas | `truck-costs`, `fuel`, `reports` | `truck-costs`, `fuel-prices`, `reports` | Costos, combustible, analitica y reporteria. |
 | Control operacional | `communications`, `notifications`, `incidents`, `reports` | `communications`, `notifications`, `incidents`, `reports` | Mensajeria, alertas, incidentes y trazabilidad. |
 
@@ -104,10 +107,10 @@ Usuario
 ## Reglas de mantenimiento
 
 - Mantener `routes.ts`, `router.tsx` y `app.config.ts` sincronizados.
+- Si cambia la navegacion visible, revisar `navigationContext.ts`, `ContextBar`, `PageHeader` y la documentacion de rutas.
 - Preferir `shared/components` y `shared/hooks` antes de duplicar UI o carga de datos.
 - Usar modulos especializados cuando existan transiciones, validaciones cruzadas o efectos en varias tablas.
 - Mantener los mocks como fallback de desarrollo, no como fuente unica de verdad.
 - Regenerar `backend/scripts/seed-data.js` desde mocks cuando cambian datos demo.
 - Ejecutar `npm run check` y `npm run build` antes de cerrar cambios frontend.
 - Ejecutar `npm run backend:db:audit` cuando cambia la estructura de recursos o SQL.
-

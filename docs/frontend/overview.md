@@ -1,6 +1,6 @@
 # Frontend - arquitectura
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 El frontend de Truck Workshop vive completo en `frontend/`. Es una aplicacion React/TypeScript optimizada para operacion logistica y taller: muchas vistas de datos, flujos rapidos, contexto persistente, busqueda y componentes compartidos.
 
@@ -52,6 +52,7 @@ frontend/
       components/
       hooks/
       layout/
+      navigation/
       services/
       shortcuts/
       types/
@@ -71,7 +72,7 @@ frontend/
 | `src/App.tsx` | Expone `RouterProvider`. |
 | `src/router.tsx` | Declara lazy imports, rutas y `MainLayout`. Usa `createHashRouter` si corre desde `file:` para Electron. |
 | `src/config/routes.ts` | Fuente unica de paths publicos y helpers con parametros. |
-| `src/config/app.config.ts` | Define taxonomia operacional de navegacion: modulos padre, accesos y secciones. |
+| `src/config/app.config.ts` | Define taxonomia operacional de navegacion: grupos, modulos padre, accesos y secciones. |
 | `src/config/env.ts` | Lee `VITE_APP_NAME` y `VITE_API_BASE_URL`. |
 
 ## Modelo de aplicacion
@@ -106,13 +107,25 @@ Regla practica:
 
 ## Navegacion
 
-La navegacion se declara en `app.config.ts` como arbol operacional: un grupo `Plataforma`, padres como `Taller`, `Flota`, `Compras`, `Logistica`, `Finanzas` y `Configuracion`, y children por submodulo.
+La navegacion se declara en `app.config.ts` como arbol operacional. Los grupos actuales son `Inicio`, `Operacion taller`, `Flota y logistica`, `Clientes y comercial`, `Abastecimiento`, `Finanzas y control` y `Administracion`.
+
+Items padre actuales:
+
+- `Dashboard operativo`.
+- `Taller`.
+- `Flota`.
+- `Logistica`.
+- `Clientes`.
+- `Compras y abastecimiento`.
+- `Finanzas`.
+- `Configuracion`.
 
 - En desktop fijo/colapsado: barra compacta con iconos de los padres y usuario fijo abajo.
 - En panel abierto: arbol con submenus expandibles y children agrupados por `section`.
 - En busqueda activa: resultados planos sobre los hijos visibles, buscando por etiqueta, padre y seccion.
 - La ruta activa expande automaticamente el grupo correspondiente y marca el path mas especifico.
 - `showInSidebar=false` oculta rutas secundarias como formularios de creacion sin eliminarlas del router.
+- `shared/navigation/navigationContext.ts` centraliza breadcrumbs y vistas relacionadas para `PageHeader` y `ContextBar`.
 
 Esto permite mantener submenus visibles para areas densas como Compras y, al mismo tiempo, saltar rapido mediante busqueda.
 
@@ -123,7 +136,7 @@ El shell se compone asi:
 1. `Sidebar`: navegacion unica, busqueda de menu y usuario fijo.
 2. `Topbar`: busqueda global, atajos rapidos, notificaciones y ayuda de teclado.
 3. `ContextBar`: modulo actual, grupo operacional y accesos relacionados.
-4. `PageHeader`: titulo, descripcion y acciones de la vista.
+4. `PageHeader`: breadcrumbs, titulo, descripcion, estado, metadata, acciones y hints de atajos.
 5. Contenido: tablas, filtros, paneles, formularios o dashboards del modulo.
 
 ## Desktop/Electron

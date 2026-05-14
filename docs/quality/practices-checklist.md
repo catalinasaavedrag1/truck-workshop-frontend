@@ -1,6 +1,6 @@
 # Buenas practicas y checklist
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 ## Estado por capa
 

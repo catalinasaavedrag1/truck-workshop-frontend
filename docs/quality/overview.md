@@ -1,6 +1,6 @@
 # Revision frontend/backend - resumen
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 ## Objetivo
 

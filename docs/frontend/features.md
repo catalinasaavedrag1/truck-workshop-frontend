@@ -1,6 +1,6 @@
 # Frontend - inventario de features
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Los modulos viven en `frontend/src/features`. Cada feature concentra paginas, componentes, servicios, tipos, mocks, constantes y utilidades del dominio. Para una lectura funcional por rutas y APIs, ver [mapa de modulos](modules.md).
 
@@ -10,9 +10,9 @@ Los modulos viven en `frontend/src/features`. Cada feature concentra paginas, co
 |---|---|---|
 | Inicio | `dashboard` | KPIs y accesos operacionales. |
 | Taller | `workshop-cases`, `diagnostics`, `diagnostic-checklists`, `repair-solutions`, `assignments`, `schedule`, `workshop-bays`, `mechanics`, `quotes`, `approvals`, `labor`, `sla` | Ciclo completo de caso: recepcion, diagnostico, cotizacion, aprobacion, reparacion y cierre. |
-| Fletes | `freight`, `freight-profitability`, `driver-trip-sheets`, `customers`, `maps` | Solicitud, cotizacion, ruta, asignacion, ejecucion y rentabilidad. |
+| Fletes y clientes | `freight`, `freight-profitability`, `driver-trip-sheets`, `customers`, `maps` | Cliente 360, torre de control logistica, solicitud, cotizacion, ruta, asignacion, ejecucion y rentabilidad. |
 | Flota | `fleet`, `trucks`, `drivers`, `truck-documents`, `truck-costs`, `fuel`, `tire-performance`, `trip-checklists`, `telematics`, `preventive-maintenance` | Disponibilidad, documentos, costos, mantenimiento, combustible, neumaticos y viajes. |
-| Inventario | `warehouse`, `parts`, `purchase-orders`, `suppliers` | Stock, ubicaciones, SKUs, compras, proveedores y reportes. |
+| Abastecimiento | `warehouse`, `parts`, `purchase-orders`, `suppliers` | Decision de compra, stock, ubicaciones, SKUs, solicitudes, OC, recepcion, proveedores, auditoria, calendario y reportes. |
 | Control | `incidents`, `communications`, `notifications`, `reports`, `permissions`, `settings` | Torre de control, comunicacion, alertas, reporteria, permisos y atajos. |
 | Auth | `auth` | Login de desarrollo y sesion. |
 
@@ -24,7 +24,7 @@ Los modulos viven en `frontend/src/features`. Cada feature concentra paginas, co
 | assignments | 1 | 4 | 1 | 0 | 1 | 0 | 0 | 0 |
 | auth | 1 | 2 | 1 | 1 | 1 | 0 | 0 | 0 |
 | communications | 1 | 1 | 1 | 0 | 1 | 1 | 0 | 2 |
-| customers | 2 | 12 | 1 | 0 | 1 | 1 | 1 | 2 |
+| customers | 2 | 13 | 1 | 0 | 1 | 1 | 1 | 3 |
 | dashboard | 1 | 5 | 1 | 0 | 1 | 0 | 0 | 0 |
 | diagnostic-checklists | 1 | 2 | 0 | 0 | 1 | 1 | 0 | 0 |
 | diagnostics | 1 | 4 | 1 | 1 | 1 | 0 | 0 | 0 |
@@ -57,7 +57,7 @@ Los modulos viven en `frontend/src/features`. Cada feature concentra paginas, co
 | truck-costs | 2 | 9 | 1 | 0 | 1 | 1 | 1 | 0 |
 | truck-documents | 2 | 5 | 1 | 0 | 1 | 1 | 1 | 0 |
 | trucks | 3 | 4 | 1 | 0 | 1 | 0 | 1 | 1 |
-| warehouse | 5 | 15 | 3 | 0 | 1 | 1 | 0 | 0 |
+| warehouse | 5 | 26 | 4 | 0 | 2 | 2 | 0 | 0 |
 | workshop-bays | 1 | 3 | 0 | 0 | 1 | 1 | 0 | 0 |
 | workshop-cases | 3 | 23 | 1 | 2 | 1 | 0 | 2 | 1 |
 
@@ -149,9 +149,11 @@ Los modulos viven en `frontend/src/features`. Cada feature concentra paginas, co
 
 - `diagnostics`: estacion de trabajo tecnica con contexto de caso, stepper, formulario compacto, checklist y acciones persistentes.
 - `incidents`: creacion de incidencia como centro operacional con tipo dominante, severidad visual, contexto detectado, impacto y sticky footer.
-- `warehouse`: gestion de inventario con acciones poco frecuentes contraidas y foco en stock, riesgo, ubicacion y compras.
+- `customers`: detalle de cliente como torre de control logistica/comercial con KPIs, fletes activos, rentabilidad, documentos y actividad.
+- `warehouse`: modulo de compras y abastecimiento con decision de compra, reposicion sugerida, solicitudes, OC, recepcion, auditoria, documentos, calendario y reportes.
 - `freight-profitability`: lectura de margen, costo/km, revenue/km y decision operacional.
 - `Sidebar`: barra compacta, submenus expandibles, busqueda plana y usuario fijo.
+- `Headers`: `PageHeader` y `ContextBar` derivan breadcrumbs/contexto desde la navegacion global.
 
 ## Reglas para nuevas features
 

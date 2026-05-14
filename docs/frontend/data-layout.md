@@ -1,6 +1,6 @@
 # Frontend - datos, layout y UI compartida
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 Este documento explica como se conectan datos, shell visual y componentes compartidos en el frontend.
 
@@ -99,7 +99,7 @@ Error:
 |---|---|
 | `Sidebar` | Barra compacta, arbol de submenus, busqueda plana de accesos y usuario fijo. |
 | `Topbar` | Busqueda global de entidades frecuentes, atajos, notificaciones y ayuda de teclado. |
-| `ContextBar` | Contexto del modulo actual y accesos relacionados desde `app.config.ts`. |
+| `ContextBar` | Contexto del modulo actual y accesos relacionados desde `navigationContext.ts` y `app.config.ts`. |
 | `PageContainer` | Contenedor base para el contenido de pagina. |
 | `KeyboardShortcutsHelp` | Modal de ayuda de atajos. |
 
@@ -121,16 +121,18 @@ La navegacion sale de `app.config.ts`:
 - Se evita duplicar paths en resultados de busqueda.
 - La ruta activa usa el match mas especifico y expande el grupo activo.
 
-Submenus visibles por padre:
+Submenus visibles por grupo/padre:
 
-| Padre | Accesos visibles |
-|---|---|
-| Taller | Casos, Agenda taller, Mecanicos, Estaciones taller, Reportes. |
-| Flota | Centro de flota, Disponibilidad, Health Score, Ficha camiones, Documentos, Choferes, Mantenimiento preventivo, Rendimiento neumaticos, Checklists viaje, Telemetria/GPS. |
-| Compras | Inventario taller, Repuestos/SKUs, Stock fisico, Ubicaciones, Encargados bodega, Ordenes de compra, Proveedores. |
-| Logistica | Clientes, Solicitudes, Portal cliente, Cotizaciones flete, Asignacion flete, Planillas choferes, Rentabilidad fletes. |
-| Finanzas | Costos por camion, Combustible, Reportes operativos, Rendimiento choferes. |
-| Configuracion | Permisos, Atajos y teclado, Comunicaciones, Notificaciones, Incidentes. |
+| Grupo | Padre | Accesos visibles |
+|---|---|---|
+| Inicio | Dashboard operativo | Dashboard operativo. |
+| Operacion taller | Taller | Casos, Agenda taller, Mecanicos, Estaciones taller, Reportes. |
+| Flota y logistica | Flota | Centro de flota, Disponibilidad, Health Score, Ficha camiones, Documentos, Choferes, Mantenimiento preventivo, Rendimiento neumaticos, Checklists viaje, Telemetria/GPS. |
+| Flota y logistica | Logistica | Solicitudes, Portal cliente, Cotizaciones flete, Asignacion flete, Planillas choferes, Rentabilidad fletes. |
+| Clientes y comercial | Clientes | Panel clientes, Cartera, Credito y riesgo, Tarifas, Operaciones, Comunicaciones, Rentabilidad. |
+| Abastecimiento | Compras y abastecimiento | Panel de control, Reposicion sugerida, Solicitudes de compra, Ordenes de compra, Recepcion, Control documentos, Repuestos/SKUs, Stock fisico, Ubicaciones, Compradores/responsables, Proveedores, Auditoria, Calendario y Reportes. |
+| Finanzas y control | Finanzas | Costos por camion, Combustible, Reportes operativos, Rendimiento choferes. |
+| Administracion | Configuracion | Permisos, Atajos y teclado, Comunicaciones, Notificaciones, Incidentes. |
 
 ## Topbar
 
@@ -156,7 +158,7 @@ El topbar ofrece:
 | `LoadingState` | Carga estandar. |
 | `MetricCard` | KPI reutilizable. |
 | `Modal` | Dialogo base. |
-| `PageHeader` | Titulo, descripcion y acciones de pagina. |
+| `PageHeader` | Breadcrumbs automaticos, titulo, descripcion, estado, meta, acciones y hints de atajos. |
 | `RutInput` | Campo RUT con formato progresivo `20.007.759-8`. |
 | `SectionHeader` | Encabezado de secciones internas. |
 | `Select` | Select visual reutilizable. |
@@ -182,6 +184,8 @@ El proyecto tiene soporte compartido para RUT chileno:
 - `useGlobalShortcuts.ts`: listener global.
 - `KeyboardShortcutsHelp.tsx`: modal de ayuda.
 
+El layout muestra feedback visual/accesible cuando un shortcut enfoca busqueda, abre la paleta, cambia modulo o ejecuta una accion rapida. Los atajos globales evitan robar foco cuando el usuario escribe en inputs editables.
+
 ## Estilos
 
 | Archivo | Rol |
@@ -196,5 +200,5 @@ El proyecto tiene soporte compartido para RUT chileno:
 
 - No duplicar tabla, filtros o estados si `shared/components` ya resuelve el patron.
 - Mantener `FilterBar` y `Table` como base de listados.
-- Mantener submenus en `app.config.ts` y usar `showInSidebar=false` para flujos secundarios.
+- Mantener submenus en `app.config.ts`, contexto en `navigationContext.ts` y usar `showInSidebar=false` para flujos secundarios.
 - Mostrar acciones frecuentes en header o sticky footer, y acciones poco frecuentes como botones secundarios o paneles colapsables.

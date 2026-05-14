@@ -1,6 +1,6 @@
 # Auditoria UX operacional
 
-Actualizado: 2026-05-13
+Actualizado: 2026-05-14
 
 ## Objetivo
 
@@ -139,12 +139,12 @@ Validacion: el usuario debe poder guardar sin volver al inicio de la pantalla.
 | Choferes | Gestionar choferes | Correcta, pero compliance debe destacarse | Tabla con licencia, disponibilidad y alertas |
 | Crear chofer | Alta de conductor | Formulario administrativo | Bloques: identidad, licencia, contacto, compliance |
 | Detalle chofer | Ver compliance y casos | Correcta como ficha | Header con estado, licencia, vencimientos y proximo bloqueo |
-| Inventario taller | Destrabar reparaciones por repuestos | Buen hub, pero subnav puede sentirse como tabs | Mantener cola de demanda y stock critico como protagonistas |
+| Compras y abastecimiento | Decidir que comprar y destrabar operaciones por repuestos | Buen hub; debe mantener subnav como flujo operativo de decision, ejecucion y auditoria | Mantener bloqueos, reposicion sugerida, OC atrasadas, recepcion y stock critico como protagonistas |
 | SKUs/repuestos | Buscar y mantener repuestos | Editor inline reduce modalidad | Priorizar busqueda, stock, demanda activa y accion secundaria de editar |
 | Detalle repuesto | Ver stock, demanda y compras | Debe conectar casos bloqueados | Header con SKU, stock disponible, minimo y siguiente compra |
 | Stock fisico | Validar existencias | Correcto como inventario operativo | Tabla por ubicacion, estado y accion de ajuste |
-| Ubicaciones bodega | Mantener ubicaciones | Configuracion secundaria | Acceso desde submenu Compras e inventario |
-| Encargados bodega | Ver responsables | Configuracion/equipo secundaria | Acceso desde submenu Compras e inventario |
+| Ubicaciones bodega | Mantener ubicaciones | Configuracion secundaria | Acceso desde submenu Compras y abastecimiento |
+| Compradores / responsables | Ver responsables | Equipo/compras secundaria | Acceso desde submenu Compras y abastecimiento |
 | Compras inventario | Gestionar OCs | Correcta como cola de compras | Mostrar estado, proveedor, entrega esperada y casos desbloqueados |
 | Crear OC | Emitir compra | Debe originarse desde demanda o stock | Formulario con resumen de repuestos y proveedor sugerido |
 | Detalle OC | Seguir compra/recepcion | Debe dejar claro si desbloquea casos | Header con proveedor, estado, entrega, monto y recepcion |
@@ -224,7 +224,7 @@ Se reviso nuevamente la plataforma completa a nivel de rutas, navegacion, layout
 
 Inventario tecnico observado:
 
-- 648 archivos bajo `frontend/src`.
+- Mas de 600 archivos bajo `frontend/src`.
 - Rutas centralizadas en `frontend/src/config/routes.ts` y lazy loading en `frontend/src/router.tsx`.
 - Navegacion principal centralizada en `frontend/src/config/app.config.ts`.
 - Modulos principales: Taller, Flota, Compras y abastecimiento, Clientes, Logistica, Finanzas, Configuracion, Comunicaciones, Notificaciones, Reportes, Incidentes y portal cliente.
@@ -242,7 +242,7 @@ Inventario tecnico observado:
 
 - `ContextBar` ahora usa la misma logica de ruta activa del sidebar, incluyendo query params.
 - `ContextBar` muestra la seccion operacional de la vista actual y hasta cuatro accesos relacionados del mismo modulo/seccion.
-- Se mantiene oculto el grupo raiz `Plataforma` para no ensuciar rutas como `Logistica / Solicitudes`.
+- Se prioriza mostrar el dominio operativo real en vez de un grupo raiz generico.
 - La busqueda global ahora permite abrir SKUs, proveedores, mecanicos y cotizaciones, con estados y contexto operativo.
 - Se agrego una vista `RouteNotFound` dentro del router autenticado con accion clara para volver al dashboard.
 
@@ -265,7 +265,7 @@ Inventario tecnico observado:
 ### Problemas encontrados
 
 - El sidebar tenia todos los modulos bajo un unico grupo raiz, lo que lo hacia sentirse como una lista larga y no como arquitectura operacional.
-- El grupo raiz `Plataforma` no agregaba significado de negocio y aumentaba ruido cognitivo.
+- El grupo raiz generico no agregaba significado de negocio y aumentaba ruido cognitivo.
 - Los modulos padres con rutas propias solo expandian/cerraban submenus; para entrar al panel del modulo habia que hacer un click adicional en un hijo.
 - En pantallas pequenas, al navegar desde el sidebar el overlay podia quedar abierto sobre la vista destino.
 - La densidad visual era baja: sidebar de 400px, textos grandes y filas altas para una herramienta que se usa todo el dia.
