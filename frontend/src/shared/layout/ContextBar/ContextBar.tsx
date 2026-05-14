@@ -60,6 +60,7 @@ export function ContextBar() {
   }
 
   const isChild = match.item.path !== match.parent.path
+  const showGroup = match.group.label !== 'Plataforma'
 
   return (
     <section className={styles.contextBar} aria-label="Contexto operacional">
@@ -67,8 +68,12 @@ export function ContextBar() {
         <span className={styles.moduleIcon}>
           {createElement(getSidebarIcon(match.parent.icon), { 'aria-hidden': true, size: 15 })}
         </span>
-        <span className={styles.group}>{match.group.label}</span>
-        <span className={styles.separator}>/</span>
+        {showGroup ? (
+          <>
+            <span className={styles.group}>{match.group.label}</span>
+            <span className={styles.separator}>/</span>
+          </>
+        ) : null}
         <Link className={styles.parentLink} to={match.parent.path}>
           {match.parent.label}
         </Link>
