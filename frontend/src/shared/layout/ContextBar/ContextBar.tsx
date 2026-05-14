@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import type { AppNavigationGroup, AppNavigationItem } from '../../../config/app.config'
 import { appConfig } from '../../../config/app.config'
 import { getSidebarIcon } from '../Sidebar/sidebarIcons'
+import { isNavigationPathActive } from '../Sidebar/sidebarUtils'
 import styles from './ContextBar.module.css'
 
 interface NavigationMatch {
@@ -11,24 +12,12 @@ interface NavigationMatch {
   parent: AppNavigationItem
 }
 
-function normalizePath(path: string) {
-  const normalized = path.replace(/\/+$/, '')
-  return normalized || '/'
-}
-
-function matchesPath(pathname: string, path: string) {
-  const currentPath = normalizePath(pathname)
-  const targetPath = normalizePath(path)
-
-  return currentPath === targetPath || (targetPath !== '/' && currentPath.startsWith(`${targetPath}/`))
-}
-
 function findNavigationMatch(pathname: string): NavigationMatch | undefined {
   const matches: NavigationMatch[] = []
 
   appConfig.navigationGroups.forEach((group) => {
     group.items.forEach((parent) => {
-      if (matchesPath(pathname, parent.path)) {
+      if (isNavigationPathActive(pathname, parent.path)) {
         matches.push({
           group,
           item: parent,
@@ -37,7 +26,7 @@ function findNavigationMatch(pathname: string): NavigationMatch | undefined {
       }
 
       parent.children?.forEach((child) => {
-        if (matchesPath(pathname, child.path)) {
+        if (isNavigationPathActive(pathname, child.path)) {
           matches.push({
             group,
             item: child,
@@ -53,7 +42,7 @@ function findNavigationMatch(pathname: string): NavigationMatch | undefined {
 
 export function ContextBar() {
   const location = useLocation()
-  const match = findNavigationMatch(location.pathname)
+  const match = findNavigationMatch(`${location.pathname}${location.search}`)
 
   if (!match) {
     return null
@@ -61,6 +50,8 @@ export function ContextBar() {
 
   const isChild = match.item.path !== match.parent.path
   const showGroup = match.group.label !== 'Plataforma'
+  const relatedItems = getRelatedNavigationItems(match)
+  const sectionLabel = match.item.section
 
   return (
     <section className={styles.contextBar} aria-label="Contexto operacional">
@@ -83,7 +74,29 @@ export function ContextBar() {
             <span className={styles.current}>{match.item.label}</span>
           </>
         ) : null}
+        {sectionLabel ? <span className={styles.sectionPill}>{sectionLabel}</span> : null}
       </div>
+      {relatedItems.length > 0 ? (
+        <nav aria-label={`Vistas relacionadas de ${match.parent.label}`} className={styles.relatedNav}>
+          {relatedItems.map((item) => (
+            <Link key={item.path} to={item.path}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      ) : null}
     </section>
   )
+}
+
+function getRelatedNavigationItems(match: NavigationMatch) {
+  const siblings = match.parent.children || []
+  const activeSection = match.item.section
+  const visibleSiblings = siblings.filter((item) => item.showInSidebar !== false && item.path !== match.item.path)
+  const sameSection = activeSection
+    ? visibleSiblings.filter((item) => item.section === activeSection)
+    : []
+  const contextualItems = sameSection.length > 0 ? sameSection : visibleSiblings
+
+  return contextualItems.slice(0, 4)
 }

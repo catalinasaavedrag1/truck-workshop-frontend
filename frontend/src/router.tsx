@@ -4,6 +4,7 @@ import { Navigate, createBrowserRouter, createHashRouter } from 'react-router-do
 import { ROUTES } from './config/routes'
 import { RequireAuth } from './features/auth/components/RequireAuth'
 import { LoadingState } from './shared/components/LoadingState/LoadingState'
+import { RouteNotFound } from './shared/components/RouteNotFound/RouteNotFound'
 import { MainLayout } from './shared/layout/MainLayout/MainLayout'
 
 function lazyPage<TModule extends Record<string, unknown>>(loader: () => Promise<TModule>, exportName: keyof TModule) {
@@ -320,6 +321,7 @@ const routes = [
       { element: routeElement(<PartDetailPage />), path: ROUTES.partDetail() },
       { element: routeElement(<ReportsPage />), path: ROUTES.reports },
       { element: routeElement(<DriverPerformanceReportPage />), path: ROUTES.driverPerformanceReport },
+      { element: <RouteNotFound />, path: '*' },
     ],
     element: <RequireAuth><MainLayout /></RequireAuth>,
     path: ROUTES.root,

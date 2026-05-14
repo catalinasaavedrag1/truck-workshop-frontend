@@ -215,3 +215,47 @@ Validacion: el usuario debe poder guardar sin volver al inicio de la pantalla.
 - Las acciones de creacion salen de headers, cards de siguiente paso o flujos, no del arbol principal.
 - Las vistas criticas tienen una tarea dominante: atender caso, asignar, comprar, despachar, registrar o resolver.
 - Los reportes deben terminar en una decision, no solo en metricas.
+
+## Iteracion transversal 2026-05-14
+
+### Revision ejecutada
+
+Se reviso nuevamente la plataforma completa a nivel de rutas, navegacion, layout global, busqueda operacional, componentes compartidos, tablas, hooks de datos y contratos frontend-backend.
+
+Inventario tecnico observado:
+
+- 648 archivos bajo `frontend/src`.
+- Rutas centralizadas en `frontend/src/config/routes.ts` y lazy loading en `frontend/src/router.tsx`.
+- Navegacion principal centralizada en `frontend/src/config/app.config.ts`.
+- Modulos principales: Taller, Flota, Compras y abastecimiento, Clientes, Logistica, Finanzas, Configuracion, Comunicaciones, Notificaciones, Reportes, Incidentes y portal cliente.
+- Componentes base ya consolidados: `PageHeader`, `Table`, `FilterBar`, `EntityLink`, `EmptyState`, `LoadingState`, `ErrorState`, `Badge`, `Button`.
+- Capa de datos compartida mediante `useResourceList`, `useResourceItem`, `resourceApi` y `httpClient`.
+
+### Problemas corregidos
+
+- La barra de contexto global no distinguia bien sub-vistas basadas en query params, por ejemplo `Clientes / Tarifas` o `Compras / Auditoria`, porque solo evaluaba `pathname`.
+- La barra de contexto mostraba poco contexto operativo: modulo y vista, pero no seccion ni accesos relacionados.
+- La busqueda operacional global no incluia entidades clave del sistema: SKUs/repuestos, proveedores, mecanicos y cotizaciones de taller.
+- Las rutas inexistentes no tenian una experiencia clara de recuperacion dentro del layout autenticado.
+
+### Cambios aplicados
+
+- `ContextBar` ahora usa la misma logica de ruta activa del sidebar, incluyendo query params.
+- `ContextBar` muestra la seccion operacional de la vista actual y hasta cuatro accesos relacionados del mismo modulo/seccion.
+- Se mantiene oculto el grupo raiz `Plataforma` para no ensuciar rutas como `Logistica / Solicitudes`.
+- La busqueda global ahora permite abrir SKUs, proveedores, mecanicos y cotizaciones, con estados y contexto operativo.
+- Se agrego una vista `NotFoundPage` dentro del router autenticado con accion clara para volver al dashboard.
+
+### Criterio UX aplicado
+
+- La ubicacion debe responder modulo, vista y seccion sin obligar al usuario a leer el sidebar.
+- La navegacion relacionada debe estar cerca del contexto, no escondida en otro menu.
+- Toda entidad recurrente que aparece en procesos operativos debe poder encontrarse desde la busqueda global.
+- Las rutas rotas deben recuperarse con una accion util y lenguaje no tecnico.
+
+### Riesgos pendientes
+
+- Muchas paginas ya usan `Table`, pero no todas pasan `error`, `isLoading` o `onRetry`; conviene una siguiente iteracion por modulo para normalizar feedback de carga/error.
+- Algunos formularios largos aun necesitan `StickyActions` y prevencion de perdida de cambios.
+- La auditoria de permisos debe conectarse a reglas reales de backend cuando el modelo de roles este completo.
+- La busqueda global sigue alimentandose desde mocks controlados para entidades transversales; cuando existan endpoints de busqueda unificada, debe migrar a servicio backend.

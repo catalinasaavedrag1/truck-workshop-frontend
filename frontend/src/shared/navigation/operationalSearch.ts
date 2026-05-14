@@ -5,9 +5,13 @@ import { fleetTrucksMock } from '../../features/fleet/mocks/fleet.mock'
 import { freightRequestsMock } from '../../features/freight/mocks/freight.mock'
 import { incidentsMock } from '../../features/incidents/mocks/incidents.mock'
 import { purchaseOrdersMock } from '../../features/purchase-orders/mocks/purchaseOrders.mock'
+import { quotesMock } from '../../features/quotes/mocks/quotes.mock'
+import { suppliersMock } from '../../features/suppliers/mocks/suppliers.mock'
 import { tirePerformanceMock } from '../../features/tire-performance/mocks/tirePerformance.mock'
 import { truckDocumentsMock } from '../../features/truck-documents/mocks/truckDocuments.mock'
 import { casesMock } from '../../mocks/cases.mock'
+import { mechanicsMock } from '../../mocks/mechanics.mock'
+import { partsMock } from '../../mocks/parts.mock'
 import { formatRut, getRutSearchText } from '../utils/rut'
 
 export type OperationalSignalTone = 'danger' | 'warning' | 'success' | 'info' | 'neutral'
@@ -103,6 +107,70 @@ export function getOperationalSearchItems(): OperationalSearchItem[] {
       path: ROUTES.purchaseOrderDetail(purchaseOrder.id),
       tone: (['RECEIVED', 'CANCELLED'].includes(purchaseOrder.status) ? 'neutral' : 'warning') as OperationalSignalTone,
       type: 'OC',
+    })),
+    ...partsMock.map((part) => ({
+      group: 'entidad' as const,
+      id: part.id,
+      keywords: [
+        part.sku,
+        part.name,
+        part.category,
+        part.stock <= part.minStock ? 'bajo minimo reponer compra stock critico' : 'stock disponible',
+      ].join(' '),
+      label: part.sku,
+      meta: `${part.name} · ${part.category} · stock ${part.stock}`,
+      path: ROUTES.partDetail(part.id),
+      tone: (part.stock <= part.minStock ? 'warning' : 'success') as OperationalSignalTone,
+      type: 'SKU',
+    })),
+    ...suppliersMock.map((supplier) => ({
+      group: 'entidad' as const,
+      id: supplier.id,
+      keywords: [
+        supplier.name,
+        getRutSearchText(supplier.rut),
+        supplier.contactName,
+        supplier.email,
+        supplier.categories.join(' '),
+        supplier.status,
+      ].join(' '),
+      label: supplier.name,
+      meta: `${formatRut(supplier.rut) || supplier.rut} · ${supplier.categories.slice(0, 2).join(', ')} · ${supplier.rating.toFixed(1)}`,
+      path: ROUTES.supplierDetail(supplier.id),
+      tone: (supplier.status === 'active' ? 'success' : 'neutral') as OperationalSignalTone,
+      type: 'Proveedor',
+    })),
+    ...mechanicsMock.map((mechanic) => ({
+      group: 'entidad' as const,
+      id: mechanic.id,
+      keywords: [
+        mechanic.name,
+        mechanic.email,
+        mechanic.specialty,
+        mechanic.availability,
+        mechanic.shift,
+      ].join(' '),
+      label: mechanic.name,
+      meta: `${mechanic.specialty} · ${mechanic.activeCases}/${mechanic.maxCases} casos · ${mechanic.availability}`,
+      path: ROUTES.mechanicDetail(mechanic.id),
+      tone: (mechanic.availability === 'available' ? 'success' : mechanic.availability === 'busy' ? 'warning' : 'neutral') as OperationalSignalTone,
+      type: 'Mecanico',
+    })),
+    ...quotesMock.map((quote) => ({
+      group: 'entidad' as const,
+      id: quote.id,
+      keywords: [
+        quote.quoteNumber,
+        quote.caseNumber,
+        quote.customerName,
+        quote.diagnosisSummary,
+        quote.status,
+      ].join(' '),
+      label: quote.quoteNumber,
+      meta: `${quote.customerName} · ${quote.caseNumber} · ${quote.status}`,
+      path: ROUTES.quoteDetail(quote.id),
+      tone: (quote.status === 'APPROVED' ? 'success' : quote.status === 'REJECTED' || quote.status === 'EXPIRED' ? 'danger' : 'warning') as OperationalSignalTone,
+      type: 'Cotizacion',
     })),
     ...freightRequestsMock.map((request) => ({
       group: 'entidad' as const,
