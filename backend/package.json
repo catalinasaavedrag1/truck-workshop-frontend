@@ -22,11 +22,11 @@
     "express": "^5.2.1",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
-    "msnodesqlv8": "^5.1.9",
     "mssql": "^12.2.0",
-    "truck-workshop": "file:..",
-    "truck-workshop-frontend": "file:../frontend",
     "uuid": "^13.0.0"
+  },
+  "optionalDependencies": {
+    "msnodesqlv8": "^5.1.9"
   },
   "devDependencies": {
     "esbuild": "^0.25.12",

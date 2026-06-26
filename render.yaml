@@ -1,0 +1,32 @@
+# Render Blueprint para el backend de Truck Workshop.
+# Despliega la API Node/Express en modo memoria (sin SQL Server), con login
+# de desarrollo habilitado. Importar el repo en https://render.com -> Blueprints.
+services:
+  - type: web
+    name: truck-workshop-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DRIVER
+        value: memory
+      - key: JWT_SECRET
+        generateValue: true
+      - key: AUTH_REQUIRED
+        value: "true"
+      - key: AUTH_ENFORCE_PERMISSIONS
+        value: "false"
+      - key: AUTH_ALLOW_DEVELOPMENT_LOGIN
+        value: "true"
+      - key: DEV_LOGIN_EMAIL
+        value: admin@truckworkshop.cl
+      # Hash pbkdf2 de la contrasena "admin123" (demo). Cambialo por uno propio
+      # generado con: node -e "import('./backend/src/shared/security/password.js').then(m=>console.log(m.hashPassword('TU_PASSWORD')))"
+      - key: DEV_LOGIN_PASSWORD_HASH
+        value: "pbkdf2-sha256$210000$AFCQFZMykQkvwOKZOohYNg$38uvMYplLadUw0118ZZj_Hwo6UCce7QHKvTVQ_CGlJg"
