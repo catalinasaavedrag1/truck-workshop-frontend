@@ -1,5 +1,6 @@
 import axios, { AxiosHeaders } from 'axios'
 import { env } from '../../config/env'
+import { setApiStatus } from './apiStatus'
 import { getActorHeaders } from './sessionUser'
 
 export const httpClient = axios.create({
@@ -30,8 +31,20 @@ httpClient.interceptors.request.use((config) => {
 })
 
 httpClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    setApiStatus('online')
+
+    return response
+  },
   (error) => {
+    if (axios.isCancel(error)) {
+      return Promise.reject(error)
+    }
+
+    // Sin `response` = la peticion no llego al servidor (backend caido, sin red
+    // o timeout). Con `response` el backend contesto, aunque sea un 4xx/5xx.
+    setApiStatus(error.response ? 'online' : 'offline')
+
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       localStorage.removeItem('truck-workshop-session')
     }
