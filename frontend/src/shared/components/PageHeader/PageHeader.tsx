@@ -47,7 +47,8 @@ export function PageHeader({
   // La ContextBar global ya muestra breadcrumb y contexto del modulo encima de
   // cada pagina, asi que el PageHeader no los repite salvo que se pidan explicito.
   showContext = false,
-  showShortcutHints = true,
+  // Los atajos ya estan en la barra superior; no se repiten en cada header.
+  showShortcutHints = false,
   status,
   title,
 }: PageHeaderProps) {
