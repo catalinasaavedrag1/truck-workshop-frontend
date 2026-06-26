@@ -6,10 +6,13 @@ interface RequireAuthProps {
   children: ReactNode
 }
 
+// TEMP: bypass de login para desarrollo. Quitar antes de produccion.
+const BYPASS_AUTH = import.meta.env.VITE_BYPASS_AUTH === 'true'
+
 export function RequireAuth({ children }: RequireAuthProps) {
   const location = useLocation()
 
-  if (!hasActiveSession()) {
+  if (!BYPASS_AUTH && !hasActiveSession()) {
     return <Navigate replace state={{ from: location }} to={ROUTES.login} />
   }
 

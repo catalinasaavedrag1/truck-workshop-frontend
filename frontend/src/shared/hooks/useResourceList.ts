@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import axios from 'axios'
 import { fetchResourceList, resolveMockFallback } from '../services/resourceApi'
 
@@ -9,6 +9,11 @@ export function useResourceList<T>(path: string, fallback: T[], params: QueryPar
   const [error, setError] = useState<unknown>(null)
   const [isFallback, setIsFallback] = useState(false)
   const [reloadIndex, setReloadIndex] = useState(0)
+  // El fallback suele pasarse como literal (`[]` o un mock), cuya referencia
+  // cambia en cada render. Lo guardamos en un ref para que NO sea dependencia del
+  // efecto; si no, cada render dispararia un refetch y la vista quedaria en bucle.
+  const fallbackRef = useRef(fallback)
+  fallbackRef.current = fallback
   const paramsKey = useMemo(() => JSON.stringify(params), [params])
   const requestKey = `${path}:${paramsKey}`
   const [settledRequestKey, setSettledRequestKey] = useState('')
@@ -36,7 +41,7 @@ export function useResourceList<T>(path: string, fallback: T[], params: QueryPar
         }
 
         try {
-          const fallbackData = resolveMockFallback(path, fallback, requestError)
+          const fallbackData = resolveMockFallback(path, fallbackRef.current, requestError)
 
           setError(null)
           setIsFallback(true)
@@ -57,7 +62,7 @@ export function useResourceList<T>(path: string, fallback: T[], params: QueryPar
       isMounted = false
       controller.abort()
     }
-  }, [fallback, paramsKey, path, reloadIndex, requestKey])
+  }, [paramsKey, path, reloadIndex, requestKey])
 
   const isLoading = settledRequestKey !== requestKey
 

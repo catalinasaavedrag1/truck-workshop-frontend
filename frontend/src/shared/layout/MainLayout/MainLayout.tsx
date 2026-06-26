@@ -6,6 +6,7 @@ import { loadShortcutPreferences } from '../../shortcuts/shortcutPreferences.ser
 import type { ShortcutPreferences } from '../../shortcuts/shortcutPreferences.types'
 import { getCurrentSessionUser } from '../../services/sessionUser'
 import { CommandPalette } from '../../components/CommandPalette'
+import { ConnectionBanner } from '../../components/ConnectionBanner/ConnectionBanner'
 import { OperationalFocusBar } from '../../components/OperationalFocusBar'
 import { KeyboardShortcutsHelp } from '../../shortcuts/KeyboardShortcutsHelp'
 import { useGlobalShortcuts } from '../../shortcuts/useGlobalShortcuts'
@@ -185,6 +186,7 @@ export function MainLayout() {
         />
       ) : null}
       <div className={styles.workspace}>
+        <ConnectionBanner />
         <Topbar
           focusSearchSignal={globalSearchFocusSignal}
           isSidebarOpen={isSidebarVisible}
