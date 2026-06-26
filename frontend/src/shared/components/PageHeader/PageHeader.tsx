@@ -44,7 +44,9 @@ export function PageHeader({
   eyebrow,
   meta,
   shortcuts = defaultShortcutHints,
-  showContext = true,
+  // La ContextBar global ya muestra breadcrumb y contexto del modulo encima de
+  // cada pagina, asi que el PageHeader no los repite salvo que se pidan explicito.
+  showContext = false,
   showShortcutHints = true,
   status,
   title,

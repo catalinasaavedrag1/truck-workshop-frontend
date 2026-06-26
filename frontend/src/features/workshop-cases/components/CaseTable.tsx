@@ -98,14 +98,12 @@ export function CaseTable({ cases }: CaseTableProps) {
       columns={columns}
       data={cases}
       density="compact"
-      enableSearch
       emptyDescription="Ajusta la busqueda o limpia filtros para volver a ver casos."
       emptyLabel="No hay casos con estos filtros"
       getRowHref={(item) => ROUTES.caseDetail(item.id)}
       getRowKey={(item) => item.id}
       getRowLabel={(item) => `Abrir caso ${item.caseNumber}`}
       pageSize={10}
-      searchPlaceholder="Buscar caso, patente, operacion, chofer, estado o repuesto"
     />
   )
 }
