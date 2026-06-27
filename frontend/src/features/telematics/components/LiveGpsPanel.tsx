@@ -12,23 +12,20 @@ import { formatDate } from '../../../shared/utils/formatDate'
 import { gpsPositionsMock } from '../mocks/gpsPositions.mock'
 import { fetchLastPositions } from '../services/gpsTracking.service'
 import type { GpsPosition } from '../services/gpsTracking.service'
+import { GPS_STATE_COLOR, gpsMovementState } from '../utils/gpsState'
+import { FleetGpsMap } from './FleetGpsMap'
 
 type GpsSource = 'live' | 'demo'
 
 function movementBadge(position: GpsPosition) {
-  if (position.speed > 0) {
+  const state = gpsMovementState(position)
+  if (state === 'moving') {
     return <Badge tone="success">En movimiento ({position.speed} km/h)</Badge>
   }
-  if (position.engineOn) {
+  if (state === 'engine') {
     return <Badge tone="warning">Motor encendido</Badge>
   }
   return <Badge tone="neutral">Detenido</Badge>
-}
-
-function osmEmbedUrl(position: GpsPosition) {
-  const d = 0.04
-  const bbox = [position.lng - d, position.lat - d, position.lng + d, position.lat + d].join(',')
-  return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${position.lat},${position.lng}`
 }
 
 function osmLink(position: GpsPosition) {
@@ -45,6 +42,15 @@ const flowStepStyle: CSSProperties = {
   background: '#f9fbfc',
   fontSize: '0.8rem',
   fontWeight: 700,
+}
+
+function LegendDot({ color, label }: { color: string; label: string }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.8rem', fontWeight: 700 }}>
+      <span style={{ width: 10, height: 10, borderRadius: 999, background: color, border: '1px solid #fff', boxShadow: '0 0 0 1px var(--color-border)' }} />
+      {label}
+    </span>
+  )
 }
 
 export function LiveGpsPanel() {
@@ -97,8 +103,18 @@ export function LiveGpsPanel() {
     [positions, selectedPlate],
   )
 
-  const moving = positions.filter((position) => position.speed > 0).length
-  const enginesOn = positions.filter((position) => position.engineOn).length
+  const counts = useMemo(() => {
+    let moving = 0
+    let engine = 0
+    let stopped = 0
+    for (const position of positions) {
+      const state = gpsMovementState(position)
+      if (state === 'moving') moving += 1
+      else if (state === 'engine') engine += 1
+      else stopped += 1
+    }
+    return { moving, engine, stopped }
+  }, [positions])
 
   const columns: TableColumn<GpsPosition>[] = [
     {
@@ -157,54 +173,61 @@ export function LiveGpsPanel() {
 
         <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
           <MetricCard label="Moviles" tone="info" value={positions.length} helper="con senal GPS" />
-          <MetricCard label="En movimiento" tone="success" value={moving} helper="velocidad > 0" />
-          <MetricCard label="Motor encendido" tone="warning" value={enginesOn} helper="detenidos con motor" />
-          <MetricCard label="Detenidos" tone="neutral" value={positions.length - moving} helper="velocidad 0" />
+          <MetricCard label="En movimiento" tone="success" value={counts.moving} helper="velocidad > 0" />
+          <MetricCard label="Motor encendido" tone="warning" value={counts.engine} helper="detenidos con motor" />
+          <MetricCard label="Detenidos" tone="neutral" value={counts.stopped} helper="motor apagado" />
         </div>
 
-        <div className="surface-panel stack-tight">
-          <strong style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-            <MapPin aria-hidden size={15} /> Como se conecta el GPS
-          </strong>
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-            <span style={flowStepStyle}>
-              <Smartphone aria-hidden size={14} /> App
-            </span>
-            <ArrowRight aria-hidden size={15} />
-            <span style={flowStepStyle}>
-              <Server aria-hidden size={14} /> Backend (proxy, tokens server-side)
-            </span>
-            <ArrowRight aria-hidden size={15} />
-            <span style={flowStepStyle}>
-              <Cloud aria-hidden size={14} /> DS-TMS GPS
-            </span>
-          </div>
-          <p className="muted-text">
-            La app pide al backend; el backend consulta DS-TMS con los tokens (que nunca llegan al navegador) y entrega la
-            posicion real. Endpoints: <code>GET /api/gps/last-position</code> y <code>GET /api/gps/history</code>.
-          </p>
-        </div>
-
-        {selected ? (
-          <div className="stack-tight">
-            <div className="split-row">
-              <strong style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                <MapPin aria-hidden size={15} /> {selected.plate} - {selected.location || 'ubicacion desconocida'}
-              </strong>
-              <a href={osmLink(selected)} rel="noreferrer" target="_blank" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                <ExternalLink aria-hidden size={14} /> Abrir mapa completo
-              </a>
+        <div className="stack-tight">
+          <div className="split-row" style={{ flexWrap: 'wrap', gap: 10 }}>
+            <strong style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <MapPin aria-hidden size={15} />
+              {selected ? `${selected.plate} - ${selected.location || 'ubicacion desconocida'}` : 'Flota en el mapa'}
+            </strong>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+              <LegendDot color={GPS_STATE_COLOR.moving} label="En movimiento" />
+              <LegendDot color={GPS_STATE_COLOR.engine} label="Motor encendido" />
+              <LegendDot color={GPS_STATE_COLOR.stopped} label="Detenido" />
+              {selected ? (
+                <a href={osmLink(selected)} rel="noreferrer" target="_blank" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <ExternalLink aria-hidden size={14} /> Abrir mapa completo
+                </a>
+              ) : null}
             </div>
-            <iframe
-              key={selected.plate}
-              title={`Mapa GPS ${selected.plate}`}
-              src={osmEmbedUrl(selected)}
-              style={{ width: '100%', height: 320, border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
-              loading="lazy"
-            />
-            <p className="muted-text">Selecciona una fila de la tabla para centrar el mapa en ese movil.</p>
           </div>
-        ) : null}
+          <FleetGpsMap
+            positions={positions}
+            selectedPlate={selected?.plate}
+            onSelect={(plate) => setSelectedPlate(plate)}
+            height={400}
+          />
+          <p className="muted-text">Clic en un punto del mapa o en una fila de la tabla para enfocar ese movil.</p>
+        </div>
+
+        <details className="surface-panel stack-tight">
+          <summary style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 700 }}>
+            <MapPin aria-hidden size={15} /> Como se conecta el GPS
+          </summary>
+          <div className="stack-tight" style={{ marginTop: 10 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
+              <span style={flowStepStyle}>
+                <Smartphone aria-hidden size={14} /> App
+              </span>
+              <ArrowRight aria-hidden size={15} />
+              <span style={flowStepStyle}>
+                <Server aria-hidden size={14} /> Backend (proxy, tokens server-side)
+              </span>
+              <ArrowRight aria-hidden size={15} />
+              <span style={flowStepStyle}>
+                <Cloud aria-hidden size={14} /> DS-TMS GPS
+              </span>
+            </div>
+            <p className="muted-text">
+              La app pide al backend; el backend consulta DS-TMS con los tokens (que nunca llegan al navegador) y entrega la
+              posicion real. Endpoints: <code>GET /api/gps/last-position</code> y <code>GET /api/gps/history</code>.
+            </p>
+          </div>
+        </details>
 
         <Table
           columns={columns}

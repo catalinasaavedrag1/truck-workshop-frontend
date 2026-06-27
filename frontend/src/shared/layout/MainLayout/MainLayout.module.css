@@ -80,6 +80,9 @@
 
   .content {
     padding: 10px;
+    /* En movil el contenido no scrollea hacia el lado: solo vertical. Las
+       tablas mantienen su propio scroll horizontal interno (.tableScroll). */
+    overflow-x: hidden;
   }
 
   .shortcutFeedback {
