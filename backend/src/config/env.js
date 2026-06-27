@@ -106,10 +106,23 @@ function buildSqlConfig() {
 }
 
 const nodeEnv = process.env.NODE_ENV || 'development'
-const jwtSecret = process.env.JWT_SECRET || 'development-only-secret'
 
-if (nodeEnv === 'production' && jwtSecret === 'development-only-secret') {
-  throw new Error('JWT_SECRET es obligatorio en produccion')
+// JWT secret: en produccion real es obligatorio (JWT_SECRET). Para una demo
+// publica (p.ej. Vercel) se acepta ALLOW_INSECURE_JWT=true y se deriva un
+// secreto estable por despliegue, asi los tokens siguen validos entre cold
+// starts sin hardcodear ningun secreto en el codigo.
+let jwtSecret = process.env.JWT_SECRET || ''
+
+if (!jwtSecret) {
+  const allowInsecureJwt = parseBoolean(process.env.ALLOW_INSECURE_JWT, false)
+
+  if (nodeEnv === 'production' && !allowInsecureJwt) {
+    throw new Error('JWT_SECRET es obligatorio en produccion')
+  }
+
+  jwtSecret = nodeEnv === 'production'
+    ? `truck-workshop-demo-${process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_DEPLOYMENT_ID || 'vercel'}`
+    : 'development-only-secret'
 }
 
 export const env = {

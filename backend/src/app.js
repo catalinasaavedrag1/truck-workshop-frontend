@@ -37,7 +37,7 @@ function corsMiddleware(request, response, next) {
     return
   }
 
-  if (!isCorsOriginAllowed(origin)) {
+  if (!isCorsOriginAllowed(origin, request)) {
     next(new AppError('Origen CORS no permitido', 403, { origin }))
     return
   }
@@ -59,6 +59,18 @@ function corsMiddleware(request, response, next) {
   next()
 }
 
-function isCorsOriginAllowed(origin) {
-  return env.nodeEnv !== 'production' || env.corsOrigins.includes(origin)
+function isCorsOriginAllowed(origin, request) {
+  if (env.nodeEnv !== 'production' || env.corsOrigins.includes(origin)) {
+    return true
+  }
+
+  // Mismo origen: frontend y API servidos desde el mismo dominio (p.ej. Vercel,
+  // donde el SPA estatico y /api comparten host). Se permite sin listar el
+  // dominio, comparando el host del origin con el host de la peticion.
+  try {
+    const host = request.headers['x-forwarded-host'] || request.headers.host
+    return Boolean(host) && new URL(origin).host === host
+  } catch {
+    return false
+  }
 }

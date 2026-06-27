@@ -1,101 +1,47 @@
-const HOP_BY_HOP_HEADERS = new Set([
-  'connection',
-  'content-encoding',
-  'content-length',
-  'host',
-  'keep-alive',
-  'proxy-authenticate',
-  'proxy-authorization',
-  'te',
-  'trailer',
-  'transfer-encoding',
-  'upgrade',
-])
-
-module.exports = async function handler(request, response) {
-  const backendBaseUrl = getBackendBaseUrl()
-
-  if (!backendBaseUrl) {
-    response.status(502).json({
-      error: 'BACKEND_URL no configurado en Vercel.',
-      hint: 'Configura BACKEND_URL con la URL publica del backend, por ejemplo https://tu-backend.com/api.',
-    })
-    return
-  }
-
-  const targetUrl = buildTargetUrl(request, backendBaseUrl)
-  const headers = buildForwardHeaders(request.headers)
-  const init = {
-    headers,
-    method: request.method,
-  }
-
-  if (!['GET', 'HEAD'].includes(request.method)) {
-    init.body = serializeBody(request.body)
-  }
-
-  try {
-    const upstreamResponse = await fetch(targetUrl, init)
-    const body = Buffer.from(await upstreamResponse.arrayBuffer())
-
-    upstreamResponse.headers.forEach((value, key) => {
-      if (!HOP_BY_HOP_HEADERS.has(key.toLowerCase())) {
-        response.setHeader(key, value)
-      }
-    })
-
-    response.status(upstreamResponse.status).send(body)
-  } catch (error) {
-    response.status(502).json({
-      error: 'No se pudo conectar con el backend publico.',
-      detail: error instanceof Error ? error.message : 'Network error',
-    })
-  }
+// Serverless entry para Vercel: corre el backend Express (createApp) como
+// funcion. Asi el frontend estatico y la API viven en el mismo dominio y
+// /api/* responde con el backend real, sin necesidad de un host externo.
+//
+// Defaults seguros para una demo publica (solo si NO vienen ya definidos como
+// env vars en Vercel, de modo que el dashboard siempre puede sobrescribirlos):
+//   - DATA_DRIVER=memory          -> repositorio en memoria (sin SQL Server)
+//   - ALLOW_INSECURE_JWT=true     -> secreto JWT estable por despliegue
+//   - AUTH_* permisivo            -> demo navegable + login admin/1234
+// Los tokens DS-TMS (GPS en vivo) se configuran como env vars en el dashboard.
+const SERVERLESS_DEFAULTS = {
+  ALLOW_INSECURE_JWT: 'true',
+  AUTH_ALLOW_DEVELOPMENT_LOGIN: 'true',
+  AUTH_ENFORCE_PERMISSIONS: 'false',
+  AUTH_REQUIRED: 'false',
+  DATA_DRIVER: 'memory',
 }
 
-function getBackendBaseUrl() {
-  const rawUrl = process.env.BACKEND_URL || process.env.API_BASE_URL || ''
-
-  if (!rawUrl) {
-    return ''
-  }
-
-  const withoutTrailingSlash = rawUrl.replace(/\/+$/, '')
-
-  return withoutTrailingSlash.endsWith('/api') ? withoutTrailingSlash : `${withoutTrailingSlash}/api`
-}
-
-function buildTargetUrl(request, backendBaseUrl) {
-  const path = Array.isArray(request.query.path)
-    ? request.query.path.join('/')
-    : request.query.path || ''
-  const url = new URL(request.url || '', 'https://vercel.local')
-
-  url.searchParams.delete('path')
-
-  return `${backendBaseUrl}/${path}${url.search}`
-}
-
-function buildForwardHeaders(sourceHeaders) {
-  const headers = {}
-
-  Object.entries(sourceHeaders || {}).forEach(([key, value]) => {
-    if (!HOP_BY_HOP_HEADERS.has(key.toLowerCase()) && value !== undefined) {
-      headers[key] = Array.isArray(value) ? value.join(', ') : String(value)
+function applyServerlessDefaults() {
+  for (const [key, value] of Object.entries(SERVERLESS_DEFAULTS)) {
+    if (process.env[key] === undefined || process.env[key] === '') {
+      process.env[key] = value
     }
-  })
-
-  return headers
+  }
 }
 
-function serializeBody(body) {
-  if (body === undefined || body === null) {
-    return undefined
+// La app se crea una sola vez y se reutiliza entre invocaciones (warm starts).
+// Se usa import dinamico para poder fijar los defaults ANTES de que el modulo
+// de configuracion del backend lea process.env.
+let cachedApp
+
+async function getApp() {
+  if (!cachedApp) {
+    applyServerlessDefaults()
+    const { createApp } = await import('../backend/src/app.js')
+    cachedApp = createApp()
   }
 
-  if (typeof body === 'string' || Buffer.isBuffer(body)) {
-    return body
-  }
+  return cachedApp
+}
 
-  return JSON.stringify(body)
+export default async function handler(request, response) {
+  // Express maneja el ciclo request/response; las rutas estan montadas bajo
+  // /api, que es exactamente el path con el que Vercel invoca esta funcion.
+  const app = await getApp()
+  return app(request, response)
 }

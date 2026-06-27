@@ -2,6 +2,7 @@
   "name": "truck-workshop",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "description": "Workspace para la plataforma Truck Workshop, con frontend instalable y backend API.",
   "scripts": {
     "dev": "npm --prefix frontend run dev",
