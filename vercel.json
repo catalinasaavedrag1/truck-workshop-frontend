@@ -10,5 +10,9 @@
       "VITE_ALLOW_MOCK_FALLBACK": "true",
       "VITE_API_BASE_URL": "/api"
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/api", "destination": "/api/index" },
+    { "source": "/api/(.*)", "destination": "/api/index" }
+  ]
 }
