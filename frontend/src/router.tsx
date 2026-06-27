@@ -358,6 +358,11 @@ const routes = [
   },
 ]
 
-const createRouter = window.location.protocol === 'file:' ? createHashRouter : createBrowserRouter
+// Hash router para empaquetado de escritorio (file://) o despliegues estaticos
+// tipo GitHub Pages (VITE_USE_HASH_ROUTER), donde no hay servidor que resuelva
+// rutas profundas. En el resto se usa el router de historial normal.
+const useHashRouter =
+  window.location.protocol === 'file:' || import.meta.env.VITE_USE_HASH_ROUTER === 'true'
+const createRouter = useHashRouter ? createHashRouter : createBrowserRouter
 
 export const router = createRouter(routes)
