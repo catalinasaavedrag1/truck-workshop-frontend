@@ -30,3 +30,4 @@ release
 
 # Cache runtime del backend (precio combustible persistido)
 backend/data/
+.vercel
