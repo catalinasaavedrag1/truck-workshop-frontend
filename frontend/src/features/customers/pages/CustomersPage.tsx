@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { Tabs } from '../../../shared/components/Tabs/Tabs'
 import {
   Activity,
   BarChart3,
@@ -450,7 +451,7 @@ export function CustomersPage() {
             </Button>
           </div>
         }
-        description="Gestion centralizada de clientes: cartera, credito, tarifas, taller, fletes, comunicaciones y rentabilidad."
+        description="Cartera, credito, tarifas, fletes y rentabilidad por cliente."
         title="Clientes"
       >
         <CustomerModuleNav activeView={activeView} />
@@ -476,25 +477,13 @@ export function CustomersPage() {
 }
 
 function CustomerModuleNav({ activeView }: { activeView: CustomerModuleView }) {
-  return (
-    <nav aria-label="Modulo de clientes" className="module-tabs">
-      {customerModuleViews.map((view) => {
-        const Icon = view.icon
+  const items = customerModuleViews.map((view) => {
+    const Icon = view.icon
 
-        return (
-          <Link
-            className={['module-tab', activeView === view.id ? 'module-tab-active' : ''].filter(Boolean).join(' ')}
-            key={view.id}
-            title={view.description}
-            to={getCustomerViewPath(view.id)}
-          >
-            <Icon aria-hidden size={16} />
-            <span>{view.label}</span>
-          </Link>
-        )
-      })}
-    </nav>
-  )
+    return { icon: <Icon aria-hidden size={16} />, id: view.id, label: view.label, to: getCustomerViewPath(view.id) }
+  })
+
+  return <Tabs activeId={activeView} ariaLabel="Modulo de clientes" items={items} />
 }
 
 function CustomerDashboardView({
@@ -605,7 +594,7 @@ function CustomerPortfolioView({
       <Card>
         <div className="stack">
           <SectionHeader
-            description="Directorio operacional con ficha 360, edicion de condiciones y desactivacion controlada."
+            description="Directorio con ficha 360 y edicion de condiciones."
             title="Cartera de clientes"
           />
           <CustomerTable
@@ -626,7 +615,7 @@ function CustomerCreditView({ snapshots }: { snapshots: Customer360Snapshot[] })
     <Card>
       <div className="stack">
         <SectionHeader
-          description="Controla cupo, exposicion vigente, pipeline y riesgo antes de aprobar solicitudes o cotizaciones."
+          description="Cupo, exposicion, pipeline y riesgo antes de aprobar."
           title="Credito y riesgo"
         />
         <Table
@@ -659,7 +648,7 @@ function CustomerPricingView({
     <Card>
       <div className="stack">
         <SectionHeader
-          description="Centraliza tarifas por cliente para evitar condiciones comerciales dispersas en fletes y cotizaciones."
+          description="Tarifas por cliente para fletes y cotizaciones."
           title="Tarifas comerciales por cliente"
         />
         <Table
@@ -684,7 +673,7 @@ function CustomerOperationsView({ snapshots }: { snapshots: Customer360Snapshot[
     <Card>
       <div className="stack">
         <SectionHeader
-          description="Une taller, fletes, planillas y cotizaciones para ver que clientes tienen trabajo activo."
+          description="Que clientes tienen trabajo activo en taller y fletes."
           title="Operaciones por cliente"
         />
         <Table
@@ -734,7 +723,7 @@ function CustomerProfitabilityView({ snapshots }: { snapshots: Customer360Snapsh
     <Card>
       <div className="stack">
         <SectionHeader
-          description="Compara ingresos, pipeline, margen y actividad para decidir que cartera cuidar o corregir."
+          description="Ingresos, pipeline, margen y actividad por cliente."
           title="Rentabilidad y valor de cartera"
         />
         <Table

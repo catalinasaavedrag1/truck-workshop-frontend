@@ -181,7 +181,7 @@ export function ReportsPage() {
     <PageContainer>
       <PageHeader
         actions={<Badge tone="info">{sectionTitle(activeSection)}</Badge>}
-        description="Vista ejecutiva y operativa para taller, flota, compras, fletes, combustible y neumaticos."
+        description="Ejecutiva y operativa: taller, flota, compras y finanzas."
         title="Reporteria"
       />
 

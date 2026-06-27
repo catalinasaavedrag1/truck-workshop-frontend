@@ -1,8 +1,9 @@
 import { isValidElement, useMemo, useState } from 'react'
 import type { KeyboardEvent, MouseEvent, ReactNode } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, ChevronUp, Search, X } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, ChevronUp, Inbox, Search, X } from 'lucide-react'
 import { Button } from '../Button/Button'
+import { EmptyState } from '../EmptyState/EmptyState'
 import { ErrorState } from '../ErrorState/ErrorState'
 import { Skeleton } from '../Skeleton/Skeleton'
 import styles from './Table.module.css'
@@ -503,8 +504,11 @@ export function Table<T,>({
             ) : (
               <tr>
                 <td className={styles.empty} colSpan={renderedColumnCount}>
-                  <strong>{query ? 'No hay resultados' : emptyLabel}</strong>
-                  {emptyDescription ? <p>{emptyDescription}</p> : null}
+                  <EmptyState
+                    icon={query ? <Search size={22} /> : <Inbox size={22} />}
+                    title={query ? 'No hay resultados' : emptyLabel}
+                    description={query ? `Sin coincidencias para "${query}".` : emptyDescription}
+                  />
                 </td>
               </tr>
             )}

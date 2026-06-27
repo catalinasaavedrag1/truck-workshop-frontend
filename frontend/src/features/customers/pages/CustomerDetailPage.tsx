@@ -144,7 +144,7 @@ export function CustomerDetailPage() {
             <Button icon={<Plus size={18} />}>Nueva solicitud</Button>
           </Link>
         }
-        description="Torre de control comercial y logistica del cliente: fletes, rutas, SLA, margen, riesgos y facturacion."
+        description="Fletes, rutas, SLA, margen, riesgos y facturacion del cliente."
         title="Cliente logistico"
       >
         <CustomerDetailTabs activeTab={activeTab} customerId={customer.id} />

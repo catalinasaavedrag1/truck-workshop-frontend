@@ -80,7 +80,7 @@ export function FleetDashboardPage() {
             </Link>
           </div>
         }
-        description="Control total de camiones, disponibilidad, riesgos, documentos, mantenciones y costos."
+        description="Disponibilidad, riesgos, documentos, mantenciones y costos."
         title="Centro de flota"
       />
       <FleetOperationsHub drivers={drivers} healthScoreAverage={averageScore} trucks={fleetTrucks} />

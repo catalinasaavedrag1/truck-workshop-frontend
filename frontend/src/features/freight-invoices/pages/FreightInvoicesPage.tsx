@@ -34,7 +34,7 @@ export function FreightInvoicesPage() {
               <Button icon={<Plus size={18} />}>Emitir factura</Button>
             </Link>
           }
-          description="Cuentas por cobrar de fletes: factura electronica (consolidada por periodo), envio con respaldos, aprobacion del cliente y pago."
+          description="Cuentas por cobrar de fletes: factura, envio, aprobacion y pago."
           title="Facturacion de fletes"
         />
         <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>

@@ -19,7 +19,7 @@ export function CreateDriverPage() {
             </Button>
           </Link>
         }
-        description="Alta operacional para que el chofer pueda asociarse a camiones, fletes, checklists, incidentes y casos de taller."
+        description="Alta de chofer para asociar camiones, fletes y checklists."
         title="Nuevo chofer de flota"
       />
       <div className={styles.formLayout}>

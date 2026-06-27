@@ -45,7 +45,7 @@ export function TruckMasterPage() {
             </Link>
           </div>
         }
-        description="Inventario maestro de unidades. Usa esta vista para datos base, propiedad, chofer asignado y estado operativo."
+        description="Inventario maestro: datos base, propiedad, chofer y estado."
         title="Ficha maestra de camiones"
       />
       <div className={styles.summaryGrid}>

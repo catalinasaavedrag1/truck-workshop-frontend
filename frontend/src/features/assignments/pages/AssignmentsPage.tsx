@@ -72,7 +72,7 @@ export function AssignmentsPage() {
             Asignar caso
           </Button>
         }
-        description="Distribuye casos con contexto tecnico, prioridad, SLA, repuestos y capacidad real del taller."
+        description="Distribuye casos por prioridad, SLA y capacidad del taller."
         title="Asignaciones"
       />
       {assignmentError ? <ErrorState description={assignmentError} title="No se pudo asignar el caso" /> : null}

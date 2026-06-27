@@ -25,7 +25,7 @@ export function FreightQuotesPage() {
   return (
     <PageContainer>
       <PageHeader
-        description="Comparativa comercial y operacional para enviar, vencer, aprobar o rechazar cotizaciones."
+        description="Envia, aprueba o rechaza cotizaciones de flete."
         title="Cotizaciones de flete"
       />
       <FreightOperationsSummary assignments={freightAssignments} quotes={freightQuotes} requests={freightRequests} />

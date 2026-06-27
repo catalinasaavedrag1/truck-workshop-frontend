@@ -8,7 +8,7 @@ export function CreateFreightRequestPage() {
   return (
     <PageContainer>
       <PageHeader
-        description="Captura cliente, ruta y carga con contexto comercial para iniciar el flujo logistico."
+        description="Cliente, ruta y carga para iniciar el flete."
         title="Crear solicitud de flete"
       />
       <FreightFlowStepper activeStage="request" title="Inicio del flujo TMS" />

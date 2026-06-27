@@ -57,7 +57,7 @@ export function FuelReportPage() {
             </Button>
           </Link>
         }
-        description="Reporte para detectar desviaciones de consumo, cargas sospechosas y gasto por unidad o chofer."
+        description="Desviaciones de consumo, cargas sospechosas y gasto por unidad."
         title="Reporte combustible"
       />
       <FuelReportFilters

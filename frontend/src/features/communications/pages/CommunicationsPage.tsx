@@ -637,7 +637,7 @@ export function CommunicationsPage() {
               </Button>
             </>
           }
-          description="Bandeja operacional para WhatsApp y correo: conversaciones, enviados, perfiles y seguimiento por cliente, caso, chofer, compra o cotizacion."
+          description="WhatsApp y correo: conversaciones, perfiles y seguimiento."
           title="Comunicaciones"
         />
 

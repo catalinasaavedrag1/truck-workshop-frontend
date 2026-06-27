@@ -1,30 +1,23 @@
 import { BarChart3, Gauge } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { ROUTES } from '../../../config/routes'
+import { Tabs } from '../../../shared/components/Tabs/Tabs'
 
 const items = [
-  { icon: Gauge, label: 'Flujo / reporte', path: ROUTES.tirePerformance },
-  { icon: BarChart3, label: 'Comparar compras', path: ROUTES.tirePerformanceComparison },
+  { icon: <Gauge aria-hidden size={16} />, id: ROUTES.tirePerformance, label: 'Flujo / reporte', to: ROUTES.tirePerformance },
+  {
+    icon: <BarChart3 aria-hidden size={16} />,
+    id: ROUTES.tirePerformanceComparison,
+    label: 'Comparar compras',
+    to: ROUTES.tirePerformanceComparison,
+  },
 ]
 
 export function TireModuleNav() {
-  return (
-    <nav aria-label="Rendimiento de neumaticos" className="module-tabs">
-      {items.map((item) => {
-        const Icon = item.icon
+  const { pathname } = useLocation()
+  const activeId = pathname.startsWith(ROUTES.tirePerformanceComparison)
+    ? ROUTES.tirePerformanceComparison
+    : ROUTES.tirePerformance
 
-        return (
-          <NavLink
-            className={({ isActive }) => ['module-tab', isActive ? 'module-tab-active' : ''].filter(Boolean).join(' ')}
-            end={item.path === ROUTES.tirePerformance}
-            key={item.path}
-            to={item.path}
-          >
-            <Icon aria-hidden size={16} />
-            <span>{item.label}</span>
-          </NavLink>
-        )
-      })}
-    </nav>
-  )
+  return <Tabs activeId={activeId} ariaLabel="Rendimiento de neumaticos" items={items} />
 }

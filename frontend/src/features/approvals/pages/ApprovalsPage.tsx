@@ -40,7 +40,7 @@ export function ApprovalsPage() {
   return (
     <PageContainer>
       <PageHeader
-        description="Bandeja de aprobaciones para compras, cotizaciones, reparaciones caras y cierres especiales."
+        description="Aprueba compras, cotizaciones, reparaciones caras y cierres."
         title="Aprobaciones"
       />
       <div className="three-column-grid">

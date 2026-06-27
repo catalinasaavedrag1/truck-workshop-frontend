@@ -19,7 +19,7 @@ export function FleetAvailabilityPage() {
   return (
     <PageContainer>
       <PageHeader
-        description="Tablero para saber que camiones se pueden usar hoy, cuales estan bloqueados, quien los conduce y cuando vuelven."
+        description="Camiones disponibles hoy, bloqueados y quien los conduce."
         title="Disponibilidad de camiones"
       />
       <FleetAvailabilityBoard availability={fleetAvailability} trucks={fleetTrucks} />

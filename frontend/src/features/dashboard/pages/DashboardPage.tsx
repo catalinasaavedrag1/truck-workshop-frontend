@@ -171,7 +171,7 @@ export function DashboardPage() {
             <Button icon={<ClipboardPlus size={18} />}>Crear caso</Button>
           </Link>
         }
-        description="Lectura del turno: casos criticos, bloqueos, disponibilidad, compras y proximas acciones."
+        description="Casos criticos, bloqueos, disponibilidad y proximas acciones."
         title="Inicio operativo"
       />
 

@@ -110,7 +110,7 @@ export function IncidentsPage() {
               </Link>
             </div>
           }
-          description="Centro operacional para accidentes, multas, retrasos, carga y fallas en ruta, conectado con camion, chofer, flete, taller, costos y documentacion."
+          description="Accidentes, multas, retrasos y fallas en ruta, ligados a flota y taller."
           title="Incidentes"
         />
 

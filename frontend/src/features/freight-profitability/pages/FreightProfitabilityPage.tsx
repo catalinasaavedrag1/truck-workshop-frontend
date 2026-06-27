@@ -52,7 +52,7 @@ export function FreightProfitabilityPage() {
               </Link>
             </div>
           }
-          description="Compara tarifa, costos directos, costo/km y margen neto para decidir que rutas replicar o corregir."
+          description="Tarifa, costo/km y margen neto por ruta."
           title="Rentabilidad por flete"
         />
         <FreightProfitabilityCards items={profitabilityItems} />

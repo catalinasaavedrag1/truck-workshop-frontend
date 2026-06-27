@@ -88,7 +88,7 @@ export function DriversPage() {
             </Link>
           </div>
         }
-        description="Submodulo de flota para controlar disponibilidad de choferes, licencia, contacto y unidad asignada."
+        description="Disponibilidad de choferes, licencia, contacto y unidad."
         title="Choferes de flota"
       />
       <div className={styles.summaryGrid}>

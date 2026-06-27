@@ -267,7 +267,7 @@ export function TruckHealthScorePage() {
             </Button>
           </>
         }
-        description="Prioriza que camiones pueden salir, cuales requieren revision y cuales deben bloquearse antes de asignar fletes."
+        description="Que camiones pueden salir, cuales revisar y cuales bloquear."
         title="Health Score flota"
       />
 

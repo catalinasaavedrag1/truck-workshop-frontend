@@ -181,7 +181,7 @@ export function DriverTripSheetsPage() {
             </Link>
           </>
         }
-        description="Rendicion operacional por viaje: peajes, viaticos, propinas, estacionamiento, espera, margen y rendimiento del chofer."
+        description="Rendicion por viaje: peajes, viaticos, espera y margen."
         title="Planillas de choferes"
       />
 
