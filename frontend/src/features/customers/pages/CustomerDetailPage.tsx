@@ -1,5 +1,5 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { AlertCircle, Plus } from 'lucide-react'
+import { AlertCircle, Building2, Plus, Truck, Users } from 'lucide-react'
 import { ROUTES } from '../../../config/routes'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
@@ -177,6 +177,7 @@ export function CustomerDetailPage() {
 
       {activeTab === 'freights' ? (
         <div className="stack">
+          <MandanteCoordinationGuide customer={customer} />
           <CustomerFreightControlTower intelligence={intelligence} />
           <FreightRequestTable requests={snapshot.freightRequests} />
           <CustomerQuoteSection
@@ -251,6 +252,70 @@ export function CustomerDetailPage() {
         </div>
       ) : null}
     </PageContainer>
+  )
+}
+
+function MandanteCoordinationGuide({ customer }: { customer: Customer }) {
+  const mandante = customer.name || 'la empresa mandante'
+
+  return (
+    <Card>
+      <details className="stack-tight">
+        <summary
+          style={{ alignItems: 'center', cursor: 'pointer', display: 'flex', fontWeight: 700, gap: 8 }}
+        >
+          <Users aria-hidden size={16} />
+          Como coordinar la operacion con una empresa mandante (ej. CMPC)
+        </summary>
+        <div className="stack-tight" style={{ marginTop: 12 }}>
+          <p className="muted-text">
+            Cuando una empresa transportista se adjudica una licitacion de una empresa mandante —por ejemplo CMPC— no basta con
+            tener camiones disponibles: debe organizar a su equipo para sostener el servicio en el tiempo y cumplir las condiciones
+            del contrato. En esta ficha, {mandante} es ese cliente constante cuya operacion se gestiona desde aqui.
+          </p>
+
+          <div className="two-column-grid">
+            <div className="surface-panel stack-tight">
+              <strong style={{ alignItems: 'center', display: 'inline-flex', gap: 6 }}>
+                <Truck aria-hidden size={15} /> Por parte de la transportista
+              </strong>
+              <p className="muted-text">
+                Al adjudicarse la licitacion se asigna una persona fija o responsable principal de la cuenta: el punto unico de
+                contacto con el cliente. Segun la empresa puede llamarse coordinador de operaciones, ejecutivo de cuenta,
+                planificador de transporte, supervisor o jefe de operaciones. Sus funciones principales son:
+              </p>
+              <ul className="muted-text" style={{ margin: 0, paddingLeft: 18 }}>
+                <li>Recibir los requerimientos de carga del cliente.</li>
+                <li>Coordinar camiones y conductores.</li>
+                <li>Planificar rutas y horarios.</li>
+                <li>Hacer seguimiento de los viajes.</li>
+                <li>Resolver contingencias (atrasos, fallas o incidencias).</li>
+                <li>Mantener comunicacion constante con el encargado del mandante.</li>
+              </ul>
+            </div>
+
+            <div className="surface-panel stack-tight">
+              <strong style={{ alignItems: 'center', display: 'inline-flex', gap: 6 }}>
+                <Building2 aria-hidden size={15} /> Por parte de la empresa mandante
+              </strong>
+              <p className="muted-text">
+                Del lado del cliente suele existir un administrador de contrato o coordinador logistico, encargado de supervisar el
+                cumplimiento del servicio: los indicadores (KPI, OTIF, SLA), los plazos y las condiciones pactadas en la licitacion.
+              </p>
+              <p className="muted-text">
+                Ambos responsables —transportista y mandante— funcionan como contraparte directa: uno ejecuta y coordina la
+                operacion; el otro controla que se cumpla lo comprometido.
+              </p>
+            </div>
+          </div>
+
+          <p className="muted-text">
+            En esta vista, ese responsable concentra todos los fletes de {mandante} —solicitud, cotizacion, asignacion, carga,
+            ruta, incidencias, documentos y facturacion— para gestionar la relacion en un solo lugar.
+          </p>
+        </div>
+      </details>
+    </Card>
   )
 }
 
