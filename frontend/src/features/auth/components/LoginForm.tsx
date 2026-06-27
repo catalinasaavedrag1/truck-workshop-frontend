@@ -7,7 +7,7 @@ import { Button } from '../../../shared/components/Button/Button'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { useAsyncAction } from '../../../shared/hooks/useAsyncAction'
-import { login } from '../services/auth.service'
+import { isDemoAuthEnabled, login } from '../services/auth.service'
 
 export function LoginForm() {
   const navigate = useNavigate()
@@ -38,24 +38,29 @@ export function LoginForm() {
 
   return (
     <form className="stack" onSubmit={handleSubmit}>
-      {errorMessage ? (
-        <ErrorState title="No se pudo iniciar sesion" description={errorMessage} />
-      ) : null}
+      {errorMessage ? <ErrorState title="No se pudo iniciar sesion" description={errorMessage} /> : null}
       <Input
-        autoComplete="email"
-        label="Email"
+        autoComplete="username"
+        defaultValue={isDemoAuthEnabled ? 'admin' : undefined}
+        label="Usuario o email"
         name="email"
-        type="email"
+        type="text"
       />
       <Input
         autoComplete="current-password"
+        defaultValue={isDemoAuthEnabled ? '1234' : undefined}
         label="Contrasena"
         name="password"
         type="password"
       />
-      <Button disabled={isSubmitting} fullWidth icon={<LogIn size={18} />} type="submit">
-        {isSubmitting ? 'Entrando...' : 'Entrar al taller'}
+      <Button fullWidth icon={<LogIn size={18} />} loading={isSubmitting} type="submit">
+        Entrar al taller
       </Button>
+      {isDemoAuthEnabled ? (
+        <p className="muted-text" style={{ textAlign: 'center', fontSize: '0.82rem' }}>
+          Demo: usuario <strong>admin</strong> · contrasena <strong>1234</strong> (Fernando González · Administrador)
+        </p>
+      ) : null}
     </form>
   )
 }

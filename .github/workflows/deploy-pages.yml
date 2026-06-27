@@ -38,7 +38,7 @@ jobs:
       - name: Build demo
         working-directory: frontend
         env:
-          VITE_BYPASS_AUTH: 'true'
+          VITE_DEMO_AUTH: 'true'
           VITE_ALLOW_MOCK_FALLBACK: 'true'
           VITE_USE_HASH_ROUTER: 'true'
           VITE_APP_NAME: 'Truck Workshop (demo)'

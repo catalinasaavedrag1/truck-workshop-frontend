@@ -19,6 +19,16 @@ const developmentUsers = [
     role: 'ADMIN',
     roleName: 'Administrador',
   },
+  {
+    // Usuario admin de demo: login "admin" / "1234" (hash PBKDF2 de '1234').
+    email: 'admin',
+    id: 'user-fernando-gonzalez',
+    name: 'Fernando González',
+    passwordHash: 'pbkdf2-sha256$210000$admin-demo-1234$6vkMSPnnPSlbhS8y39xvtrIbXdr6rscrtbE4HnGKAzA',
+    permissions: ['*'],
+    role: 'ADMIN',
+    roleName: 'Administrador',
+  },
 ]
 
 export class AuthService {
