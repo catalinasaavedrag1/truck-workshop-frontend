@@ -27,3 +27,6 @@ release
 *.njsproj
 *.sln
 *.sw?
+
+# Cache runtime del backend (precio combustible persistido)
+backend/data/

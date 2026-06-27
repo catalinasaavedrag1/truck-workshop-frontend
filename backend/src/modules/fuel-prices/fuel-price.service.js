@@ -1,3 +1,6 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { env } from '../../config/env.js'
 import { fuelPriceSnapshotResource } from '../../config/resources.js'
 import { createRepository } from '../../shared/data/repository-factory.js'
@@ -5,10 +8,50 @@ import { scrapeFuelPrice } from './fuel-price.scraper.js'
 
 const PROVIDER = 'SCRAPER'
 
+// Archivo donde se guarda el ultimo precio scrapeado, para que sobreviva a los
+// reinicios del backend (el repositorio en memoria se vacia al reiniciar).
+const SNAPSHOT_FILE = resolve(dirname(fileURLToPath(import.meta.url)), '../../../data/fuel-price-snapshots.json')
+
+function readSnapshotsFromDisk() {
+  try {
+    if (!existsSync(SNAPSHOT_FILE)) {
+      return []
+    }
+    const parsed = JSON.parse(readFileSync(SNAPSHOT_FILE, 'utf8'))
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function writeSnapshotsToDisk(records) {
+  try {
+    mkdirSync(dirname(SNAPSHOT_FILE), { recursive: true })
+    writeFileSync(SNAPSHOT_FILE, JSON.stringify(records, null, 2))
+  } catch (error) {
+    console.warn(`No se pudo guardar el precio de combustible en disco: ${error.message}`)
+  }
+}
+
 export class FuelPriceService {
   constructor() {
     this.repository = createRepository(fuelPriceSnapshotResource)
     this.lastScrapeAttemptAt = 0
+  }
+
+  /** Carga en el repositorio el ultimo precio guardado en disco (al arrancar). */
+  async restoreFromDisk() {
+    const records = readSnapshotsFromDisk()
+    if (records.length > 0) {
+      await this.repository.upsertMany(records)
+    }
+    return records.length
+  }
+
+  /** Persiste en disco todos los snapshots vigentes del repositorio. */
+  async persistToDisk() {
+    const all = await this.repository.findAll({ limit: 1000, order: 'desc', sort: 'lastFetchedAt' })
+    writeSnapshotsToDisk(all.data)
   }
 
   async getCurrentPrice(options = {}) {
@@ -89,6 +132,9 @@ export class FuelPriceService {
     const fetchedAt = new Date().toISOString()
     const record = await scrapeFuelPrice({ normalizedFuelType, regionCode, fetchedAt })
     const saved = await this.repository.upsertMany([record])
+
+    // Guardar en disco para que el precio sobreviva a reinicios del backend.
+    await this.persistToDisk()
 
     return {
       provider: env.scraper.sourceLabel,

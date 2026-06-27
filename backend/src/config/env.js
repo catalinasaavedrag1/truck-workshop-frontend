@@ -131,7 +131,7 @@ export const env = {
     requestTimeoutMs: Math.max(1000, parseNumber(process.env.FUEL_SCRAPER_REQUEST_TIMEOUT_MS, 12000)),
     userAgent: process.env.FUEL_SCRAPER_USER_AGENT || 'Mozilla/5.0 (compatible; TruckWorkshop/1.0)',
     // Programacion diaria: hora local (0-23) y zona horaria.
-    dailyHour: Math.min(23, Math.max(0, parseNumber(process.env.FUEL_SCRAPER_DAILY_HOUR, 6))),
+    dailyHour: Math.min(23, Math.max(0, parseNumber(process.env.FUEL_SCRAPER_DAILY_HOUR, 3))),
     timeZone: process.env.FUEL_SCRAPER_TIMEZONE || 'America/Santiago',
     // Un snapshot se considera vencido tras 24 h (cadencia diaria).
     staleAfterMinutes: Math.max(1, parseNumber(process.env.FUEL_SCRAPER_STALE_AFTER_MINUTES, 24 * 60)),

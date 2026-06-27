@@ -3,8 +3,9 @@ import { fuelPriceService } from './fuel-price.service.js'
 
 /**
  * Programa el scraping del precio de combustible una vez al dia a la hora
- * configurada (por defecto 06:00 hora de Chile). Tambien hace una corrida al
- * arrancar para no quedar con el fallback hasta el primer disparo diario.
+ * configurada (por defecto 03:00 hora de Chile). Al arrancar restaura el ultimo
+ * precio guardado en disco y solo vuelve a scrapear si ese dato esta vencido,
+ * de modo que el precio persiste entre reinicios y se refresca una vez al dia.
  */
 export function startFuelPriceScheduler() {
   if (env.nodeEnv === 'test') {
@@ -37,9 +38,15 @@ export function startFuelPriceScheduler() {
     timeoutHandle?.unref?.()
   }
 
-  // Calienta el cache al arrancar y luego dispara cada dia a la hora indicada.
-  run()
-  scheduleNext()
+  // Restaura el ultimo precio guardado en disco y luego calienta el cache; el
+  // refresco solo ocurre si el dato esta vencido. Despues dispara cada dia.
+  fuelPriceService
+    .restoreFromDisk()
+    .catch((error) => console.warn(`No se pudo restaurar el precio guardado: ${error.message}`))
+    .finally(() => {
+      run()
+      scheduleNext()
+    })
 
   return () => clearTimeout(timeoutHandle)
 }
