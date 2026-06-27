@@ -14,7 +14,6 @@ import { LiveGpsPanel } from '../components/LiveGpsPanel'
 import { RouteTimeline } from '../components/RouteTimeline'
 import { TelematicsStatsCards } from '../components/TelematicsStatsCards'
 import styles from '../components/TelematicsModule.module.css'
-import { TruckLocationMap } from '../components/TruckLocationMap'
 import { TruckTelemetryTable } from '../components/TruckTelemetryTable'
 import { telematicsMock } from '../mocks/telematics.mock'
 import type { TruckTelemetry } from '../types/telematics.types'
@@ -104,9 +103,9 @@ export function TelematicsPage() {
           title="Telemetria / GPS"
         />
 
-        <TelematicsStatsCards items={items} totalFleet={trucks.length} />
-
         <LiveGpsPanel />
+
+        <TelematicsStatsCards items={items} totalFleet={trucks.length} />
 
         <div className={styles.controlStrip}>
           <Input
@@ -134,14 +133,7 @@ export function TelematicsPage() {
           </div>
         </div>
 
-        <div className={styles.workbench}>
-          <TruckLocationMap
-            items={filteredItems}
-            onSelectTruck={setSelectedTruckId}
-            selectedTruckId={selectedVisibleTruckId}
-          />
-          <RouteTimeline items={filteredItems} selectedTruckId={selectedVisibleTruckId} />
-        </div>
+        <RouteTimeline items={filteredItems} selectedTruckId={selectedVisibleTruckId} />
 
         <Card>
           <TruckTelemetryTable items={filteredItems} onSelectTruck={setSelectedTruckId} />
