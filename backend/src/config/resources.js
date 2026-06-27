@@ -1003,7 +1003,6 @@ export const workshopBayResource = resources.find((resource) => resource.name ==
 export const mechanicResource = resources.find((resource) => resource.name === 'mechanics')
 export const mechanicSpecialtyResource = resources.find((resource) => resource.name === 'mechanic-specialties')
 export const roleResource = resources.find((resource) => resource.name === 'roles')
-export const shortcutPreferenceResource = resources.find((resource) => resource.name === 'shortcut-preferences')
 export const userRoleAssignmentResource = resources.find((resource) => resource.name === 'user-role-assignments')
 
 export const workshopCaseResource = {

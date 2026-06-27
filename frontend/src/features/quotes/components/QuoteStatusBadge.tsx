@@ -1,14 +1,7 @@
 import { Badge } from '../../../shared/components/Badge/Badge'
 import type { BadgeTone } from '../../../shared/components/Badge/Badge'
 import type { QuoteStatus } from '../types/quote.types'
-
-const STATUS_LABELS: Record<QuoteStatus, string> = {
-  APPROVED: 'Aprobada',
-  DRAFT: 'Borrador',
-  EXPIRED: 'Expirada',
-  REJECTED: 'Rechazada',
-  SENT: 'Enviada',
-}
+import { QUOTE_STATUS_LABELS } from '../constants/quoteStatus.constants'
 
 const STATUS_TONES: Record<QuoteStatus, BadgeTone> = {
   APPROVED: 'success',
@@ -23,5 +16,5 @@ interface QuoteStatusBadgeProps {
 }
 
 export function QuoteStatusBadge({ status }: QuoteStatusBadgeProps) {
-  return <Badge tone={STATUS_TONES[status]}>{STATUS_LABELS[status]}</Badge>
+  return <Badge tone={STATUS_TONES[status]}>{QUOTE_STATUS_LABELS[status]}</Badge>
 }

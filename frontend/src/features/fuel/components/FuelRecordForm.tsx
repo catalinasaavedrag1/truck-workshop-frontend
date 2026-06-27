@@ -8,6 +8,7 @@ import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { createResource } from '../../../shared/services/resourceApi'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import { driversMock } from '../../drivers/mocks/drivers.mock'
@@ -21,7 +22,6 @@ export function FuelRecordForm() {
   const [pricePerLiter, setPricePerLiter] = useState(0)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
   const { errorMessage: fuelPriceError, fuelPrice, isLoading: isFuelPriceLoading } = useFuelPrice()
   const effectivePricePerLiter = pricePerLiter || fuelPrice?.pricePerLiter || 0
   const total = useMemo(() => liters * effectivePricePerLiter, [effectivePricePerLiter, liters])
@@ -36,7 +36,6 @@ export function FuelRecordForm() {
     const payloadPricePerLiter = Number(formData.get('pricePerLiter') || 0)
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -54,7 +53,7 @@ export function FuelRecordForm() {
         truckId: String(formData.get('truckId') || ''),
       })
 
-      setSavedMessage(`Carga ${record.receiptNumber || record.id} guardada en backend.`)
+      toast.success('Carga registrada', `Carga ${record.receiptNumber || record.id} guardada en backend.`)
       setLiters(0)
       form.reset()
       setPricePerLiter(0)
@@ -112,9 +111,12 @@ export function FuelRecordForm() {
               />
               <Input
                 helperText={
-                  fuelPrice?.isOfficial
-                    ? `${fuelPrice.source} - ${fuelPrice.regionName || 'Region Metropolitana'}`
-                    : fuelPriceError || (isFuelPriceLoading ? 'Consultando CNE...' : 'Fallback configurable')
+                  fuelPriceError ||
+                  (isFuelPriceLoading
+                    ? 'Consultando precio...'
+                    : fuelPrice?.status === 'OK'
+                      ? `${fuelPrice.source} - ${fuelPrice.regionName || 'Chile'}`
+                      : 'Fallback configurable')
                 }
                 label="Precio por litro"
                 min={0}
@@ -177,10 +179,10 @@ export function FuelRecordForm() {
             </div>
           </section>
           <div className={styles.formActions}>
-            <Button disabled={isSaving || liters <= 0 || effectivePricePerLiter <= 0} icon={<Save size={18} />} type="submit">
-              {isSaving ? 'Guardando...' : 'Guardar carga'}
+            <Button disabled={liters <= 0 || effectivePricePerLiter <= 0} icon={<Save size={18} />} loading={isSaving} type="submit">
+              Guardar carga
             </Button>
-            <span className={styles.muted}>{savedMessage || 'El rendimiento se evaluara contra historico por camion.'}</span>
+            <span className={styles.muted}>El rendimiento se evaluara contra historico por camion.</span>
           </div>
         </form>
       </Card>

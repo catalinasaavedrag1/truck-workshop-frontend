@@ -12,8 +12,12 @@ export function useResourceList<T>(path: string, fallback: T[], params: QueryPar
   // El fallback suele pasarse como literal (`[]` o un mock), cuya referencia
   // cambia en cada render. Lo guardamos en un ref para que NO sea dependencia del
   // efecto; si no, cada render dispararia un refetch y la vista quedaria en bucle.
+  // El ref se actualiza en un efecto (no durante el render) para no romper la
+  // regla de React de no mutar refs mientras se renderiza.
   const fallbackRef = useRef(fallback)
-  fallbackRef.current = fallback
+  useEffect(() => {
+    fallbackRef.current = fallback
+  }, [fallback])
   const paramsKey = useMemo(() => JSON.stringify(params), [params])
   const requestKey = `${path}:${paramsKey}`
   const [settledRequestKey, setSettledRequestKey] = useState('')

@@ -18,6 +18,7 @@ import { Badge } from '../../../shared/components/Badge/Badge'
 import type { BadgeTone } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
 import { EntityLink } from '../../../shared/components/EntityLink'
+import { Tabs } from '../../../shared/components/Tabs/Tabs'
 import { Table } from '../../../shared/components/Table/Table'
 import type { TableColumn } from '../../../shared/components/Table/Table'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
@@ -239,24 +240,19 @@ export function CustomerExecutiveHeader({ customer, intelligence, snapshot }: Cu
 }
 
 export function CustomerDetailTabs({ activeTab, customerId }: { activeTab: CustomerDetailTab; customerId: string }) {
-  return (
-    <nav aria-label="Vista operacional del cliente" className={styles.tabs}>
-      {CUSTOMER_DETAIL_TABS.map((tab) => {
-        const Icon = tab.icon
+  const items = CUSTOMER_DETAIL_TABS.map((tab) => {
+    const Icon = tab.icon
 
-        return (
-          <Link
-            className={[styles.tab, activeTab === tab.id ? styles.tabActive : ''].filter(Boolean).join(' ')}
-            key={tab.id}
-            to={tab.id === 'summary' ? ROUTES.customerDetail(customerId) : `${ROUTES.customerDetail(customerId)}?tab=${tab.id}`}
-          >
-            <Icon aria-hidden size={15} />
-            <span>{tab.label}</span>
-          </Link>
-        )
-      })}
-    </nav>
-  )
+    return {
+      icon: <Icon aria-hidden size={15} />,
+      id: tab.id,
+      label: tab.label,
+      to: tab.id === 'summary' ? ROUTES.customerDetail(customerId) : `${ROUTES.customerDetail(customerId)}?tab=${tab.id}`,
+    }
+  })
+
+  return <Tabs activeId={activeTab} ariaLabel="Vista operacional del cliente" items={items} />
+
 }
 
 export function CustomerSummaryControlView({ customer, intelligence, snapshot }: CustomerLogisticsProps) {
@@ -292,19 +288,13 @@ export function CustomerFreightControlTower({ intelligence }: { intelligence: Cu
         title="Torre de control de fletes"
       />
       <div className={styles.viewToolbar}>
-        <div aria-label="Cambiar vista de control de fletes" className={styles.viewSwitch} role="tablist">
-          {freightControlViews.map((item) => (
-            <button
-              aria-selected={view === item.id}
-              className={view === item.id ? styles.viewSwitchActive : undefined}
-              key={item.id}
-              onClick={() => setView(item.id)}
-              type="button"
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+        <Tabs
+          activeId={view}
+          ariaLabel="Cambiar vista de control de fletes"
+          items={freightControlViews}
+          onChange={(id) => setView(id as FreightControlView)}
+          variant="segmented"
+        />
         <div aria-label="Filtros rapidos de fletes" className={styles.quickFilterRail}>
           {quickFilters.map((item) => (
             <button

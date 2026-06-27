@@ -26,22 +26,6 @@ export async function saveDiagnostic(payload: DiagnosticPayload) {
   return response.data.data
 }
 
-export async function updateDiagnostic(id: string, payload: Partial<DiagnosticPayload>) {
-  const response = await httpClient.patch<ApiResponse<Diagnostic>>(`/diagnostics/${id}`, payload, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
-}
-
-export async function deleteDiagnostic(id: string) {
-  const response = await httpClient.delete<ApiResponse<Diagnostic>>(`/diagnostics/${id}`, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
-}
-
 export function getCurrentActorName() {
   return resolveCurrentActorName()
 }

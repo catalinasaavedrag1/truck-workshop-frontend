@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { toast } from '../../../shared/services/toastStore'
 import type { FreightQuote, FreightQuoteStatus } from '../types/freight.types'
 import { FreightRequestStatusBadge } from './FreightRequestStatusBadge'
 
@@ -12,6 +13,16 @@ interface QuoteApprovalPanelProps {
 export function QuoteApprovalPanel({ quote }: QuoteApprovalPanelProps) {
   const [status, setStatus] = useState<FreightQuoteStatus>(quote.status)
 
+  const handleApprove = () => {
+    setStatus('APPROVED')
+    toast.success('Cotizacion aprobada', `${quote.quoteNumber} quedo marcada como aprobada.`)
+  }
+
+  const handleReject = () => {
+    setStatus('REJECTED')
+    toast.warning('Cotizacion rechazada', `${quote.quoteNumber} quedo marcada como rechazada.`)
+  }
+
   return (
     <Card>
       <div className="stack">
@@ -20,10 +31,16 @@ export function QuoteApprovalPanel({ quote }: QuoteApprovalPanelProps) {
           <FreightRequestStatusBadge status={status} type="quote" />
         </div>
         <div className="inline-actions">
-          <Button icon={<CheckCircle2 size={18} />} onClick={() => setStatus('APPROVED')} type="button">
+          <Button disabled={status === 'APPROVED'} icon={<CheckCircle2 size={18} />} onClick={handleApprove} type="button">
             Marcar aprobada
           </Button>
-          <Button icon={<XCircle size={18} />} onClick={() => setStatus('REJECTED')} type="button" variant="danger">
+          <Button
+            disabled={status === 'REJECTED'}
+            icon={<XCircle size={18} />}
+            onClick={handleReject}
+            type="button"
+            variant="danger"
+          >
             Marcar rechazada
           </Button>
         </div>

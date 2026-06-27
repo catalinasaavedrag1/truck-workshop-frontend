@@ -142,7 +142,6 @@ export function Topbar({
           >
             {createElement(getSidebarIcon(action.icon), { 'aria-hidden': true, size: 17 })}
             <span className={styles.srOnly}>{action.label}</span>
-            {shortcutPreferences.shortcutHintsEnabled ? <kbd>{index + 1}</kbd> : null}
           </Link>
         ))}
         {secondaryQuickActions.length > 0 ? (

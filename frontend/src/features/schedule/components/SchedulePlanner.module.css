@@ -33,15 +33,13 @@
 }
 
 .timeCell,
-.bayLabel,
-.slot {
+.bayLabel {
   min-height: 44px;
   padding: 10px;
   border-right: 1px solid var(--color-border);
 }
 
-.timeCell:last-child,
-.slot:last-child {
+.timeCell:last-child {
   border-right: 0;
 }
 

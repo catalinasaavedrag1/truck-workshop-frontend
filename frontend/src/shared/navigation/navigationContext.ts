@@ -38,10 +38,12 @@ export function getNavigationBreadcrumbs(match?: NavigationContextMatch): Naviga
     return []
   }
 
-  const breadcrumbs: NavigationBreadcrumb[] = [
-    { label: match.group.label },
-    { href: match.parent.path, label: match.parent.label },
-  ]
+  // Cuando el grupo y el item padre comparten nombre (cada dominio nombra su
+  // padre igual que el grupo) se colapsan en un solo nivel para no repetirlo.
+  const breadcrumbs: NavigationBreadcrumb[] =
+    match.parent.label === match.group.label
+      ? [{ href: match.parent.path, label: match.group.label }]
+      : [{ label: match.group.label }, { href: match.parent.path, label: match.parent.label }]
 
   if (match.item.path !== match.parent.path) {
     breadcrumbs.push({ href: match.item.path, label: match.item.label })

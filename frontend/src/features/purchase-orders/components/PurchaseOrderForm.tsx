@@ -12,6 +12,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import type { Part } from '../../parts/types/part.types'
 import { suppliersMock } from '../../suppliers/mocks/suppliers.mock'
@@ -97,6 +98,7 @@ export function PurchaseOrderForm() {
         totalEstimated: quantity * estimatedUnitCost,
       })
 
+      toast.success('Orden de compra creada', `${purchaseOrder.purchaseOrderNumber || 'La OC'} quedo registrada.`)
       navigate(ROUTES.purchaseOrderDetail(purchaseOrder.id))
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
@@ -169,8 +171,8 @@ export function PurchaseOrderForm() {
         type="number"
       />
       <div className="span-2 inline-actions">
-        <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
-          {isSaving ? 'Guardando...' : 'Crear orden'}
+        <Button icon={<Save size={18} />} loading={isSaving} type="submit">
+          Crear orden
         </Button>
         <Button disabled={isSaving} onClick={() => navigate(ROUTES.purchaseOrders)} type="button" variant="secondary">
           Cancelar

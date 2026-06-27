@@ -9,6 +9,7 @@ import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Textarea } from '../../../shared/components/Textarea/Textarea'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { saveDiagnostic } from '../services/diagnostics.service'
 import type { Diagnostic } from '../types/diagnostic.types'
 import { FailureCategorySelect } from './FailureCategorySelect'
@@ -31,7 +32,6 @@ export function DiagnosticForm({ caseId, formId = 'diagnostic-form', onSaved, sh
   const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -48,7 +48,6 @@ export function DiagnosticForm({ caseId, formId = 'diagnostic-form', onSaved, sh
 
     setIsSaving(true)
     setErrorMessage('')
-    setSavedMessage('')
 
     try {
       const diagnostic = await saveDiagnostic({
@@ -60,7 +59,7 @@ export function DiagnosticForm({ caseId, formId = 'diagnostic-form', onSaved, sh
       })
 
       onSaved?.(diagnostic)
-      setSavedMessage('Diagnostico registrado y caso actualizado.')
+      toast.success('Diagnostico registrado', 'El diagnostico se guardo y el caso fue actualizado.')
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
     } finally {
@@ -94,15 +93,14 @@ export function DiagnosticForm({ caseId, formId = 'diagnostic-form', onSaved, sh
         </div>
         {showActions ? (
           <div className="inline-actions">
-            <Button disabled={isSaving || !caseId} icon={<Save size={18} />} type="submit">
-              {isSaving ? 'Guardando...' : 'Guardar diagnostico'}
+            <Button disabled={!caseId} icon={<Save size={18} />} loading={isSaving} type="submit">
+              Guardar diagnostico
             </Button>
             <Button disabled={isSaving || !caseId} onClick={() => caseId && navigate(ROUTES.caseDetail(caseId))} type="button" variant="secondary">
               Volver al caso
             </Button>
           </div>
         ) : null}
-        {savedMessage ? <p className={styles.savedMessage} role="status">{savedMessage}</p> : null}
       </form>
     </Card>
   )

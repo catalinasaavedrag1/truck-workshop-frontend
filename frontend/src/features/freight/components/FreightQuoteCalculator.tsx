@@ -315,7 +315,9 @@ export function FreightQuoteCalculator({ request }: FreightQuoteCalculatorProps)
             <div className="split-row">
               <strong>Petroleo usado en cotizacion</strong>
               <span className="muted-text">
-                {activeCalculation.fuelPriceSource?.isOfficial ? 'CNE oficial' : 'Fallback configurable'}
+                {activeCalculation.fuelPriceSource?.status === 'OK'
+                  ? activeCalculation.fuelPriceSource.source
+                  : 'Fallback configurable'}
               </span>
             </div>
             <span className="muted-text">

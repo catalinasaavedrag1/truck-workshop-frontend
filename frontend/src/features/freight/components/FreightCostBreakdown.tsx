@@ -61,7 +61,7 @@ export function FreightCostBreakdown({
             {fuelLiters ? ` (${fuelLiters.toLocaleString('es-CL')} L x ${formatCurrency(dieselPricePerLiter || 0)})` : ''}
             {fuelPriceSource ? (
               <small className="muted-text">
-                {fuelPriceSource.isOfficial ? ` ${fuelPriceSource.source}` : ' Fallback local'}
+                {fuelPriceSource.status === 'OK' ? ` ${fuelPriceSource.source}` : ' Fallback local'}
                 {fuelPriceSource.lastFetchedAt ? `, ${formatDate(fuelPriceSource.lastFetchedAt)}` : ''}
               </small>
             ) : null}

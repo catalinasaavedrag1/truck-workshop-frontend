@@ -9,6 +9,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { RutInput } from '../../../shared/components/RutInput/RutInput'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatRut } from '../../../shared/utils/rut'
 import { createSupplier, updateSupplier } from '../services/suppliers.service'
 import type { Supplier, SupplierStatus } from '../types/supplier.types'
@@ -50,6 +51,7 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
 
     try {
       const savedSupplier = supplier ? await updateSupplier(supplier.id, payload) : await createSupplier(payload)
+      toast.success(supplier ? 'Proveedor actualizado' : 'Proveedor creado', `${savedSupplier.name} se guardo correctamente.`)
       navigate(ROUTES.supplierDetail(savedSupplier.id))
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
@@ -98,8 +100,8 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
       <Select defaultValue={supplier?.status || 'active'} label="Estado" name="status" options={statusOptions} />
       <Input className="span-2" defaultValue={supplier?.notes} label="Notas" name="notes" placeholder="Condiciones, cobertura o restricciones" />
       <div className="span-2 inline-actions">
-        <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
-          {isSaving ? 'Guardando...' : 'Guardar proveedor'}
+        <Button icon={<Save size={18} />} loading={isSaving} type="submit">
+          Guardar proveedor
         </Button>
         <Button disabled={isSaving} onClick={() => navigate(ROUTES.suppliers)} type="button" variant="secondary">
           Cancelar

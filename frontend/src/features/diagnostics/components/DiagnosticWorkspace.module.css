@@ -150,35 +150,6 @@
   grid-column: 1 / -1;
 }
 
-.textField {
-  display: grid;
-  gap: 6px;
-  font-weight: 740;
-}
-
-.textField span {
-  color: var(--color-text);
-  font-size: 0.83rem;
-}
-
-.textField textarea {
-  width: 100%;
-  min-height: 86px;
-  padding: 10px 12px;
-  color: var(--color-text);
-  background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font: inherit;
-  font-weight: 500;
-  resize: vertical;
-}
-
-.textField textarea:focus {
-  border-color: var(--color-primary);
-  outline: 3px solid var(--color-primary-soft);
-}
-
 .severityField {
   display: grid;
   gap: 6px;
@@ -240,13 +211,6 @@
   color: var(--color-danger);
   background: #fee4e2;
   border-color: rgb(220 38 38 / 0.3);
-}
-
-.savedMessage {
-  margin: 0;
-  color: var(--color-success);
-  font-size: 0.84rem;
-  font-weight: 760;
 }
 
 .summaryList {

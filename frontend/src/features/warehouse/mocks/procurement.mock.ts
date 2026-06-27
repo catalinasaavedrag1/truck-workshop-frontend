@@ -1091,16 +1091,3 @@ export const replenishmentCalendarMock: ReplenishmentCalendarEvent[] = [
     type: 'OC por llegar',
   },
 ]
-
-export const purchaseSuggestions = purchaseSuggestionsMock
-export const purchaseRequests = purchaseRequestsMock
-export const purchaseOrders = procurementPurchaseOrdersMock
-export const purchaseReceipts = purchaseReceiptsMock
-export const supplierPerformance = supplierPerformanceMock
-export const buyerPerformance = buyerPerformanceMock
-export const purchaseAuditAlerts = purchaseAuditAlertsMock
-export const skuCoverage = skuCoverageMock
-export const stockHealth = stockHealthMock
-export const categorySupplyHealth = categorySupplyHealthMock
-export const documentControl = documentControlMock
-export const replenishmentCalendar = replenishmentCalendarMock

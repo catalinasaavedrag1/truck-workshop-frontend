@@ -1,12 +1,13 @@
 import type { FormEvent, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { AtSign, CheckCircle2, Mail, MessageCircle, Plug, Plus, Send, Trash2, UserPlus } from 'lucide-react'
+import { AtSign, CheckCircle2, Mail, MessageCircle, MessagesSquare, Plug, Plus, Send, Trash2, UserPlus } from 'lucide-react'
 import { ROUTES } from '../../../config/routes'
 import { Badge } from '../../../shared/components/Badge/Badge'
 import type { BadgeTone } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { EmptyState } from '../../../shared/components/EmptyState/EmptyState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Modal } from '../../../shared/components/Modal/Modal'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -14,6 +15,7 @@ import { Select } from '../../../shared/components/Select/Select'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import { formatDate } from '../../../shared/utils/formatDate'
 import { freightQuotesMock } from '../../freight/mocks/freight.mock'
@@ -718,9 +720,15 @@ export function CommunicationsPage() {
                 </button>
               ))}
               {filteredConversations.length === 0 ? (
-                <p className={styles.emptyText}>
-                  {activeQuoteReference ? 'No hay conversaciones asociadas a esta cotizacion.' : 'No hay conversaciones para este filtro.'}
-                </p>
+                <EmptyState
+                  description={
+                    activeQuoteReference
+                      ? 'No hay conversaciones asociadas a esta cotizacion.'
+                      : 'Ajusta los filtros o inicia una nueva conversacion.'
+                  }
+                  icon={<MessagesSquare size={22} />}
+                  title="Sin conversaciones"
+                />
               ) : null}
             </div>
           </Card>
@@ -744,15 +752,24 @@ export function CommunicationsPage() {
                   <div className={styles.profileActions}>
                     <Button
                       onClick={async () => {
-                        const updatedConversation = await updateCommunicationConversation(selectedConversation.id, {
-                          status: selectedConversation.status === 'resolved' ? 'open' : 'resolved',
-                          unreadCount: 0,
-                          updatedBy: selectedConversation.assignedTo,
-                        })
-                        setSavedConversations((current) => [
-                          updatedConversation,
-                          ...current.filter((conversation) => conversation.id !== updatedConversation.id),
-                        ])
+                        const willResolve = selectedConversation.status !== 'resolved'
+                        try {
+                          const updatedConversation = await updateCommunicationConversation(selectedConversation.id, {
+                            status: willResolve ? 'resolved' : 'open',
+                            unreadCount: 0,
+                            updatedBy: selectedConversation.assignedTo,
+                          })
+                          setSavedConversations((current) => [
+                            updatedConversation,
+                            ...current.filter((conversation) => conversation.id !== updatedConversation.id),
+                          ])
+                          toast.success(
+                            willResolve ? 'Conversacion resuelta' : 'Conversacion reabierta',
+                            `${updatedConversation.contactName} quedo como ${willResolve ? 'resuelta' : 'abierta'}.`,
+                          )
+                        } catch (error) {
+                          toast.error('No se pudo actualizar la conversacion', getApiErrorMessage(error))
+                        }
                       }}
                       size="sm"
                       type="button"

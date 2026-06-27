@@ -6,7 +6,6 @@ import { partsMock } from '../../../mocks/parts.mock'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
 import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
-import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { FilterBar } from '../../../shared/components/FilterBar/FilterBar'
 import { Input } from '../../../shared/components/Input/Input'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -15,6 +14,7 @@ import { SectionHeader } from '../../../shared/components/SectionHeader/SectionH
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { InventoryModuleNav } from '../../warehouse/components/InventoryModuleNav'
 import styles from '../../warehouse/components/InventoryModule.module.css'
 import { getPartInventoryRows } from '../../warehouse/services/warehouseInsights.service'
@@ -33,8 +33,6 @@ export function PartsPage() {
   const [partPendingDeletion, setPartPendingDeletion] = useState<{ partId: string; sku: string } | null>(null)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
   const [deletingId, setDeletingId] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
   const { data: partsData } = useResourceList<Part>('/parts', partsMock, { order: 'asc', sort: 'sku' })
   const parts = useMemo(() => {
     const savedById = new Map(savedParts.map((part) => [part.id, part]))
@@ -69,6 +67,7 @@ export function PartsPage() {
   const statusLabel = statusOptions.find((option) => option.value === status)?.label
 
   const handleSaved = (part: Part) => {
+    const isNew = !savedParts.some((item) => item.id === part.id) && !partsData.some((item) => item.id === part.id)
     setSavedParts((current) => [
       part,
       ...current.filter((item) => item.id !== part.id),
@@ -76,15 +75,12 @@ export function PartsPage() {
     setDeletedIds((current) => current.filter((id) => id !== part.id))
     setSelectedPart(null)
     setIsEditorOpen(false)
-    setErrorMessage('')
-    setSuccessMessage('')
+    toast.success(isNew ? 'SKU creado' : 'SKU actualizado', `${part.sku} se guardo correctamente.`)
   }
 
   const handleCreate = () => {
     setSelectedPart(null)
     setIsEditorOpen(true)
-    setErrorMessage('')
-    setSuccessMessage('')
   }
 
   const handleEdit = (row: { partId: string }) => {
@@ -93,8 +89,6 @@ export function PartsPage() {
     if (part) {
       setSelectedPart(part)
       setIsEditorOpen(true)
-      setErrorMessage('')
-      setSuccessMessage('')
     }
   }
 
@@ -108,18 +102,19 @@ export function PartsPage() {
     }
 
     setDeletingId(partPendingDeletion.partId)
-    setErrorMessage('')
-    setSuccessMessage('')
 
     try {
       const removedPart = await deletePart(partPendingDeletion.partId)
       setDeletedIds((current) => Array.from(new Set([...current, partPendingDeletion.partId])))
       setSelectedPart((current) => (current?.id === partPendingDeletion.partId ? null : current))
       setIsEditorOpen((current) => (selectedPart?.id === partPendingDeletion.partId ? false : current))
-      setSuccessMessage(`SKU ${removedPart.sku} anulado por ${removedPart.deletedBy || removedPart.updatedBy || 'Sistema'}`)
+      toast.success(
+        'SKU anulado',
+        `${removedPart.sku} anulado por ${removedPart.deletedBy || removedPart.updatedBy || 'Sistema'}.`,
+      )
       setPartPendingDeletion(null)
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error))
+      toast.error('No se pudo anular el SKU', getApiErrorMessage(error))
     } finally {
       setDeletingId('')
     }
@@ -151,14 +146,6 @@ export function PartsPage() {
         />
         <InventoryModuleNav />
         <PartInventorySummary rows={rows} />
-        {errorMessage ? <ErrorState description={errorMessage} title="No se pudo anular el SKU" /> : null}
-        {successMessage ? (
-          <Card>
-            <p className="muted-text" role="status">
-              {successMessage}
-            </p>
-          </Card>
-        ) : null}
         <FilterBar
           activeCount={(query ? 1 : 0) + (category !== 'all' ? 1 : 0) + (status !== 'all' ? 1 : 0)}
           activeFilters={[

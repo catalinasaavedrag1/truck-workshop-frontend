@@ -48,12 +48,6 @@ export async function createWorkshopCase(payload: Omit<WorkshopCase, 'id' | 'cod
   return response.data.data
 }
 
-export async function updateWorkshopCase(caseId: string, payload: Partial<WorkshopCase>) {
-  const response = await httpClient.patch<ApiResponse<WorkshopCase>>(`/cases/${caseId}`, payload)
-
-  return response.data.data
-}
-
 export async function assignWorkshopCase(caseId: string, payload: Assignment) {
   const response = await httpClient.post<ApiResponse<{ assignment: Assignment; workshopCase: WorkshopCase }>>(
     `/cases/${caseId}/assignments`,

@@ -8,6 +8,7 @@ import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import type { Driver } from '../../drivers/types/driver.types'
 import type { FreightAssignment, FreightQuote, FreightRequest } from '../../freight/types/freight.types'
@@ -71,7 +72,6 @@ export function DriverTripSheetForm({
           })
         : createEmptyDraft(nextSheetNumber),
   )
-  const [confirmedMessage, setConfirmedMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [waitingCostTouched, setWaitingCostTouched] = useState(Boolean(sheet?.waitingCost))
@@ -228,7 +228,6 @@ export function DriverTripSheetForm({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setErrorMessage('')
-    setConfirmedMessage('')
     setIsSaving(true)
 
     try {
@@ -244,7 +243,10 @@ export function DriverTripSheetForm({
         : await createDriverTripSheet(payload)
 
       onSaved?.(saved)
-      setConfirmedMessage(sheet?.id ? 'Planilla actualizada en la base de datos.' : 'Planilla creada en la base de datos.')
+      toast.success(
+        sheet?.id ? 'Planilla actualizada' : 'Planilla creada',
+        `${saved.sheetNumber || 'La planilla'} quedo guardada en la base de datos.`,
+      )
 
       if (!sheet?.id) {
         setFormState(createEmptyDraft(nextSheetNumber))
@@ -384,13 +386,19 @@ export function DriverTripSheetForm({
           />
         </label>
         <div className={styles.actionRow}>
-          <Button disabled={isSaving} icon={<ReceiptText size={18} />} type="submit">
-            {isSaving ? 'Guardando...' : sheet ? 'Actualizar planilla' : 'Crear planilla'}
+          <Button icon={<ReceiptText size={18} />} loading={isSaving} type="submit">
+            {sheet ? 'Actualizar planilla' : 'Crear planilla'}
           </Button>
-          <Button icon={<Calculator size={18} />} onClick={() => setConfirmedMessage('Totales recalculados con los valores actuales.')} type="button" variant="secondary">
+          <Button
+            icon={<Calculator size={18} />}
+            onClick={() =>
+              toast.info('Totales al dia', 'Los totales se recalculan automaticamente con cada cambio del formulario.')
+            }
+            type="button"
+            variant="secondary"
+          >
             Recalcular
           </Button>
-          {confirmedMessage ? <p className="muted-text" role="status">{confirmedMessage}</p> : null}
         </div>
       </form>
     </Card>

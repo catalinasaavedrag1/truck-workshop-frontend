@@ -122,15 +122,22 @@ export const env = {
     jwtExpiresInSeconds: Math.max(60, parseDurationSeconds(process.env.JWT_EXPIRES_IN, 8 * 60 * 60)),
     requireAuth: parseBoolean(process.env.AUTH_REQUIRED, nodeEnv === 'production'),
   },
-  cne: {
-    apiToken: process.env.CNE_API_TOKEN || process.env.ENERGIA_ABIERTA_API_TOKEN || '',
-    baseUrl: process.env.CNE_API_BASE_URL || 'https://api.cne.cl',
-    defaultFuelType: process.env.CNE_DEFAULT_FUEL_TYPE || 'DIESEL',
-    defaultRegionCode: process.env.CNE_DEFAULT_REGION_CODE || '13',
-    fallbackDieselPricePerLiter: Math.max(0, parseNumber(process.env.CNE_FALLBACK_DIESEL_PRICE_PER_LITER, 1050)),
-    fuelPricesPath: process.env.CNE_FUEL_PRICES_PATH || '/api/ea/precio/combustibleliquido',
-    requestTimeoutMs: Math.max(1000, parseNumber(process.env.CNE_REQUEST_TIMEOUT_MS, 12000)),
-    syncIntervalMinutes: Math.max(1, parseNumber(process.env.CNE_SYNC_INTERVAL_MINUTES, 15)),
+  // Precio de combustible: scraping de un sitio publico (sin token), una vez al
+  // dia a la hora configurada en la zona horaria de Chile.
+  scraper: {
+    enabled: parseBoolean(process.env.FUEL_SCRAPER_ENABLED, true),
+    url: process.env.FUEL_SCRAPER_URL || 'https://preciocombustible.cl/',
+    sourceLabel: process.env.FUEL_SCRAPER_SOURCE_LABEL || 'preciocombustible.cl',
+    requestTimeoutMs: Math.max(1000, parseNumber(process.env.FUEL_SCRAPER_REQUEST_TIMEOUT_MS, 12000)),
+    userAgent: process.env.FUEL_SCRAPER_USER_AGENT || 'Mozilla/5.0 (compatible; TruckWorkshop/1.0)',
+    // Programacion diaria: hora local (0-23) y zona horaria.
+    dailyHour: Math.min(23, Math.max(0, parseNumber(process.env.FUEL_SCRAPER_DAILY_HOUR, 6))),
+    timeZone: process.env.FUEL_SCRAPER_TIMEZONE || 'America/Santiago',
+    // Un snapshot se considera vencido tras 24 h (cadencia diaria).
+    staleAfterMinutes: Math.max(1, parseNumber(process.env.FUEL_SCRAPER_STALE_AFTER_MINUTES, 24 * 60)),
+    defaultFuelType: process.env.FUEL_DEFAULT_FUEL_TYPE || 'DIESEL',
+    defaultRegionCode: process.env.FUEL_DEFAULT_REGION_CODE || '13',
+    fallbackDieselPricePerLiter: Math.max(0, parseNumber(process.env.FUEL_FALLBACK_DIESEL_PRICE_PER_LITER, 1050)),
   },
   corsOrigins: parseList(process.env.CORS_ORIGIN, [
     'http://127.0.0.1:5173',

@@ -10,6 +10,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import type { Truck } from '../../trucks/types/truck.types'
 import {
   TIRE_POSITION_OPTIONS,
@@ -63,7 +64,6 @@ export function TireInstallationForm() {
   const [odometer, setOdometer] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
   const requestedTire = stockTires.find((tire) => tire.id === tireId)
   const selectedSkuId = skuId || requestedTire?.skuId || tireSkus[0]?.id || ''
 
@@ -106,7 +106,6 @@ export function TireInstallationForm() {
     const tirePosition = String(formData.get('position') || '')
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -119,7 +118,7 @@ export function TireInstallationForm() {
         usageType: String(formData.get('usageType') || 'TRACTION') as TireLifecycle['usageType'],
       })
 
-      setSavedMessage('Instalacion registrada: el backend valido stock, posicion libre, camion y km inicial.')
+      toast.success('Instalacion registrada', 'El backend valido stock, posicion libre, camion y km inicial.')
       setInstalledTireIds((current) => [...current, selectedTireId])
       setTireId('')
     } catch (error) {
@@ -211,14 +210,14 @@ export function TireInstallationForm() {
             </dl>
           </div>
           <Button
-            disabled={errors.length > 0 || isSaving || isLoading}
+            disabled={errors.length > 0 || isLoading}
             icon={<Save size={18} />}
+            loading={isSaving}
             type="submit"
           >
-            {isSaving ? 'Registrando...' : isLoading ? 'Cargando datos...' : 'Registrar instalacion'}
+            {isLoading ? 'Cargando datos...' : 'Registrar instalacion'}
           </Button>
           {errors.length > 0 ? <p className="muted-text">{errors[0]}</p> : null}
-          {savedMessage ? <p className="muted-text">{savedMessage}</p> : null}
         </div>
       </form>
     </Card>

@@ -36,7 +36,6 @@
 .metricCopy span,
 .metricCopy small,
 .rowMeta,
-.breakdownMeta,
 .legend,
 .comparison small {
   color: var(--color-text-muted);

@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { AlertCircle, ArrowLeft, Hash, Wrench } from 'lucide-react'
+import { AlertCircle, ArrowLeft, Hash, Truck as TruckIcon, Wrench } from 'lucide-react'
 import { ROUTES } from '../../../config/routes'
 import { trucksMock } from '../../../mocks/trucks.mock'
 import { Badge } from '../../../shared/components/Badge/Badge'
@@ -8,7 +8,10 @@ import { Card } from '../../../shared/components/Card/Card'
 import { EmptyState } from '../../../shared/components/EmptyState/EmptyState'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
 import { useResourceItem } from '../../../shared/hooks/useResourceItem'
+import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
+import { fleetTrucksMock } from '../../fleet/mocks/fleet.mock'
+import type { FleetTruck } from '../../fleet/types/fleet.types'
 import { formatDate } from '../../../shared/utils/formatDate'
 import { TruckHistory } from '../components/TruckHistory'
 import styles from '../components/TruckModule.module.css'
@@ -18,6 +21,10 @@ import { getShortVin, getTruckServiceRisk } from '../utils/truckMaintenance'
 export function TruckDetailPage() {
   const { truckId } = useParams()
   const { data: truck } = useResourceItem('/trucks', truckId, trucksMock)
+  const { data: fleetTrucks } = useResourceList<FleetTruck>('/fleet/trucks', fleetTrucksMock, {
+    order: 'asc',
+    sort: 'plate',
+  })
 
   if (!truck) {
     return (
@@ -28,16 +35,26 @@ export function TruckDetailPage() {
   }
 
   const serviceRisk = getTruckServiceRisk(truck.lastServiceAt)
+  const fleetTruck = fleetTrucks.find((item) => item.plate === truck.plate)
 
   return (
     <PageContainer>
       <PageHeader
         actions={
-          <Link to={ROUTES.trucks}>
-            <Button icon={<ArrowLeft size={18} />} variant="secondary">
-              Volver
-            </Button>
-          </Link>
+          <div className="inline-actions">
+            <Link to={ROUTES.trucks}>
+              <Button icon={<ArrowLeft size={18} />} size="sm" variant="secondary">
+                Volver
+              </Button>
+            </Link>
+            {fleetTruck ? (
+              <Link to={ROUTES.fleetTruckDetail(fleetTruck.id)}>
+                <Button icon={<TruckIcon size={18} />} size="sm" variant="secondary">
+                  Ficha de flota
+                </Button>
+              </Link>
+            ) : null}
+          </div>
         }
         description={`${truck.brand} ${truck.model} - ano ${truck.year}. Vista de mantenimiento; la ficha maestra vive en Flota.`}
         title={`Taller camion ${truck.plate}`}

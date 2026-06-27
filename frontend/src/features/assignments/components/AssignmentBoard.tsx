@@ -89,6 +89,7 @@ export function AssignmentBoard({
           <div className={styles.caseList}>
             {activeCases.map((workshopCase) => (
               <button
+                aria-pressed={workshopCase.id === selectedCase?.id}
                 className={[styles.caseCard, workshopCase.id === selectedCase?.id ? styles.caseCardActive : ''].filter(Boolean).join(' ')}
                 key={workshopCase.id}
                 onClick={() => onSelectCase(workshopCase.id)}

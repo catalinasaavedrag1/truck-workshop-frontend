@@ -7,6 +7,7 @@ import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import type { FleetTruck } from '../../fleet/types/fleet.types'
 import { createTruckDocument, updateTruckDocument } from '../services/truckDocuments.service'
 import type { TruckDocument } from '../types/truckDocuments.types'
@@ -20,7 +21,6 @@ interface TruckDocumentFormProps {
 export function TruckDocumentForm({ document, onSaved, trucks }: TruckDocumentFormProps) {
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
   const isEditing = Boolean(document)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -39,7 +39,6 @@ export function TruckDocumentForm({ document, onSaved, trucks }: TruckDocumentFo
     }
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -47,7 +46,7 @@ export function TruckDocumentForm({ document, onSaved, trucks }: TruckDocumentFo
         ? await updateTruckDocument(document.id, payload)
         : await createTruckDocument(payload)
 
-      setSavedMessage(document ? 'Documento actualizado en backend.' : 'Documento guardado en backend.')
+      toast.success(document ? 'Documento actualizado' : 'Documento guardado', 'Los datos del documento se guardaron en backend.')
       onSaved?.(savedDocument)
 
       if (!document) {
@@ -101,10 +100,9 @@ export function TruckDocumentForm({ document, onSaved, trucks }: TruckDocumentFo
           />
         </label>
         <div className="span-2 inline-actions">
-          <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
-            {isSaving ? 'Guardando...' : isEditing ? 'Actualizar documento' : 'Guardar documento'}
+          <Button icon={<Save size={18} />} loading={isSaving} type="submit">
+            {isEditing ? 'Actualizar documento' : 'Guardar documento'}
           </Button>
-          {savedMessage ? <span className="muted-text">{savedMessage}</span> : null}
         </div>
       </form>
     </Card>

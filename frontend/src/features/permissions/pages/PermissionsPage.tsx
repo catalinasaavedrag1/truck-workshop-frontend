@@ -8,6 +8,7 @@ import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmMod
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { LoadingState } from '../../../shared/components/LoadingState/LoadingState'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
+import { Tabs } from '../../../shared/components/Tabs/Tabs'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { PermissionMatrix } from '../components/PermissionMatrix'
@@ -150,14 +151,16 @@ export function PermissionsPage() {
       </div>
 
       <div className={styles.toolbar}>
-        <div className={styles.segmented} role="tablist">
-          <button data-active={activePanel === 'users'} onClick={() => setActivePanel('users')} type="button">
-            Usuarios
-          </button>
-          <button data-active={activePanel === 'profiles'} onClick={() => setActivePanel('profiles')} type="button">
-            Perfiles
-          </button>
-        </div>
+        <Tabs
+          activeId={activePanel}
+          ariaLabel="Vista de administracion"
+          items={[
+            { id: 'users', label: 'Usuarios' },
+            { id: 'profiles', label: 'Perfiles' },
+          ]}
+          onChange={(id) => setActivePanel(id as typeof activePanel)}
+          variant="segmented"
+        />
         <Badge tone={stats.mechanicUsers > 0 ? 'success' : 'warning'}>{stats.mechanicUsers} mecanicos vinculados</Badge>
       </div>
 

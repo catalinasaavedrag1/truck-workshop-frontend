@@ -26,22 +26,6 @@ export async function createFreightAssignment(payload: FreightAssignmentPayload)
   return response.data.data
 }
 
-export async function updateFreightAssignment(assignmentId: string, payload: Partial<FreightAssignmentPayload>) {
-  const response = await httpClient.patch<ApiResponse<FreightAssignment>>(`/freight/assignments/${assignmentId}`, payload, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
-}
-
-export async function deleteFreightAssignment(assignmentId: string) {
-  const response = await httpClient.delete<ApiResponse<FreightAssignment>>(`/freight/assignments/${assignmentId}`, {
-    headers: getActorHeaders(),
-  })
-
-  return response.data.data
-}
-
 export function getCurrentActorName() {
   return resolveCurrentActorName()
 }

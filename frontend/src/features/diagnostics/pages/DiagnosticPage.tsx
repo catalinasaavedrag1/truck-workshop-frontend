@@ -266,7 +266,12 @@ function OperationalCasePanel({
           <Eye size={14} />
           Ver caso
         </Link>
-        <button disabled title="La carga de evidencia aun no tiene flujo dedicado en esta vista." type="button">
+        <button
+          aria-label="Cargar evidencia (no disponible: aun sin flujo dedicado en esta vista)"
+          disabled
+          title="La carga de evidencia aun no tiene flujo dedicado en esta vista."
+          type="button"
+        >
           <Paperclip size={14} />
           Evidencia
         </button>

@@ -1,10 +1,11 @@
 import type { FormEvent } from 'react'
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { CheckCheck, Plus, SlidersHorizontal } from 'lucide-react'
+import { BellOff, CheckCheck, Plus, SlidersHorizontal } from 'lucide-react'
 import { Badge } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { EmptyState } from '../../../shared/components/EmptyState/EmptyState'
 import { Input } from '../../../shared/components/Input/Input'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
 import { Select } from '../../../shared/components/Select/Select'
@@ -303,7 +304,13 @@ export function NotificationsPage() {
                   </div>
                 </article>
               ))}
-              {filteredNotifications.length === 0 ? <p className={styles.emptyText}>No hay alertas para este filtro.</p> : null}
+              {filteredNotifications.length === 0 ? (
+                <EmptyState
+                  description="Ajusta los filtros para ver otras alertas o crea una nueva suscripcion."
+                  icon={<BellOff size={22} />}
+                  title="Sin alertas para este filtro"
+                />
+              ) : null}
             </div>
           </Card>
 

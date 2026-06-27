@@ -6,6 +6,7 @@ import { Card } from '../../../shared/components/Card/Card'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { saveRepairSolution } from '../services/repairSolutions.service'
 
 interface RepairSolutionFormProps {
@@ -15,7 +16,6 @@ interface RepairSolutionFormProps {
 export function RepairSolutionForm({ caseId }: RepairSolutionFormProps) {
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -31,7 +31,6 @@ export function RepairSolutionForm({ caseId }: RepairSolutionFormProps) {
     const laborHours = Number(formData.get('laborHours') || 0)
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -44,7 +43,7 @@ export function RepairSolutionForm({ caseId }: RepairSolutionFormProps) {
         summary: String(formData.get('summary') || '').trim(),
       })
 
-      setSavedMessage('Solucion guardada en backend.')
+      toast.success('Solucion guardada', 'La propuesta de reparacion quedo registrada en backend.')
       form.reset()
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
@@ -61,10 +60,9 @@ export function RepairSolutionForm({ caseId }: RepairSolutionFormProps) {
         <Input label="Horas de trabajo" min={0} name="laborHours" type="number" />
         <Input label="Costo estimado" min={0} name="estimatedCost" type="number" />
         <div className="span-2 inline-actions">
-          <Button disabled={isSaving || !caseId} icon={<Save size={18} />} type="submit">
-            {isSaving ? 'Guardando...' : 'Guardar solucion'}
+          <Button disabled={!caseId} icon={<Save size={18} />} loading={isSaving} type="submit">
+            Guardar solucion
           </Button>
-          {savedMessage ? <span className="muted-text">{savedMessage}</span> : null}
         </div>
       </form>
     </Card>

@@ -7,13 +7,31 @@ import type { ShortcutPreferences } from '../../shortcuts/shortcutPreferences.ty
 import { getCurrentSessionUser } from '../../services/sessionUser'
 import { CommandPalette } from '../../components/CommandPalette'
 import { ConnectionBanner } from '../../components/ConnectionBanner/ConnectionBanner'
-import { OperationalFocusBar } from '../../components/OperationalFocusBar'
+import { ToastViewport } from '../../components/ToastViewport/ToastViewport'
 import { KeyboardShortcutsHelp } from '../../shortcuts/KeyboardShortcutsHelp'
 import { useGlobalShortcuts } from '../../shortcuts/useGlobalShortcuts'
 import { ContextBar } from '../ContextBar/ContextBar'
 import { Sidebar } from '../Sidebar/Sidebar'
 import { Topbar } from '../Topbar/Topbar'
 import styles from './MainLayout.module.css'
+
+const SIDEBAR_PINNED_KEY = 'tw.sidebar.pinnedOpen'
+
+function readSidebarPinnedPreference(): boolean {
+  try {
+    return window.localStorage.getItem(SIDEBAR_PINNED_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
+
+function writeSidebarPinnedPreference(value: boolean) {
+  try {
+    window.localStorage.setItem(SIDEBAR_PINNED_KEY, String(value))
+  } catch {
+    // localStorage no disponible (modo privado/SSR): la preferencia no persiste.
+  }
+}
 
 export function MainLayout() {
   const location = useLocation()
@@ -22,6 +40,9 @@ export function MainLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false)
   const [isSidebarKeyboardExpanded, setIsSidebarKeyboardExpanded] = useState(false)
+  // Preferencia persistida del usuario: mantener el menu de escritorio fijo y
+  // expandido (en vez del riel que se expande solo al pasar el mouse).
+  const [isSidebarPinnedOpen, setIsSidebarPinnedOpen] = useState(readSidebarPinnedPreference)
   const [sidebarSearchFocusSignal, setSidebarSearchFocusSignal] = useState(0)
   const [globalSearchFocusSignal, setGlobalSearchFocusSignal] = useState(0)
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false)
@@ -33,7 +54,24 @@ export function MainLayout() {
 
   const isSidebarPinned = isDesktop
   const isSidebarVisible = isSidebarPinned || isSidebarOpen
-  const isSidebarCollapsed = isSidebarPinned && !isSidebarHovered && !isSidebarKeyboardExpanded
+  const isSidebarCollapsed = isSidebarPinned && !isSidebarHovered && !isSidebarKeyboardExpanded && !isSidebarPinnedOpen
+
+  // En mobile/drawer, Escape cierra el menu lateral.
+  useEffect(() => {
+    if (isDesktop || !isSidebarOpen) {
+      return undefined
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isDesktop, isSidebarOpen])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 881px)')
@@ -52,7 +90,12 @@ export function MainLayout() {
 
   const toggleSidebar = () => {
     if (isDesktop) {
-      setIsSidebarKeyboardExpanded((current) => !current)
+      // En escritorio el boton fija/suelta el menu de forma persistente.
+      setIsSidebarPinnedOpen((current) => {
+        const next = !current
+        writeSidebarPinnedPreference(next)
+        return next
+      })
     } else {
       setIsSidebarOpen((current) => !current)
     }
@@ -197,7 +240,6 @@ export function MainLayout() {
           shortcutPreferences={shortcutPreferences}
         />
         <ContextBar />
-        <OperationalFocusBar />
         <main className={styles.content}>
           <Outlet />
         </main>
@@ -215,6 +257,7 @@ export function MainLayout() {
         open={shortcutHelpOpen}
         preferences={shortcutPreferences}
       />
+      <ToastViewport />
     </div>
   )
 }

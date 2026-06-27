@@ -11,6 +11,7 @@ import { useResourceItem } from '../../../shared/hooks/useResourceItem'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import { formatDate } from '../../../shared/utils/formatDate'
 import { QuoteCommunicationsPanel } from '../../communications/components/QuoteCommunicationsPanel'
@@ -20,6 +21,7 @@ import type { Customer } from '../../customers/types/customer.types'
 import type { CustomerCreditQuoteReference } from '../../customers/utils/customerPricing'
 import { QuoteItemsTable } from '../components/QuoteItemsTable'
 import { QuoteStatusBadge } from '../components/QuoteStatusBadge'
+import { QUOTE_STATUS_LABELS } from '../constants/quoteStatus.constants'
 import { quotesMock } from '../mocks/quotes.mock'
 import { changeWorkshopQuoteStatus } from '../services/quotes.service'
 import type { Quote, QuoteStatus } from '../types/quote.types'
@@ -85,6 +87,7 @@ export function QuoteDetailPage() {
       )
 
       setLocalQuote(updatedQuote)
+      toast.success('Cotizacion actualizada', `${updatedQuote.quoteNumber} cambio a estado ${QUOTE_STATUS_LABELS[status] ?? status}.`)
     } catch (error) {
       setActionError(getApiErrorMessage(error))
     } finally {
@@ -112,32 +115,32 @@ export function QuoteDetailPage() {
             <div className="inline-actions">
               {visibleQuote.status === 'DRAFT' ? (
                 <Button
-                  disabled={isSaving}
                   icon={<Send size={18} />}
+                  loading={isSaving}
                   onClick={() => void handleStatusChange('SENT')}
                   type="button"
                 >
-                  {isSaving ? 'Enviando...' : 'Enviar a aprobacion'}
+                  Enviar a aprobacion
                 </Button>
               ) : null}
               {visibleQuote.status === 'SENT' ? (
                 <>
                   <Button
-                    disabled={isSaving}
                     icon={<CheckCircle2 size={18} />}
+                    loading={isSaving}
                     onClick={() => void handleStatusChange('APPROVED')}
                     type="button"
                   >
-                    {isSaving ? 'Aprobando...' : 'Aprobar'}
+                    Aprobar
                   </Button>
                   <Button
-                    disabled={isSaving}
                     icon={<XCircle size={18} />}
+                    loading={isSaving}
                     onClick={() => void handleStatusChange('REJECTED')}
                     type="button"
                     variant="danger"
                   >
-                    {isSaving ? 'Rechazando...' : 'Rechazar'}
+                    Rechazar
                   </Button>
                 </>
               ) : null}

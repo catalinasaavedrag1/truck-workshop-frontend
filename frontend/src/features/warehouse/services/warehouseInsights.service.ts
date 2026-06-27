@@ -3,19 +3,11 @@ import { casesMock } from '../../../mocks/cases.mock'
 import { partsMock } from '../../../mocks/parts.mock'
 import type { Part } from '../../parts/types/part.types'
 import type { BadgeTone } from '../../../shared/components/Badge/Badge'
-import { purchaseOrdersMock, purchaseRequestsMock } from '../../purchase-orders/mocks/purchaseOrders.mock'
+import { purchaseOrdersMock } from '../../purchase-orders/mocks/purchaseOrders.mock'
 import type { PurchaseOrder, PurchaseOrderStatus } from '../../purchase-orders/types/purchaseOrder.types'
 import type { WorkshopCase } from '../../workshop-cases/types/workshopCase.types'
 import { warehouseStockMock } from '../mocks/warehouse.mock'
 import type { StockStatus } from '../types/warehouse.types'
-
-export interface WarehouseMetric {
-  id: string
-  label: string
-  value: string
-  helper: string
-  tone: BadgeTone
-}
 
 export interface WarehouseDemandRow {
   id: string
@@ -128,40 +120,6 @@ function requiredQuantityForSku(sku: string, workshopCases = casesMock) {
         .reduce((partTotal, part) => partTotal + part.quantity, 0),
     0,
   )
-}
-
-export function getWarehouseMetrics(
-  stockItems = warehouseStockMock,
-  workshopCases = casesMock,
-  purchaseOrders = purchaseOrdersMock,
-): WarehouseMetric[] {
-  const totalUnits = stockItems.reduce((total, item) => total + item.quantity, 0)
-  const lowStock = stockItems.filter((item) => item.status === 'low-stock').length
-  const outOfStock = stockItems.filter((item) => item.status === 'out-of-stock').length
-  const casesBlocked = workshopCases.filter((item) => item.requiredParts.some((part) => part.requiresPurchase)).length
-  const pendingRequests = purchaseRequestsMock.filter((request) => request.status === 'open').length
-  const pendingPurchaseAmount = purchaseOrders
-    .filter((order) => !['RECEIVED', 'CANCELLED'].includes(order.status))
-    .reduce((total, order) => total + order.totalEstimated, 0)
-  const stockValue = stockItems.reduce((total, stockItem) => {
-    const part = partsMock.find((item) => item.sku === stockItem.sku)
-    return total + stockItem.quantity * (part?.unitCost || 0)
-  }, 0)
-
-  return [
-    { id: 'units', label: 'Unidades ubicadas', value: String(totalUnits), helper: 'Stock fisico con ubicacion', tone: 'info' },
-    { id: 'low', label: 'Bajo minimo', value: String(lowStock), helper: 'Reponer antes de bloquear casos', tone: lowStock > 0 ? 'warning' : 'success' },
-    { id: 'out', label: 'Sin stock', value: String(outOfStock), helper: 'No se puede entregar a taller', tone: outOfStock > 0 ? 'danger' : 'success' },
-    { id: 'blocked', label: 'Casos bloqueados', value: String(casesBlocked), helper: 'Requieren compra o recepcion', tone: casesBlocked > 0 ? 'danger' : 'success' },
-    { id: 'requests', label: 'Solicitudes abiertas', value: String(pendingRequests), helper: 'Pendientes de convertir en OC', tone: pendingRequests > 0 ? 'warning' : 'success' },
-    {
-      id: 'value',
-      label: 'Valor stock',
-      value: new Intl.NumberFormat('es-CL', { currency: 'CLP', maximumFractionDigits: 0, notation: 'compact', style: 'currency' }).format(stockValue),
-      helper: `OC pendientes: ${new Intl.NumberFormat('es-CL', { currency: 'CLP', maximumFractionDigits: 0, notation: 'compact', style: 'currency' }).format(pendingPurchaseAmount)}`,
-      tone: 'neutral',
-    },
-  ]
 }
 
 export function getWarehouseDemandRows(workshopCases = casesMock): WarehouseDemandRow[] {

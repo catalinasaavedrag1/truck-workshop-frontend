@@ -8,6 +8,8 @@ import type { AppNavigationGroup, AppNavigationItem } from '../../../config/app.
 import { getCurrentSessionUser } from '../../services/sessionUser'
 import { getSidebarIcon } from './sidebarIcons'
 import { SidebarSection } from './components/SidebarSection'
+import { useSidebarBadges } from './useSidebarBadges'
+import type { SidebarBadge } from './useSidebarBadges'
 import {
   isNavigationPathActive,
   matchesNavigationQuery,
@@ -44,6 +46,7 @@ export function Sidebar({
 }: SidebarProps) {
   const location = useLocation()
   const sessionUser = getCurrentSessionUser()
+  const badges = useSidebarBadges()
   const searchInputRef = useRef<HTMLInputElement>(null)
   const [query, setQuery] = useState('')
   const [expandedGroupLabels, setExpandedGroupLabels] = useState<Record<string, boolean>>(() =>
@@ -111,17 +114,19 @@ export function Sidebar({
                 const Icon = getSidebarIcon(item.icon)
                 const itemActive = isNavigationPathActive(currentNavigationPath, item.path)
                   || Boolean(item.children?.some((child) => isNavigationPathActive(currentNavigationPath, child.path)))
+                const railBadge = getBranchBadge(item, badges)
 
                 return (
                   <NavLink
-                    aria-label={`${group.label}: ${item.label}`}
+                    aria-label={railBadge ? `${group.label}: ${item.label} (${railBadge.label})` : `${group.label}: ${item.label}`}
                     className={[styles.railLink, itemActive ? styles.active : ''].filter(Boolean).join(' ')}
                     key={item.path}
                     onClick={onNavigate}
-                    title={`${group.label} / ${item.label}`}
+                    title={railBadge ? `${group.label} / ${item.label} - ${railBadge.label}` : `${group.label} / ${item.label}`}
                     to={item.path}
                   >
                     {createElement(Icon, { 'aria-hidden': true, size: 22 })}
+                    {railBadge ? <span className={[styles.railDot, RAIL_DOT_TONE[railBadge.tone]].join(' ')} /> : null}
                     <span className={styles.srOnly}>{item.label}</span>
                   </NavLink>
                 )
@@ -203,6 +208,7 @@ export function Sidebar({
           <div className={styles.menuTree}>
             {appConfig.navigationGroups.map((group) => (
               <SidebarSection
+                badges={badges}
                 collapsible={isNavigationGroupCollapsible(group)}
                 expanded={expandedGroupLabels[group.label] ?? true}
                 expandedItemPaths={expandedItemPaths}
@@ -228,6 +234,24 @@ export function Sidebar({
       </Link>
     </aside>
   )
+}
+
+const RAIL_DOT_TONE: Record<string, string> = {
+  info: styles.navBadgeInfo,
+  warning: styles.navBadgeWarning,
+  danger: styles.navBadgeDanger,
+}
+
+const BADGE_SEVERITY: Record<string, number> = { danger: 3, warning: 2, info: 1 }
+
+/** Badge mas severe (con conteo > 0) entre un item y sus hijos, para el riel colapsado. */
+function getBranchBadge(item: AppNavigationItem, badges: Record<string, SidebarBadge>): SidebarBadge | undefined {
+  const keys = [item.badge, ...(item.children?.map((child) => child.badge) ?? [])].filter(Boolean) as string[]
+
+  return keys
+    .map((key) => badges[key])
+    .filter((badge): badge is SidebarBadge => Boolean(badge) && badge.count > 0)
+    .sort((first, second) => (BADGE_SEVERITY[second.tone] ?? 0) - (BADGE_SEVERITY[first.tone] ?? 0))[0]
 }
 
 function getInitialExpandedGroupLabels(groups: AppNavigationGroup[]) {

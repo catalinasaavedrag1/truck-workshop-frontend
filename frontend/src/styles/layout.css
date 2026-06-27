@@ -83,20 +83,35 @@
 
 .module-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
   padding: 0 0 4px;
+  margin: 0 -2px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
   background: transparent;
   border-bottom: 1px solid var(--color-border);
 }
 
+.module-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.module-tabs::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+
 .module-tab {
   display: inline-flex;
+  flex: 0 0 auto;
   min-height: 34px;
   align-items: center;
   gap: 8px;
-  padding: 0 8px;
+  padding: 0 10px;
   color: var(--color-text-muted);
+  white-space: nowrap;
   border-bottom: 2px solid transparent;
   font-size: 0.88rem;
   font-weight: 750;

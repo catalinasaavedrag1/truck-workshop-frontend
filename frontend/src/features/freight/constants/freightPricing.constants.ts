@@ -1,7 +1,6 @@
 import type {
   CargoType,
   FreightQuoteCalculationInput,
-  FreightQuoteLineItem,
 } from '../types/freight.types'
 
 export const FREIGHT_PRICING = {
@@ -51,66 +50,4 @@ export function calculateFreightQuote(input: FreightQuoteCalculationInput) {
     unloadingCost,
     waitingCost,
   }
-}
-
-export function buildFreightQuoteLineItems(input: FreightQuoteCalculationInput): FreightQuoteLineItem[] {
-  const calculation = calculateFreightQuote(input)
-  const items: FreightQuoteLineItem[] = [
-    {
-      id: 'base-rate',
-      label: 'Tarifa base',
-      quantity: 1,
-      total: calculation.baseRate,
-      unitAmount: calculation.baseRate,
-    },
-    {
-      id: 'distance',
-      label: 'Kilometraje',
-      quantity: input.estimatedKm,
-      total: calculation.distanceCost,
-      unitAmount: calculation.kmRate,
-    },
-  ]
-
-  if (calculation.cargoTypeSurcharge > 0) {
-    items.push({
-      id: 'cargo-surcharge',
-      label: 'Recargo tipo de carga',
-      quantity: 1,
-      total: calculation.cargoTypeSurcharge,
-      unitAmount: calculation.cargoTypeSurcharge,
-    })
-  }
-
-  if (calculation.waitingCost > 0) {
-    items.push({
-      id: 'waiting',
-      label: 'Horas de espera',
-      quantity: input.waitingHours || 0,
-      total: calculation.waitingCost,
-      unitAmount: FREIGHT_PRICING.waitingHourRate,
-    })
-  }
-
-  if (calculation.loadingCost > 0) {
-    items.push({
-      id: 'loading',
-      label: 'Ayuda de carga',
-      quantity: 1,
-      total: calculation.loadingCost,
-      unitAmount: calculation.loadingCost,
-    })
-  }
-
-  if (calculation.unloadingCost > 0) {
-    items.push({
-      id: 'unloading',
-      label: 'Ayuda de descarga',
-      quantity: 1,
-      total: calculation.unloadingCost,
-      unitAmount: calculation.unloadingCost,
-    })
-  }
-
-  return items
 }

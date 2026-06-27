@@ -261,6 +261,14 @@
   padding: 14px;
 }
 
+.skeletonRow td {
+  cursor: default;
+}
+
+.table tbody tr.skeletonRow:hover td {
+  background: transparent;
+}
+
 .cellContent {
   min-width: 0;
 }

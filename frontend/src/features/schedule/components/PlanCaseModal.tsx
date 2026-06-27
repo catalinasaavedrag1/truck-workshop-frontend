@@ -8,6 +8,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Modal } from '../../../shared/components/Modal/Modal'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import type { Mechanic } from '../../mechanics/types/mechanic.types'
 import type { WorkshopBay } from '../../workshop-bays/types/workshopBay.types'
 import { planScheduleEvent } from '../services/schedule.service'
@@ -147,6 +148,7 @@ function PlanCaseForm({
 
       onScheduled(response)
       onClose()
+      toast.success('Caso agendado', 'La agenda se registro y el caso se movio a la estacion.')
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
     } finally {

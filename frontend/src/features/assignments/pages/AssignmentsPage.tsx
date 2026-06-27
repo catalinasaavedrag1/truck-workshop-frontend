@@ -9,6 +9,7 @@ import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { useModal } from '../../../shared/hooks/useModal'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { AssignmentBoard } from '../components/AssignmentBoard'
 import { AssignCaseModal } from '../components/AssignCaseModal'
 import { assignCase } from '../services/assignments.service'
@@ -57,6 +58,7 @@ export function AssignmentsPage() {
       ])
       setSelectedCaseIdOverride(savedAssignment.caseId)
       modal.close()
+      toast.success('Caso asignado', 'La asignacion se registro correctamente.')
     } catch (error) {
       setAssignmentError(getApiErrorMessage(error))
     }

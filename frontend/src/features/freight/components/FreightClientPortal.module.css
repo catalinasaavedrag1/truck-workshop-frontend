@@ -232,11 +232,6 @@
   gap: 8px;
 }
 
-.costList {
-  display: grid;
-  gap: 8px;
-}
-
 .costRow {
   display: flex;
   justify-content: space-between;

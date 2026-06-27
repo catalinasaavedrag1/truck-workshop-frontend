@@ -20,9 +20,10 @@ export const fuelPriceController = {
   }),
 
   sync: asyncHandler(async (request, response) => {
-    const result = await fuelPriceService.sync({
+    const result = await fuelPriceService.forceRefresh({
       actorName: getActorName(request, ['updatedBy', 'createdBy']),
-      force: true,
+      fuelType: request.body?.fuelType || request.query.fuelType,
+      regionCode: request.body?.regionCode || request.query.regionCode,
     })
 
     sendResponse(response, { data: result })

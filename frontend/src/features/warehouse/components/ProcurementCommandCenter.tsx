@@ -7,9 +7,7 @@ import {
   CalendarDays,
   Clock3,
   ClipboardList,
-  Command,
   FileWarning,
-  Keyboard,
   PackageCheck,
   PackageSearch,
   ReceiptText,
@@ -125,6 +123,11 @@ const tabGroups: Array<{ helper: string; label: ProcurementTabGroup }> = [
   { helper: 'OC, recepcion y documentos', label: 'Ejecucion' },
   { helper: 'Stock, proveedores y auditoria', label: 'Control' },
 ]
+
+// El panel muestra solo los montos financieros (exposicion de capital); los
+// contadores accionables ya viven en la cola de prioridades. El set completo de
+// indicadores sigue disponible en la vista Reportes.
+const DASHBOARD_HEADLINE_KPI_IDS = ['open-po', 'dead-stock', 'overstock', 'critical-value']
 
 const validTabs = new Set<ProcurementTab>(tabs.map((tab) => tab.id))
 const calendarModes: CalendarMode[] = ['Dia', 'Semana', 'Mes', 'Timeline operativo']
@@ -893,56 +896,6 @@ function ActiveViewGuide({
   )
 }
 
-function ProcurementCommandBar({
-  onClearSearch,
-  onFocusSearch,
-  onTabChange,
-}: {
-  onClearSearch: () => void
-  onFocusSearch: () => void
-  onTabChange: (tab: ProcurementTab) => void
-}) {
-  const commands = [
-    { hint: 'Alt+O', label: 'Nueva OC', to: ROUTES.purchaseOrderNew },
-    { hint: 'Alt+S', label: 'Solicitudes', tab: 'requests' as const },
-    { hint: 'Alt+R', label: 'Recepcion', tab: 'receipts' as const },
-    { hint: 'Alt+P', label: 'Proveedores', tab: 'suppliers' as const },
-    { hint: 'Alt+A', label: 'Auditoria', tab: 'audit' as const },
-  ]
-
-  return (
-    <div className={styles.procurementCommandBar}>
-      <div className={styles.commandCopy}>
-        <Command aria-hidden size={16} />
-        <span>Centro de control</span>
-        <button onClick={onFocusSearch} type="button">
-          <Keyboard aria-hidden size={14} />
-          Ctrl K busqueda
-        </button>
-      </div>
-      <div className={styles.commandActions}>
-        {commands.map((command) =>
-          command.to ? (
-            <Link className={styles.commandButton} key={command.label} to={command.to}>
-              <span>{command.label}</span>
-              <kbd>{command.hint}</kbd>
-            </Link>
-          ) : (
-            <button className={styles.commandButton} key={command.label} onClick={() => onTabChange(command.tab)} type="button">
-              <span>{command.label}</span>
-              <kbd>{command.hint}</kbd>
-            </button>
-          ),
-        )}
-        <button className={styles.commandButton} onClick={onClearSearch} type="button">
-          <span>Limpiar foco</span>
-          <kbd>Esc</kbd>
-        </button>
-      </div>
-    </div>
-  )
-}
-
 function ProcurementFocusFilters({
   onQueryChange,
   query,
@@ -1397,8 +1350,8 @@ export function ProcurementCommandCenter({
       <Card>
         <div className={styles.procurementHero}>
           <div>
-            <span className="muted-text">Flujo operacional</span>
-            <h2>Demanda detectada {'>'} decision {'>'} OC {'>'} recepcion {'>'} stock actualizado {'>'} auditoria</h2>
+            <span className="muted-text">Centro de abastecimiento</span>
+            <h2>Que comprar, que frenar y que bloquea la operacion</h2>
             <p>{activeGuide.now}. {activeGuide.action}</p>
           </div>
           <label className={styles.procurementSearch}>
@@ -1414,28 +1367,27 @@ export function ProcurementCommandCenter({
         </div>
       </Card>
 
-      <ProcurementCommandBar
-        onClearSearch={clearSearch}
-        onFocusSearch={() => searchInputRef.current?.focus()}
-        onTabChange={setActiveTab}
-      />
       <ProcurementFocusFilters onQueryChange={setQuery} query={query} />
       <ProcurementPriorityQueue items={priorityQueueItems} onTabChange={setActiveTab} />
       <ProcurementFlowNav activeTab={activeTab} counts={tabCounts} onTabChange={setActiveTab} />
-      <ActiveViewGuide
-        action={activeGuide.action}
-        activeTab={activeTab}
-        count={visibleCounts[activeTab]}
-        now={activeGuide.now}
-        why={activeGuide.why}
-      />
+      {activeTab === 'dashboard' ? null : (
+        <ActiveViewGuide
+          action={activeGuide.action}
+          activeTab={activeTab}
+          count={visibleCounts[activeTab]}
+          now={activeGuide.now}
+          why={activeGuide.why}
+        />
+      )}
 
       {activeTab === 'dashboard' ? (
         <div className={styles.procurementStack}>
           <div className={styles.operationalKpiGrid}>
-            {dashboard.kpis.map((kpi) => (
-              <OperationalKpiCard key={kpi.id} kpi={kpi} />
-            ))}
+            {dashboard.kpis
+              .filter((kpi) => DASHBOARD_HEADLINE_KPI_IDS.includes(kpi.id))
+              .map((kpi) => (
+                <OperationalKpiCard key={kpi.id} kpi={kpi} />
+              ))}
           </div>
           <Card>
             <div className="stack">

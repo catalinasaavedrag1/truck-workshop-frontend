@@ -793,12 +793,13 @@
 
 .procurementFlowGroup {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
-  padding: 10px;
-  background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  padding: 0 12px 0 0;
+}
+
+.procurementFlowGroup:not(:last-child) {
+  border-right: 1px solid var(--color-border);
 }
 
 .procurementFlowHeading {

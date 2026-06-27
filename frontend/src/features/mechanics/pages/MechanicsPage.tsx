@@ -142,6 +142,7 @@ export function MechanicsPage() {
         <div className={styles.filterBar} aria-label="Filtros de mecanicos">
           {filters.map((filter) => (
             <button
+              aria-pressed={activeFilter === filter.key}
               className={[
                 styles.filterButton,
                 activeFilter === filter.key ? styles.filterButtonActive : '',

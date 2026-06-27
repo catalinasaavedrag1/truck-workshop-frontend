@@ -1,7 +1,7 @@
 import { ROUTES } from '../../../config/routes'
 import type { BadgeTone } from '../../../shared/components/Badge/Badge'
 import type { FreightRequestOperation } from '../../freight/utils/freightOperations'
-import { formatHours, getFreightRequestOperation } from '../../freight/utils/freightOperations'
+import { getFreightRequestOperation } from '../../freight/utils/freightOperations'
 import type { Customer360Alert, Customer360Snapshot } from './customer360'
 
 export type CustomerFreightColumnKey =
@@ -1062,12 +1062,4 @@ function getToneScore(tone: BadgeTone) {
   }
 
   return scores[tone]
-}
-
-export function formatCustomerDelayLabel(hours?: number) {
-  if (hours === undefined) {
-    return 'Sin atraso'
-  }
-
-  return hours < 0 ? `Retraso ${formatHours(Math.abs(hours))}` : `Faltan ${formatHours(hours)}`
 }

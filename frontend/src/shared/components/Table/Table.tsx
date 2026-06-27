@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, ChevronUp, Search, X } from 'lucide-react'
 import { Button } from '../Button/Button'
 import { ErrorState } from '../ErrorState/ErrorState'
-import { LoadingState } from '../LoadingState/LoadingState'
+import { Skeleton } from '../Skeleton/Skeleton'
 import styles from './Table.module.css'
 
 type SortDirection = 'asc' | 'desc'
@@ -432,13 +432,24 @@ export function Table<T,>({
               })}
             </tr>
           </thead>
-          <tbody>
+          <tbody aria-busy={isLoading || undefined}>
             {isLoading ? (
-              <tr>
-                <td className={styles.stateCell} colSpan={renderedColumnCount}>
-                  <LoadingState label={loadingLabel} />
-                </td>
-              </tr>
+              <>
+                <tr>
+                  <td className={styles.srOnly} colSpan={renderedColumnCount} role="status">
+                    {loadingLabel || 'Cargando datos'}
+                  </td>
+                </tr>
+                {Array.from({ length: Math.min(pageSize, 6) }).map((_, rowIndex) => (
+                  <tr className={styles.skeletonRow} key={`skeleton-${rowIndex}`}>
+                    {Array.from({ length: renderedColumnCount }).map((__, cellIndex) => (
+                      <td key={`skeleton-${rowIndex}-${cellIndex}`}>
+                        <Skeleton width={cellIndex === 0 ? '60%' : `${55 + ((cellIndex * 13) % 35)}%`} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </>
             ) : error ? (
               <tr>
                 <td className={styles.stateCell} colSpan={renderedColumnCount}>

@@ -1,5 +1,5 @@
-export const DEFAULT_PAGE_SIZE = 25
-export const MAX_PAGE_SIZE = 100
+const DEFAULT_PAGE_SIZE = 25
+const MAX_PAGE_SIZE = 100
 
 export function parsePaginationOptions(query = {}) {
   const page = clampInteger(query.page, { fallback: 1, max: Number.MAX_SAFE_INTEGER, min: 1 })

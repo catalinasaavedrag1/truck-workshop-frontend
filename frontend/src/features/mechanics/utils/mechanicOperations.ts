@@ -45,10 +45,6 @@ export function getAssignedCases(cases: WorkshopCase[], mechanicId: string) {
   })
 }
 
-export function getActiveAssignedCases(cases: WorkshopCase[], mechanicId: string) {
-  return getAssignedCases(cases, mechanicId).filter((workshopCase) => activeCaseStatuses.has(workshopCase.status))
-}
-
 export function getMechanicScheduleEvents(events: ScheduleEvent[], mechanicId: string) {
   return events
     .filter((event) => event.mechanicId === mechanicId)

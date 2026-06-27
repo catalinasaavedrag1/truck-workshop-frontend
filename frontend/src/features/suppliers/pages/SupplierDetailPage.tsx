@@ -12,6 +12,7 @@ import { useResourceItem } from '../../../shared/hooks/useResourceItem'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatDate } from '../../../shared/utils/formatDate'
 import { formatRut } from '../../../shared/utils/rut'
 import { PurchaseOrderTable } from '../../purchase-orders/components/PurchaseOrderTable'
@@ -62,6 +63,7 @@ export function SupplierDetailPage() {
 
     try {
       await deleteSupplier(supplier.id)
+      toast.success('Proveedor eliminado', `${supplier.name} fue dado de baja.`)
       navigate(ROUTES.suppliers)
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))

@@ -1,7 +1,5 @@
-import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import type {
   FleetAvailabilityItem,
-  FleetMetric,
   FleetTruck,
   TruckHealthScore,
   TruckTimelineEvent,
@@ -293,33 +291,4 @@ export const truckHealthScoresMock: TruckHealthScore[] = [
     ],
     summary: 'Bloqueado para operacion hasta regularizar riesgo documental y seguridad.',
   },
-]
-
-export const fleetMetricsMock: FleetMetric[] = [
-  { label: 'Total camiones', value: String(fleetTrucksMock.length), helper: 'Flota activa registrada' },
-  {
-    label: 'Disponibles',
-    value: String(fleetTrucksMock.filter((truck) => truck.operationalStatus === 'AVAILABLE').length),
-    helper: 'Pueden asignarse hoy',
-  },
-  {
-    label: 'En ruta',
-    value: String(fleetTrucksMock.filter((truck) => truck.operationalStatus === 'ON_ROUTE').length),
-    helper: 'Con flete activo',
-  },
-  {
-    label: 'En taller',
-    value: String(fleetTrucksMock.filter((truck) => truck.operationalStatus === 'IN_WORKSHOP').length),
-    helper: 'Diagnostico o reparacion',
-  },
-  {
-    label: 'Bloqueados',
-    value: String(fleetTrucksMock.filter((truck) => truck.operationalStatus === 'BLOCKED').length),
-    helper: 'No aptos para despacho',
-  },
-  { label: 'Documentos vencidos', value: '1', helper: 'Requieren regularizacion' },
-  { label: 'Mantenciones criticas', value: '2', helper: 'Vencidas o a menos de 1.000 km' },
-  { label: 'Incidentes abiertos', value: '3', helper: 'Con seguimiento activo' },
-  { label: 'Costo mensual flota', value: formatCurrency(18650000), helper: 'Combustible, taller y permisos' },
-  { label: 'Health score prom.', value: '66/100', helper: 'Promedio operacional' },
 ]

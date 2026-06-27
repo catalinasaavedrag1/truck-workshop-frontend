@@ -41,9 +41,6 @@ export const incidentStatusTones: Record<IncidentStatus, BadgeTone> = {
   CLOSED: 'neutral',
 }
 
-export const incidentTypeOptions: Array<{ label: string; value: IncidentType }> = Object.entries(incidentTypeLabels)
-  .map(([value, label]) => ({ label, value: value as IncidentType }))
-
 export const incidentSeverityOptions: Array<{ label: string; value: IncidentSeverity }> = Object.entries(incidentSeverityLabels)
   .map(([value, label]) => ({ label, value: value as IncidentSeverity }))
 

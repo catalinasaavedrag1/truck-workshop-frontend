@@ -23,6 +23,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { createResource } from '../../../shared/services/resourceApi'
+import { toast } from '../../../shared/services/toastStore'
 import { driversMock } from '../../drivers/mocks/drivers.mock'
 import { fleetTrucksMock } from '../../fleet/mocks/fleet.mock'
 import { freightRequestsMock } from '../../freight/mocks/freight.mock'
@@ -51,7 +52,6 @@ export function DepartureChecklistForm() {
   const [freightId, setFreightId] = useState(defaultFreight?.id ?? '')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
   const blockingItems = departureChecklistItems.filter((item) => item.critical && !checks[item.key])
   const observedItems = departureChecklistItems.filter((item) => !item.critical && !checks[item.key])
   const failedItems = departureChecklistItems.filter((item) => !checks[item.key])
@@ -79,7 +79,6 @@ export function DepartureChecklistForm() {
     const formData = new FormData(form)
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -102,7 +101,11 @@ export function DepartureChecklistForm() {
         waterOk: checks.waterOk,
       })
 
-      setSavedMessage(blocked ? 'Salida guardada como bloqueada.' : 'Salida registrada y conectada al backend.')
+      if (blocked) {
+        toast.warning('Salida bloqueada', 'Se registro la inspeccion con bloqueo critico pendiente.')
+      } else {
+        toast.success('Salida registrada', 'La inspeccion de salida quedo guardada en backend.')
+      }
       form.reset()
       setChecks(initialChecks)
       setTruckId(defaultTruck?.id ?? '')
@@ -271,12 +274,10 @@ export function DepartureChecklistForm() {
             <textarea id="departureObservations" name="observations" placeholder="Detalle de falla, bloqueo, responsable o autorizacion excepcional" />
           </label>
           <div className={styles.formActions}>
-            <Button disabled={isSaving} type="submit" variant={blocked ? 'danger' : 'primary'}>
-              {isSaving ? 'Guardando...' : blocked ? 'Guardar salida bloqueada' : 'Autorizar salida'}
+            <Button loading={isSaving} type="submit" variant={blocked ? 'danger' : 'primary'}>
+              {blocked ? 'Guardar salida bloqueada' : 'Autorizar salida'}
             </Button>
-            {savedMessage ? (
-              <span className={styles.muted}>{savedMessage}</span>
-            ) : blocked ? (
+            {blocked ? (
               <span className={styles.muted}>Corregir antes de despachar: {blockingItems.map((item) => item.label).join(', ')}.</span>
             ) : observedItems.length > 0 ? (
               <span className={styles.muted}>Sale con seguimiento: {observedItems.map((item) => item.label).join(', ')}.</span>

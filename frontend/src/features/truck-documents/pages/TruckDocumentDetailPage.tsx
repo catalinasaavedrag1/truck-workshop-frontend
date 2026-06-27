@@ -4,6 +4,7 @@ import { AlertCircle, Trash2 } from 'lucide-react'
 import { ROUTES } from '../../../config/routes'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
+import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
 import { EmptyState } from '../../../shared/components/EmptyState/EmptyState'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { PageHeader } from '../../../shared/components/PageHeader/PageHeader'
@@ -11,6 +12,7 @@ import { useResourceItem } from '../../../shared/hooks/useResourceItem'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatDate } from '../../../shared/utils/formatDate'
 import { fleetTrucksMock } from '../../fleet/mocks/fleet.mock'
 import type { FleetTruck } from '../../fleet/types/fleet.types'
@@ -37,6 +39,7 @@ export function TruckDocumentDetailPage() {
   const [localDocument, setLocalDocument] = useState<TruckDocument | undefined>()
   const [errorMessage, setErrorMessage] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
   const visibleDocument = localDocument?.id === documentId ? localDocument : document
   const visibleDocuments = useMemo(
     () => truckDocuments.map((item) => (item.id === visibleDocument?.id ? visibleDocument : item)),
@@ -60,9 +63,11 @@ export function TruckDocumentDetailPage() {
 
     try {
       await deleteTruckDocument(visibleDocument.id)
+      toast.success('Documento eliminado', 'El documento fue removido del registro de la unidad.')
       navigate(ROUTES.truckDocuments)
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
+      setIsDeleteConfirmOpen(false)
     } finally {
       setIsDeleting(false)
     }
@@ -111,19 +116,28 @@ export function TruckDocumentDetailPage() {
               </div>
             </dl>
             <Button
-              disabled={isDeleting}
               icon={<Trash2 size={18} />}
-              onClick={() => void handleDelete()}
+              onClick={() => setIsDeleteConfirmOpen(true)}
               type="button"
               variant="danger"
             >
-              {isDeleting ? 'Eliminando...' : 'Eliminar documento'}
+              Eliminar documento
             </Button>
           </div>
         </Card>
         <TruckDocumentTimeline documents={relatedTruckDocuments} />
       </div>
       <TruckDocumentForm document={visibleDocument} onSaved={setLocalDocument} trucks={fleetTrucks} />
+      <ConfirmModal
+        confirmLabel="Eliminar documento"
+        description={`Esta accion elimina ${truckDocumentTypeLabels[visibleDocument.documentType]} de ${truck?.plate || visibleDocument.truckId}. No se puede deshacer.`}
+        isConfirming={isDeleting}
+        onCancel={() => setIsDeleteConfirmOpen(false)}
+        onConfirm={() => void handleDelete()}
+        open={isDeleteConfirmOpen}
+        title="Eliminar documento"
+        tone="danger"
+      />
     </PageContainer>
   )
 }

@@ -10,6 +10,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { createResource } from '../../../shared/services/resourceApi'
+import { toast } from '../../../shared/services/toastStore'
 import type { FleetTruck } from '../../fleet/types/fleet.types'
 import styles from './TruckModule.module.css'
 
@@ -61,6 +62,7 @@ export function TruckForm() {
         year,
       })
 
+      toast.success('Camion creado', `${truck.plate} quedo registrado en la flota.`)
       navigate(ROUTES.fleetTruckDetail(truck.id))
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
@@ -115,8 +117,8 @@ export function TruckForm() {
           <Button disabled={isSaving} icon={<RotateCcw size={18} />} onClick={() => setErrorMessage('')} type="reset" variant="secondary">
             Limpiar
           </Button>
-          <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
-            {isSaving ? 'Guardando...' : 'Guardar camion'}
+          <Button icon={<Save size={18} />} loading={isSaving} type="submit">
+            Guardar camion
           </Button>
         </div>
       </form>

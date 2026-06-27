@@ -9,6 +9,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import {
   TIRE_POSITION_LABELS,
   TIRE_REMOVAL_REASON_OPTIONS,
@@ -36,7 +37,6 @@ export function TireRemovalForm() {
   const [reason, setReason] = useState<TireRemovalReason | 'all'>('all')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
   const selectedTireId = installedTires.some((tire) => tire.id === tireId)
     ? tireId
     : installedTires[0]?.id || ''
@@ -79,7 +79,6 @@ export function TireRemovalForm() {
     const formData = new FormData(event.currentTarget)
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -90,7 +89,7 @@ export function TireRemovalForm() {
         removedAt: toIsoDate(String(formData.get('removedAt') || '')) || new Date().toISOString(),
       })
 
-      setSavedMessage('Retiro registrado: el backend calculo km usados, costo/km y costo del camion.')
+      toast.success('Retiro registrado', 'El backend calculo km usados, costo/km y costo del camion.')
       setRemovedTireIds((current) => [...current, selectedTireId])
       setTireId('')
       setOdometerAtRemoval('')
@@ -172,14 +171,14 @@ export function TireRemovalForm() {
         ) : null}
         <div className="span-2 stack">
           <Button
-            disabled={errors.length > 0 || isSaving || isLoading}
+            disabled={errors.length > 0 || isLoading}
             icon={<Save size={18} />}
+            loading={isSaving}
             type="submit"
           >
-            {isSaving ? 'Registrando...' : isLoading ? 'Cargando datos...' : 'Registrar retiro'}
+            {isLoading ? 'Cargando datos...' : 'Registrar retiro'}
           </Button>
           {errors.length > 0 ? <p className="muted-text">{errors[0]}</p> : null}
-          {savedMessage ? <p className="muted-text">{savedMessage}</p> : null}
         </div>
       </form>
     </Card>

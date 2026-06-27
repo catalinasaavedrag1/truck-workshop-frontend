@@ -1,3 +1,4 @@
+import { Tabs } from '../../../shared/components/Tabs/Tabs'
 import type { TruckCostPeriodMode } from '../types/truckCosts.types'
 import styles from './TruckCostsModule.module.css'
 
@@ -20,14 +21,16 @@ export function TruckCostPeriodControls({
 }: TruckCostPeriodControlsProps) {
   return (
     <div className={styles.costHeaderActions}>
-      <div className={styles.segmented} role="group" aria-label="Periodo de costos">
-        <button data-active={period === 'monthly'} onClick={() => onPeriodChange('monthly')} type="button">
-          Mensual
-        </button>
-        <button data-active={period === 'annual'} onClick={() => onPeriodChange('annual')} type="button">
-          Anual
-        </button>
-      </div>
+      <Tabs
+        activeId={period}
+        ariaLabel="Periodo de costos"
+        items={[
+          { id: 'monthly', label: 'Mensual' },
+          { id: 'annual', label: 'Anual' },
+        ]}
+        onChange={(id) => onPeriodChange(id as TruckCostPeriodMode)}
+        variant="segmented"
+      />
       {period === 'monthly' ? (
         <input
           className={styles.periodInput}

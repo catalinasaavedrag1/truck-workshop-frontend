@@ -1,19 +1,10 @@
-import { createResource, deleteResource, listResource, updateResource } from '../../../shared/services/resourceApi'
+import { createResource, deleteResource, updateResource } from '../../../shared/services/resourceApi'
 import { httpClient } from '../../../shared/services/httpClient'
 import { getActorHeaders } from '../../../shared/services/sessionUser'
 import type { ApiResponse } from '../../../shared/types/api.types'
-import {
-  communicationConversationsMock,
-  communicationMessagesMock,
-  communicationProviderConfigsMock,
-  communicationProfilesMock,
-  communicationQuoteLinksMock,
-} from '../mocks/communications.mock'
 import type {
   CommunicationConversation,
   CommunicationConversationPayload,
-  CommunicationMessage,
-  CommunicationMessagePayload,
   CommunicationProviderConfig,
   CommunicationProviderConfigPayload,
   CommunicationProviderTestResponse,
@@ -25,26 +16,12 @@ import type {
   CommunicationSendResponse,
 } from '../types/communication.types'
 
-export async function getCommunicationProfiles() {
-  return listResource<CommunicationProfile>('/communications/profiles', communicationProfilesMock, {
-    order: 'asc',
-    sort: 'name',
-  })
-}
-
 export async function createCommunicationProfile(payload: CommunicationProfilePayload) {
   return createResource<CommunicationProfile, CommunicationProfilePayload>('/communications/profiles', payload)
 }
 
 export async function updateCommunicationProfile(profileId: string, payload: CommunicationProfilePayload) {
   return updateResource<CommunicationProfile, CommunicationProfilePayload>('/communications/profiles', profileId, payload)
-}
-
-export async function getCommunicationProviderConfigs() {
-  return listResource<CommunicationProviderConfig>('/communications/provider-configs', communicationProviderConfigsMock, {
-    order: 'desc',
-    sort: 'updatedAt',
-  })
 }
 
 export async function createCommunicationProviderConfig(payload: CommunicationProviderConfigPayload) {
@@ -86,13 +63,6 @@ export async function testCommunicationProviderConfig(configId: string) {
   return response.data.data
 }
 
-export async function getCommunicationConversations() {
-  return listResource<CommunicationConversation>('/communications/conversations', communicationConversationsMock, {
-    order: 'desc',
-    sort: 'lastMessageAt',
-  })
-}
-
 export async function createCommunicationConversation(payload: CommunicationConversationPayload) {
   return createResource<CommunicationConversation, CommunicationConversationPayload>('/communications/conversations', payload)
 }
@@ -105,30 +75,12 @@ export async function updateCommunicationConversation(conversationId: string, pa
   )
 }
 
-export async function getCommunicationMessages() {
-  return listResource<CommunicationMessage>('/communications/messages', communicationMessagesMock, {
-    order: 'asc',
-    sort: 'sentAt',
-  })
-}
-
-export async function createCommunicationMessage(payload: CommunicationMessagePayload) {
-  return createResource<CommunicationMessage, CommunicationMessagePayload>('/communications/messages', payload)
-}
-
 export async function sendCommunicationMessage(payload: CommunicationSendPayload) {
   const response = await httpClient.post<ApiResponse<CommunicationSendResponse>>('/communications/send', payload, {
     headers: getActorHeaders(),
   })
 
   return response.data.data
-}
-
-export async function getCommunicationQuoteLinks() {
-  return listResource<CommunicationQuoteLink>('/communications/quote-links', communicationQuoteLinksMock, {
-    order: 'desc',
-    sort: 'createdAt',
-  })
 }
 
 export async function createCommunicationQuoteLink(payload: CommunicationQuoteLinkPayload) {

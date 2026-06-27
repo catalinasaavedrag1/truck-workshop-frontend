@@ -11,6 +11,7 @@ import { Select } from '../../../shared/components/Select/Select'
 import { Textarea } from '../../../shared/components/Textarea/Textarea'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { createResource } from '../../../shared/services/resourceApi'
+import { toast } from '../../../shared/services/toastStore'
 import { formatCurrency } from '../../../shared/utils/formatCurrency'
 import { CustomerCreditBadge } from '../../customers/components/CustomerCreditBadge'
 import { CustomerSelect } from '../../customers/components/CustomerSelect'
@@ -28,7 +29,6 @@ export function FreightRequestForm() {
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [routePlannerKey, setRoutePlannerKey] = useState(0)
-  const [savedMessage, setSavedMessage] = useState('')
   const selectedPrice = getCustomerPriceForCargo(selectedCustomer, cargoType)
 
   const handleCustomerChange = (customer: Customer | undefined, customerId: string) => {
@@ -47,7 +47,6 @@ export function FreightRequestForm() {
     const formData = new FormData(form)
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -95,7 +94,7 @@ export function FreightRequestForm() {
         weightKg: Number(formData.get('weightKg') || 0),
       })
 
-      setSavedMessage(`Solicitud ${request.requestNumber} creada en backend.`)
+      toast.success('Solicitud creada', `${request.requestNumber} quedo registrada en backend.`)
       form.reset()
       setSelectedCustomerId('')
       setSelectedCustomer(undefined)
@@ -187,10 +186,9 @@ export function FreightRequestForm() {
           placeholder="Condiciones de retiro, restricciones o ventanas horarias"
         />
         <div className="span-2 inline-actions">
-          <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
-            {isSaving ? 'Creando...' : 'Crear solicitud'}
+          <Button icon={<Save size={18} />} loading={isSaving} type="submit">
+            Crear solicitud
           </Button>
-          {savedMessage ? <span className="muted-text">{savedMessage}</span> : null}
         </div>
       </form>
     </Card>

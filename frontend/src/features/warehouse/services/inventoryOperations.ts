@@ -1,4 +1,3 @@
-import type { BadgeTone } from '../../../shared/components/Badge/Badge'
 import type { Part } from '../../parts/types/part.types'
 import type { PurchaseOrder } from '../../purchase-orders/types/purchaseOrder.types'
 import type { Supplier } from '../../suppliers/types/supplier.types'
@@ -7,14 +6,6 @@ import { getWarehouseStockInsightRows } from './warehouseInsights.service'
 import type { WarehouseLocation, WarehouseMovement, WarehouseStockItem } from '../types/warehouse.types'
 
 const openPurchaseOrderStatuses = new Set(['APPROVED', 'ORDERED', 'PARTIALLY_RECEIVED', 'REQUESTED'])
-
-export interface InventoryAction {
-  helper: string
-  id: string
-  label: string
-  targetLabel: string
-  tone: BadgeTone
-}
 
 export interface InventoryCategoryReportRow {
   category: string
@@ -30,52 +21,6 @@ export interface InventorySupplierReportRow {
   averageDeliveryDays: number
   rating: number
   supplierName: string
-}
-
-export function getInventoryActions({
-  demandRows,
-  purchaseOrders,
-  stockItems,
-}: {
-  demandRows: WarehouseDemandRow[]
-  purchaseOrders: PurchaseOrder[]
-  stockItems: WarehouseStockItem[]
-}): InventoryAction[] {
-  const outOfStock = stockItems.filter((item) => item.status === 'out-of-stock').length
-  const lowStock = stockItems.filter((item) => item.status === 'low-stock').length
-  const blockedCases = demandRows.filter((row) => row.purchaseRequiredParts > 0 || row.waitingReceptionParts > 0).length
-  const openOrders = purchaseOrders.filter((order) => openPurchaseOrderStatuses.has(order.status)).length
-
-  return [
-    {
-      helper: 'Casos de taller que no avanzan por falta de repuesto o recepcion pendiente.',
-      id: 'blocked-cases',
-      label: `${blockedCases} casos bloqueados`,
-      targetLabel: 'Resolver demanda taller',
-      tone: blockedCases > 0 ? 'danger' : 'success',
-    },
-    {
-      helper: 'SKUs sin unidades disponibles. Revisar OC activa o generar compra.',
-      id: 'out-stock',
-      label: `${outOfStock} sin stock`,
-      targetLabel: 'Comprar o recibir',
-      tone: outOfStock > 0 ? 'danger' : 'success',
-    },
-    {
-      helper: 'SKUs bajo minimo. Conviene reponer antes de que bloqueen taller.',
-      id: 'low-stock',
-      label: `${lowStock} bajo minimo`,
-      targetLabel: 'Reponer minimo',
-      tone: lowStock > 0 ? 'warning' : 'success',
-    },
-    {
-      helper: 'Ordenes no cerradas que deben seguirse por fecha de entrega.',
-      id: 'open-orders',
-      label: `${openOrders} OC activas`,
-      targetLabel: 'Seguimiento compras',
-      tone: openOrders > 0 ? 'info' : 'neutral',
-    },
-  ]
 }
 
 export function getInventoryCategoryReport(parts: Part[], stockItems: WarehouseStockItem[]): InventoryCategoryReportRow[] {

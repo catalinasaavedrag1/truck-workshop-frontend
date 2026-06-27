@@ -9,6 +9,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { RutInput } from '../../../shared/components/RutInput/RutInput'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatRut } from '../../../shared/utils/rut'
 import { createDriver, updateDriver } from '../services/drivers.service'
 import type { Driver, DriverStatus } from '../types/driver.types'
@@ -46,7 +47,8 @@ export function DriverForm({ driver }: DriverFormProps) {
 
     try {
       const savedDriver = driver ? await updateDriver(driver.id, payload) : await createDriver(payload)
-      navigate(driver ? ROUTES.driverDetail(savedDriver.id) : ROUTES.driverDetail(savedDriver.id))
+      toast.success(driver ? 'Chofer actualizado' : 'Chofer creado', `${savedDriver.name} se guardo correctamente.`)
+      navigate(ROUTES.driverDetail(savedDriver.id))
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error))
     } finally {
@@ -68,8 +70,8 @@ export function DriverForm({ driver }: DriverFormProps) {
       <Input defaultValue={driver?.license} label="Licencia" name="license" placeholder="A5 vigente" required />
       <Select defaultValue={driver?.status || 'active'} label="Estado" name="status" options={statusOptions} />
       <div className="span-2 inline-actions">
-        <Button disabled={isSaving} icon={<Save size={18} />} type="submit">
-          {isSaving ? 'Guardando...' : 'Guardar chofer'}
+        <Button icon={<Save size={18} />} loading={isSaving} type="submit">
+          Guardar chofer
         </Button>
         <Button disabled={isSaving} onClick={() => navigate(ROUTES.drivers)} type="button" variant="secondary">
           Cancelar

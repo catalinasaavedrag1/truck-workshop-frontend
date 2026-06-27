@@ -50,29 +50,3 @@ export function getEntityPath(type: EntityType, id?: string | null) {
 
   return routeBuilders[type]?.(id)
 }
-
-export function getEntityListPath(type: EntityType) {
-  const listRoutes: Partial<Record<EntityType, string>> = {
-    case: ROUTES.cases,
-    customer: ROUTES.customers,
-    driver: ROUTES.drivers,
-    freightQuote: ROUTES.freightQuotes,
-    freightRequest: ROUTES.freightRequests,
-    incident: ROUTES.incidents,
-    maintenancePlan: ROUTES.preventiveMaintenance,
-    mechanic: ROUTES.mechanics,
-    part: ROUTES.parts,
-    purchaseOrder: ROUTES.purchaseOrders,
-    quote: ROUTES.quotes,
-    sku: ROUTES.parts,
-    supplier: ROUTES.suppliers,
-    truck: ROUTES.fleetTrucks,
-    truckCost: ROUTES.truckCosts,
-    truckDocument: ROUTES.truckDocuments,
-    warehouseLocation: ROUTES.warehouseLocations,
-    workshopCase: ROUTES.cases,
-    workshopTruck: ROUTES.trucks,
-  }
-
-  return listRoutes[type]
-}

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ROUTES } from '../../../config/routes'
 import type { FreightAssignment, FreightQuote, FreightRequest } from '../types/freight.types'
-import { findAssignmentForRequest, getFreightPriority, getFreightRequestStage } from '../utils/freightOperations'
+import { findAssignmentForRequest, getFreightPriority } from '../utils/freightOperations'
 import styles from './FreightModule.module.css'
 
 interface FreightOperationsSummaryProps {
@@ -53,14 +53,6 @@ export function FreightOperationsSummary({ assignments, quotes, requests }: Frei
     },
   ]
 
-  const counts = requests.reduce(
-    (current, request) => ({
-      ...current,
-      [getFreightRequestStage(request)]: (current[getFreightRequestStage(request)] ?? 0) + 1,
-    }),
-    {} as Record<string, number>,
-  )
-
   return (
     <section className={styles.flowPanel}>
       <div className={styles.flowHeader}>
@@ -78,43 +70,6 @@ export function FreightOperationsSummary({ assignments, quotes, requests }: Frei
           </Link>
         ))}
       </div>
-      <div className={styles.flowSteps}>
-        {['request', 'quote', 'approval', 'assignment', 'dispatch', 'tracking', 'closure'].map((stage) => (
-          <div className={styles.flowStep} key={stage}>
-            <span className={styles.flowStepCount}>{counts[stage] ?? 0}</span>
-            <strong>{stageLabel(stage)}</strong>
-            <span>{stageHint(stage)}</span>
-          </div>
-        ))}
-      </div>
     </section>
   )
-}
-
-function stageLabel(stage: string) {
-  const labels: Record<string, string> = {
-    approval: 'Aprobacion',
-    assignment: 'Asignacion',
-    closure: 'Cierre',
-    dispatch: 'Despacho',
-    quote: 'Cotizacion',
-    request: 'Solicitud',
-    tracking: 'Seguimiento',
-  }
-
-  return labels[stage] || stage
-}
-
-function stageHint(stage: string) {
-  const hints: Record<string, string> = {
-    approval: 'cliente decide',
-    assignment: 'camion y chofer',
-    closure: 'entrega final',
-    dispatch: 'salida programada',
-    quote: 'tarifa activa',
-    request: 'datos base',
-    tracking: 'en ruta',
-  }
-
-  return hints[stage] || ''
 }

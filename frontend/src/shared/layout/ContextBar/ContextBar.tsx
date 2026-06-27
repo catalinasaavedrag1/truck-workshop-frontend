@@ -1,25 +1,54 @@
 import { createElement } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { findNavigationContext, getRelatedNavigationItems } from '../../navigation/navigationContext'
 import { getSidebarIcon } from '../Sidebar/sidebarIcons'
 import styles from './ContextBar.module.css'
 
 export function ContextBar() {
   const location = useLocation()
+  const navigate = useNavigate()
   const match = findNavigationContext(`${location.pathname}${location.search}`)
+  // location.key es 'default' solo en la primera entrada del historial (no hay a
+  // donde volver). En cualquier otro caso, ofrecer "Atras" mantiene el hilo de
+  // navegacion al saltar entre modulos (ej: OC -> caso -> volver a la OC).
+  const canGoBack = location.key !== 'default'
 
-  if (!match) {
+  if (!match && !canGoBack) {
     return null
   }
 
+  const backButton = canGoBack ? (
+    <button
+      aria-label="Volver a la vista anterior"
+      className={styles.backButton}
+      onClick={() => navigate(-1)}
+      type="button"
+    >
+      <ArrowLeft aria-hidden size={15} />
+      <span>Atras</span>
+    </button>
+  ) : null
+
+  if (!match) {
+    return (
+      <section className={styles.contextBar} aria-label="Contexto operacional">
+        <div className={styles.identity}>{backButton}</div>
+      </section>
+    )
+  }
+
   const isChild = match.item.path !== match.parent.path
-  const showGroup = match.group.label !== 'Plataforma'
+  // Cada dominio nombra su item padre igual que el grupo (ej. grupo "Clientes" ->
+  // padre "Clientes"); en ese caso evitamos el breadcrumb redundante "Clientes / Clientes".
+  const showGroup = match.group.label !== 'Plataforma' && match.group.label !== match.parent.label
   const relatedItems = getRelatedNavigationItems(match)
   const sectionLabel = match.item.section
 
   return (
     <section className={styles.contextBar} aria-label="Contexto operacional">
       <div className={styles.identity}>
+        {backButton}
         <span className={styles.moduleIcon}>
           {createElement(getSidebarIcon(match.parent.icon), { 'aria-hidden': true, size: 15 })}
         </span>

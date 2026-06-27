@@ -12,6 +12,7 @@ import { LoadingState } from '../../../shared/components/LoadingState/LoadingSta
 import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { AssignCaseModal } from '../../assignments/components/AssignCaseModal'
 import type { Assignment } from '../../assignments/types/assignment.types'
 import { CaseApprovalsPanel } from '../../approvals/components/CaseApprovalsPanel'
@@ -258,6 +259,7 @@ export function WorkshopCaseDetailPage() {
       setLocalCasePatch(saved.workshopCase)
       setSelectedStageOverride(null)
       closeCaseAction()
+      toast.success('Caso asignado', 'La asignacion se registro correctamente.')
     } catch (error) {
       setActionError(getApiErrorMessage(error))
     }
@@ -274,6 +276,7 @@ export function WorkshopCaseDetailPage() {
       setLocalCasePatch(saved.workshopCase)
       setSelectedStageOverride(null)
       closeEscalation()
+      toast.warning('Caso escalado', `El caso se elevo a nivel ${saved.escalation.toLevel}.`)
     } catch (error) {
       setActionError(getApiErrorMessage(error))
     }
@@ -288,6 +291,7 @@ export function WorkshopCaseDetailPage() {
       setLocalCasePatch(updatedCase)
       setSelectedStageOverride({ caseId: workshopCase.id, stageId: 'closure' })
       closeCaseAction()
+      toast.success('Caso cerrado', 'El caso se cerro y la unidad vuelve a disponibilidad.')
     } catch (error) {
       setActionError(getApiErrorMessage(error))
     }

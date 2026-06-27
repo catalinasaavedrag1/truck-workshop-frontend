@@ -23,39 +23,43 @@ export function FuelPriceStatusCard({ compact = false, onPriceLoaded }: FuelPric
     }
   }, [fuelPrice, onPriceLoaded])
 
-  const statusTone = fuelPrice?.isOfficial ? 'success' : 'warning'
-  const lastFetched = fuelPrice?.lastFetchedAt ? formatDate(fuelPrice.lastFetchedAt) : 'Sin sincronizar'
+  // Hay un precio real (scraping web) cuando el snapshot esta OK y trae valor.
+  // Si no, mostramos el fallback estatico como "Referencial".
+  const hasLivePrice = fuelPrice?.status === 'OK' && (fuelPrice?.pricePerLiter ?? 0) > 0
+  const statusTone = hasLivePrice ? 'success' : 'warning'
+  const badgeLabel = hasLivePrice ? 'Web en vivo' : 'Referencial'
+  const lastFetched = fuelPrice?.lastFetchedAt ? formatDate(fuelPrice.lastFetchedAt) : 'Sin actualizar'
+  const rawWarning = errorMessage || fuelPrice?.errorMessage || ''
+  const warning = hasLivePrice ? '' : rawWarning || 'Precio referencial: no se pudo obtener un valor en vivo.'
 
   return (
     <Card className={compact ? styles.priceStatusCompact : styles.priceStatusCard}>
       <div className={styles.priceStatusHeader}>
         <div>
-          <p className={styles.label}>Precio petroleo</p>
-          <h2>{fuelPrice ? formatCurrency(fuelPrice.pricePerLiter) : isLoading ? 'Cargando...' : 'No disponible'}</h2>
+          <p className={styles.label}>Precio petroleo (diesel)</p>
+          <h2>{fuelPrice ? `${formatCurrency(fuelPrice.pricePerLiter)} / L` : isLoading ? 'Cargando...' : 'No disponible'}</h2>
         </div>
-        <Badge tone={statusTone}>{fuelPrice?.isOfficial ? 'CNE oficial' : 'Fallback'}</Badge>
+        <Badge tone={statusTone}>{badgeLabel}</Badge>
       </div>
       <div className={styles.priceStatusMeta}>
-        <span>{fuelPrice?.source || 'CNE / Energia Abierta'}</span>
-        <span>{fuelPrice?.regionName || 'Region Metropolitana'}</span>
-        <span>Ultima consulta: {lastFetched}</span>
-        {fuelPrice?.minutesUntilNextSync !== undefined ? <span>Proxima revision: {fuelPrice.minutesUntilNextSync} min</span> : null}
+        <span>{fuelPrice?.source || 'preciocombustible.cl'}</span>
+        <span>{fuelPrice?.regionName || 'Chile (promedio nacional)'}</span>
+        <span>Ultima actualizacion: {lastFetched}</span>
       </div>
-      {errorMessage || fuelPrice?.errorMessage ? (
-        <p className={styles.priceStatusWarning}>{errorMessage || fuelPrice?.errorMessage}</p>
-      ) : null}
+      {warning ? <p className={styles.priceStatusWarning}>{warning}</p> : null}
       <div className={styles.priceStatusActions}>
         <Button
-          disabled={isLoading || isSyncing}
           icon={<RefreshCw size={16} />}
+          loading={isSyncing}
+          disabled={isLoading}
           onClick={() => void refresh(true)}
           size="sm"
           type="button"
           variant="secondary"
         >
-          {isSyncing ? 'Sincronizando...' : 'Sincronizar CNE'}
+          Actualizar precio
         </Button>
-        <span className={styles.muted}>Cache automatico cada {fuelPrice?.syncIntervalMinutes || 15} min.</span>
+        <span className={styles.muted}>Actualizacion automatica diaria a las 06:00 (hora Chile).</span>
       </div>
     </Card>
   )

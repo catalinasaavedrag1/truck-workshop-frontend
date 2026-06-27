@@ -20,6 +20,37 @@
   white-space: nowrap;
 }
 
+.backButton {
+  display: inline-flex;
+  min-height: 27px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px 0 7px;
+  color: var(--color-text);
+  background: #f9fbfc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  font-weight: 780;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
+}
+
+.backButton:hover {
+  color: var(--color-primary-dark);
+  border-color: rgb(15 118 110 / 0.32);
+  background: #fff;
+}
+
+.backButton:focus-visible {
+  outline: 3px solid var(--color-primary-soft);
+  outline-offset: 1px;
+}
+
 .moduleIcon {
   display: inline-grid;
   width: 23px;

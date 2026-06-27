@@ -23,6 +23,7 @@ import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
 import { createResource } from '../../../shared/services/resourceApi'
+import { toast } from '../../../shared/services/toastStore'
 import { driversMock } from '../../drivers/mocks/drivers.mock'
 import { fleetTrucksMock } from '../../fleet/mocks/fleet.mock'
 import { freightRequestsMock } from '../../freight/mocks/freight.mock'
@@ -49,7 +50,6 @@ export function ArrivalChecklistForm() {
   const [newDamages, setNewDamages] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [savedMessage, setSavedMessage] = useState('')
   const hasObservation = cargoStatus !== 'ok' || newDamages
   const selectedTruck = fleetTrucksMock.find((truck) => truck.id === truckId)
   const selectedDriver = driversMock.find((driver) => driver.id === driverId)
@@ -72,7 +72,6 @@ export function ArrivalChecklistForm() {
     const formData = new FormData(form)
 
     setErrorMessage('')
-    setSavedMessage('')
     setIsSaving(true)
 
     try {
@@ -91,7 +90,11 @@ export function ArrivalChecklistForm() {
         truckId: String(formData.get('truckId') || truckId || ''),
       })
 
-      setSavedMessage(hasObservation ? 'Entrada cerrada con novedad en backend.' : 'Entrada cerrada conforme en backend.')
+      if (hasObservation) {
+        toast.warning('Entrada cerrada con novedad', 'Quedo marcada para seguimiento operacional.')
+      } else {
+        toast.success('Entrada cerrada conforme', 'El retorno quedo registrado en backend.')
+      }
       form.reset()
       setTruckId(defaultTruck?.id ?? '')
       setDriverId(defaultDriverId)
@@ -261,12 +264,10 @@ export function ArrivalChecklistForm() {
             <ChecklistEvidenceUploader slots={['Carga recibida', 'Odometro final', 'Dano si aplica', 'Firma receptor']} />
           </section>
           <div className={styles.formActions}>
-            <Button disabled={isSaving} type="submit" variant={hasObservation ? 'secondary' : 'primary'}>
-              {isSaving ? 'Guardando...' : hasObservation ? 'Cerrar con novedad' : 'Cerrar entrada conforme'}
+            <Button loading={isSaving} type="submit" variant={hasObservation ? 'secondary' : 'primary'}>
+              {hasObservation ? 'Cerrar con novedad' : 'Cerrar entrada conforme'}
             </Button>
-            {savedMessage ? (
-              <span className={styles.muted}>{savedMessage}</span>
-            ) : hasObservation ? (
+            {hasObservation ? (
               <span className={styles.muted}>La entrada quedara marcada para seguimiento operacional.</span>
             ) : (
               <span className={styles.muted}>La unidad queda lista para continuidad si no hay bloqueo externo.</span>

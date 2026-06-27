@@ -16,12 +16,3 @@ export interface PaginatedApiResponse<T> {
     totalPages: number
   }
 }
-
-export interface ApiError {
-  code: string
-  details?: unknown
-  message: string
-  path?: string
-  requestId?: string
-  statusCode?: number
-}

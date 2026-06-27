@@ -7,6 +7,7 @@ import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { Input } from '../../../shared/components/Input/Input'
 import { Select } from '../../../shared/components/Select/Select'
 import { getApiErrorMessage } from '../../../shared/services/apiErrorHandler'
+import { toast } from '../../../shared/services/toastStore'
 import { formatDate } from '../../../shared/utils/formatDate'
 import type { Driver } from '../../drivers/types/driver.types'
 import type { Truck } from '../../trucks/types/truck.types'
@@ -30,7 +31,6 @@ export function FreightAssignmentForm({ drivers, freightRequests, onSaved, truck
     [assignedRequestIds, freightRequests],
   )
   const [selectedRequestId, setSelectedRequestId] = useState(approvedRequests[0]?.id || '')
-  const [confirmedMessage, setConfirmedMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const selectedRequest = approvedRequests.find((request) => request.id === selectedRequestId) || approvedRequests[0]
@@ -65,7 +65,6 @@ export function FreightAssignmentForm({ drivers, freightRequests, onSaved, truck
 
     setIsSaving(true)
     setErrorMessage('')
-    setConfirmedMessage('')
 
     try {
       const assignment = await createFreightAssignment({
@@ -82,7 +81,7 @@ export function FreightAssignmentForm({ drivers, freightRequests, onSaved, truck
 
       onSaved?.(assignment)
       setAssignedRequestIds((current) => Array.from(new Set([...current, assignment.requestId])))
-      setConfirmedMessage('Flete programado y guardado en la base de datos.')
+      toast.success('Flete programado', `${request?.requestNumber || 'La asignacion'} quedo agendada y guardada.`)
       event.currentTarget.reset()
       setSelectedRequestId(approvedRequests.find((item) => item.id !== requestId)?.id || '')
     } catch (error) {
@@ -144,10 +143,9 @@ export function FreightAssignmentForm({ drivers, freightRequests, onSaved, truck
           <textarea id="assignmentNotes" name="notes" placeholder="Condiciones de carga, temperatura, permisos o contacto en destino" />
         </label>
         <div className="span-2 stack">
-          <Button disabled={isSaving} icon={<CalendarCheck size={18} />} type="submit">
-            {isSaving ? 'Guardando...' : 'Confirmar asignacion'}
+          <Button icon={<CalendarCheck size={18} />} loading={isSaving} type="submit">
+            Confirmar asignacion
           </Button>
-          {confirmedMessage ? <p className="muted-text" role="status">{confirmedMessage}</p> : null}
           <p className="muted-text">
             Camiones no disponibles para flete: {unavailableTrucks.map((truck) => truck.plate).join(', ') || 'ninguno'}
           </p>

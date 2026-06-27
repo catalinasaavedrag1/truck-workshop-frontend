@@ -114,14 +114,6 @@ export function getTruckPreventiveSummary(
   }
 }
 
-export function getWorstMaintenanceRisk(plans: PreventiveMaintenancePlan[], truck?: FleetTruck) {
-  return plans.reduce<MaintenanceRiskStatus>((currentRisk, plan) => {
-    const snapshot = getMaintenancePlanSnapshot(plan, truck)
-
-    return riskWeight[snapshot.effectiveRisk] > riskWeight[currentRisk] ? snapshot.effectiveRisk : currentRisk
-  }, 'OK')
-}
-
 function getEffectiveRisk(
   plan: PreventiveMaintenancePlan,
   daysRemaining?: number,
