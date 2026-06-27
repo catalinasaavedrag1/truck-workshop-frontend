@@ -139,6 +139,16 @@ export const env = {
     defaultRegionCode: process.env.FUEL_DEFAULT_REGION_CODE || '13',
     fallbackDieselPricePerLiter: Math.max(0, parseNumber(process.env.FUEL_FALLBACK_DIESEL_PRICE_PER_LITER, 1050)),
   },
+  // GPS / telematica DS-TMS (posicion en vivo de la flota). Tokens server-side,
+  // se leen desde variables de entorno (backend/.env). Nunca hardcodear secretos.
+  dsTms: {
+    enabled: parseBoolean(process.env.DSTMS_ENABLED, true),
+    baseUrl: process.env.DSTMS_BASE_URL || 'https://www.ds-tms.com',
+    client: process.env.DSTMS_CLIENT || 'mimbral',
+    lastPositionToken: process.env.DSTMS_LAST_POSITION_TOKEN || '',
+    historyToken: process.env.DSTMS_HISTORY_TOKEN || '',
+    requestTimeoutMs: Math.max(1000, parseNumber(process.env.DSTMS_REQUEST_TIMEOUT_MS, 15000)),
+  },
   corsOrigins: parseList(process.env.CORS_ORIGIN, [
     'http://127.0.0.1:5173',
     'http://localhost:5173',

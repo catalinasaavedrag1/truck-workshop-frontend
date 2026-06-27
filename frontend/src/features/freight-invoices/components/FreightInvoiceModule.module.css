@@ -1,0 +1,93 @@
+.pageStack {
+  display: grid;
+  gap: 12px;
+}
+
+.linesTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.linesTable th,
+.linesTable td {
+  padding: 7px 9px;
+  text-align: right;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.linesTable th:nth-child(1),
+.linesTable td:nth-child(1),
+.linesTable th:nth-child(2),
+.linesTable td:nth-child(2) {
+  text-align: left;
+  white-space: normal;
+}
+
+.linesTable thead th {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.linesTable tfoot td {
+  font-weight: 850;
+  border-top: 2px solid var(--color-border-strong);
+}
+
+.backups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.backup {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 760;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+}
+
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.flowStep {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+}
+
+.flowStepDone {
+  color: var(--color-success);
+  background: var(--color-success-soft);
+  border-color: rgb(6 118 71 / 0.2);
+}
+
+.flowStepCurrent {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.32);
+}
+
+.flowArrow {
+  color: var(--color-border-strong);
+}

@@ -2448,6 +2448,284 @@ export const seedRecordsByResource = {
       "updatedAt": "2026-03-18T10:00:00.000Z"
     }
   ],
+  "purchase-invoices": [
+    {
+      "id": "pinv-001",
+      "invoiceNumber": "F-48213",
+      "supplierId": "sup-001",
+      "supplierName": "Frenos Andinos Ltda.",
+      "purchaseOrderId": "po-001",
+      "purchaseOrderNumber": "OC-2026-0007",
+      "status": "REGISTERED",
+      "invoiceDate": "2026-06-20T12:00:00.000Z",
+      "receivedAt": "2026-06-21T09:30:00.000Z",
+      "dueDate": "2026-07-20T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "items": [
+        {
+          "sku": "BRK-2210",
+          "name": "Valvula moduladora freno",
+          "orderedQuantity": 2,
+          "receivedQuantity": 2,
+          "invoicedQuantity": 2,
+          "unitPrice": 315000
+        }
+      ],
+      "net": 630000,
+      "tax": 119700,
+      "total": 749700,
+      "notes": "Pendiente de conciliar contra recepcion.",
+      "createdAt": "2026-06-21T09:35:00.000Z",
+      "updatedAt": "2026-06-21T09:35:00.000Z"
+    },
+    {
+      "id": "pinv-002",
+      "invoiceNumber": "F-90455",
+      "supplierId": "sup-002",
+      "supplierName": "Lubricantes del Sur SA",
+      "purchaseOrderId": "po-002",
+      "purchaseOrderNumber": "OC-2026-0008",
+      "status": "WITH_DIFFERENCE",
+      "invoiceDate": "2026-06-18T12:00:00.000Z",
+      "receivedAt": "2026-06-19T10:00:00.000Z",
+      "dueDate": "2026-07-18T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "items": [
+        {
+          "sku": "OIL-15W40",
+          "name": "Aceite motor 15W40 (tambor)",
+          "orderedQuantity": 10,
+          "receivedQuantity": 8,
+          "invoicedQuantity": 10,
+          "unitPrice": 48000
+        }
+      ],
+      "net": 480000,
+      "tax": 91200,
+      "total": 571200,
+      "notes": "Diferencia: se facturan 10 pero se recibieron 8. Retener pago.",
+      "createdAt": "2026-06-19T10:05:00.000Z",
+      "updatedAt": "2026-06-19T10:05:00.000Z"
+    },
+    {
+      "id": "pinv-003",
+      "invoiceNumber": "F-11782",
+      "supplierId": "sup-003",
+      "supplierName": "Neumaticos Pacifico SpA",
+      "purchaseOrderId": "po-003",
+      "purchaseOrderNumber": "OC-2026-0009",
+      "status": "APPROVED",
+      "invoiceDate": "2026-06-10T12:00:00.000Z",
+      "receivedAt": "2026-06-11T11:00:00.000Z",
+      "dueDate": "2026-07-10T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "items": [
+        {
+          "sku": "TIRE-1100R20",
+          "name": "Neumatico 1100R20",
+          "orderedQuantity": 6,
+          "receivedQuantity": 6,
+          "invoicedQuantity": 6,
+          "unitPrice": 240000
+        }
+      ],
+      "net": 1440000,
+      "tax": 273600,
+      "total": 1713600,
+      "approvedBy": "Javier Torres",
+      "approvedAt": "2026-06-12T15:00:00.000Z",
+      "notes": "Conciliada y aprobada. Pendiente registro contable.",
+      "createdAt": "2026-06-11T11:10:00.000Z",
+      "updatedAt": "2026-06-11T11:10:00.000Z"
+    },
+    {
+      "id": "pinv-004",
+      "invoiceNumber": "F-30021",
+      "supplierId": "sup-001",
+      "supplierName": "Frenos Andinos Ltda.",
+      "purchaseOrderId": "po-004",
+      "purchaseOrderNumber": "OC-2026-0005",
+      "status": "PAID",
+      "invoiceDate": "2026-05-12T12:00:00.000Z",
+      "receivedAt": "2026-05-13T09:00:00.000Z",
+      "dueDate": "2026-06-11T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "items": [
+        {
+          "sku": "BRK-1180",
+          "name": "Pastillas de freno (juego)",
+          "orderedQuantity": 8,
+          "receivedQuantity": 8,
+          "invoicedQuantity": 8,
+          "unitPrice": 62000
+        }
+      ],
+      "net": 496000,
+      "tax": 94240,
+      "total": 590240,
+      "approvedBy": "Javier Torres",
+      "approvedAt": "2026-05-15T10:00:00.000Z",
+      "accountingEntry": "AS-2026-0412",
+      "accountedAt": "2026-05-16T09:00:00.000Z",
+      "paidAt": "2026-06-10T14:30:00.000Z",
+      "paymentReference": "TRF-889217",
+      "notes": "Ciclo completo: conciliada, aprobada, contabilizada y pagada.",
+      "createdAt": "2026-05-13T09:10:00.000Z",
+      "updatedAt": "2026-05-13T09:10:00.000Z"
+    }
+  ],
+  "freight-invoices": [
+    {
+      "id": "finv-001",
+      "invoiceNumber": "F-001245",
+      "customerId": "customer-ruta-norte",
+      "customerName": "Ruta Norte SpA",
+      "status": "SENT",
+      "issueDate": "2026-06-07T12:00:00.000Z",
+      "dueDate": "2026-07-07T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "periodStart": "2026-06-01T00:00:00.000Z",
+      "periodEnd": "2026-06-07T23:59:59.000Z",
+      "lines": [
+        {
+          "date": "2026-06-02T00:00:00.000Z",
+          "description": "Flete contenedor 40 - Talca -> Puerto San Antonio",
+          "reference": "FLE-2026-021",
+          "kind": "FREIGHT",
+          "amount": 250000
+        },
+        {
+          "date": "2026-06-04T00:00:00.000Z",
+          "description": "Flete contenedor 20 - Rancagua -> Puerto Valparaiso",
+          "reference": "FLE-2026-024",
+          "kind": "FREIGHT",
+          "amount": 180000
+        },
+        {
+          "date": "2026-06-06T00:00:00.000Z",
+          "description": "Flete contenedor reefer - Curico -> Puerto San Antonio",
+          "reference": "FLE-2026-028",
+          "kind": "FREIGHT",
+          "amount": 320000
+        },
+        {
+          "date": "2026-06-06T00:00:00.000Z",
+          "description": "Peajes ruta",
+          "kind": "SURCHARGE",
+          "amount": 35000
+        },
+        {
+          "date": "2026-06-06T00:00:00.000Z",
+          "description": "Espera de contenedor en puerto",
+          "kind": "SURCHARGE",
+          "amount": 20000
+        }
+      ],
+      "backupDocuments": [
+        "Carta de porte",
+        "Comprobante de entrega firmado",
+        "Registro GPS",
+        "Documentos del puerto"
+      ],
+      "net": 805000,
+      "tax": 152950,
+      "total": 957950,
+      "sentAt": "2026-06-07T15:00:00.000Z",
+      "notes": "Consolidado semanal. Enviada con respaldos, en espera de aprobacion del cliente.",
+      "createdAt": "2026-06-07T14:30:00.000Z",
+      "updatedAt": "2026-06-07T14:30:00.000Z"
+    },
+    {
+      "id": "finv-002",
+      "invoiceNumber": "F-001239",
+      "customerId": "customer-maipo",
+      "customerName": "Transportes Maipo",
+      "status": "APPROVED",
+      "issueDate": "2026-06-03T12:00:00.000Z",
+      "dueDate": "2026-07-03T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "periodStart": "2026-05-26T00:00:00.000Z",
+      "periodEnd": "2026-06-01T23:59:59.000Z",
+      "lines": [
+        {
+          "date": "2026-05-28T00:00:00.000Z",
+          "description": "Flete Talca -> Puerto San Antonio",
+          "reference": "FLE-2026-018",
+          "kind": "FREIGHT",
+          "amount": 250000
+        },
+        {
+          "date": "2026-05-30T00:00:00.000Z",
+          "description": "Peajes ruta",
+          "kind": "SURCHARGE",
+          "amount": 35000
+        },
+        {
+          "date": "2026-05-30T00:00:00.000Z",
+          "description": "Espera de contenedor",
+          "kind": "SURCHARGE",
+          "amount": 20000
+        }
+      ],
+      "backupDocuments": [
+        "Carta de porte",
+        "Comprobante de entrega"
+      ],
+      "net": 305000,
+      "tax": 57950,
+      "total": 362950,
+      "sentAt": "2026-06-03T16:00:00.000Z",
+      "approvedAt": "2026-06-05T11:00:00.000Z",
+      "approvedBy": "Marcela Soto (Transportes Maipo)",
+      "notes": "Aprobada por el cliente. En cuentas por cobrar.",
+      "createdAt": "2026-06-03T15:30:00.000Z",
+      "updatedAt": "2026-06-03T15:30:00.000Z"
+    },
+    {
+      "id": "finv-003",
+      "invoiceNumber": "F-001210",
+      "customerId": "customer-ruta-norte",
+      "customerName": "Ruta Norte SpA",
+      "status": "PAID",
+      "issueDate": "2026-05-10T12:00:00.000Z",
+      "dueDate": "2026-06-09T12:00:00.000Z",
+      "paymentTerms": "DIAS_30",
+      "periodStart": "2026-05-01T00:00:00.000Z",
+      "periodEnd": "2026-05-09T23:59:59.000Z",
+      "lines": [
+        {
+          "date": "2026-05-05T00:00:00.000Z",
+          "description": "Flete contenedor 40 - Linares -> Puerto San Antonio",
+          "reference": "FLE-2026-009",
+          "kind": "FREIGHT",
+          "amount": 280000
+        },
+        {
+          "date": "2026-05-07T00:00:00.000Z",
+          "description": "Flete contenedor 20 - Talca -> Puerto Valparaiso",
+          "reference": "FLE-2026-012",
+          "kind": "FREIGHT",
+          "amount": 190000
+        }
+      ],
+      "backupDocuments": [
+        "Carta de porte",
+        "Comprobante de entrega",
+        "Registro GPS"
+      ],
+      "net": 470000,
+      "tax": 89300,
+      "total": 559300,
+      "sentAt": "2026-05-10T15:00:00.000Z",
+      "approvedAt": "2026-05-12T10:00:00.000Z",
+      "approvedBy": "Luis Herrera (Ruta Norte)",
+      "paidAt": "2026-06-08T13:00:00.000Z",
+      "paymentReference": "TRF-552310",
+      "notes": "Ciclo completo: emitida, enviada, aprobada y pagada.",
+      "createdAt": "2026-05-10T14:30:00.000Z",
+      "updatedAt": "2026-05-10T14:30:00.000Z"
+    }
+  ],
   "purchase-requests": [
     {
       "id": "prq-001",

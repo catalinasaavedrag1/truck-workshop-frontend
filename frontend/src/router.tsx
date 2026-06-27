@@ -124,6 +124,30 @@ const PurchaseOrdersPage = lazyPage(
   () => import('./features/purchase-orders/pages/PurchaseOrdersPage'),
   'PurchaseOrdersPage',
 )
+const PurchaseInvoicesPage = lazyPage(
+  () => import('./features/purchase-invoices/pages/PurchaseInvoicesPage'),
+  'PurchaseInvoicesPage',
+)
+const CreatePurchaseInvoicePage = lazyPage(
+  () => import('./features/purchase-invoices/pages/CreatePurchaseInvoicePage'),
+  'CreatePurchaseInvoicePage',
+)
+const PurchaseInvoiceDetailPage = lazyPage(
+  () => import('./features/purchase-invoices/pages/PurchaseInvoiceDetailPage'),
+  'PurchaseInvoiceDetailPage',
+)
+const FreightInvoicesPage = lazyPage(
+  () => import('./features/freight-invoices/pages/FreightInvoicesPage'),
+  'FreightInvoicesPage',
+)
+const CreateFreightInvoicePage = lazyPage(
+  () => import('./features/freight-invoices/pages/CreateFreightInvoicePage'),
+  'CreateFreightInvoicePage',
+)
+const FreightInvoiceDetailPage = lazyPage(
+  () => import('./features/freight-invoices/pages/FreightInvoiceDetailPage'),
+  'FreightInvoiceDetailPage',
+)
 const QuoteDetailPage = lazyPage(() => import('./features/quotes/pages/QuoteDetailPage'), 'QuoteDetailPage')
 const QuotesPage = lazyPage(() => import('./features/quotes/pages/QuotesPage'), 'QuotesPage')
 const RepairSolutionPage = lazyPage(
@@ -264,6 +288,12 @@ const routes = [
       { element: routeElement(<PurchaseOrdersPage />), path: ROUTES.purchaseOrders },
       { element: routeElement(<CreatePurchaseOrderPage />), path: ROUTES.purchaseOrderNew },
       { element: routeElement(<PurchaseOrderDetailPage />), path: ROUTES.purchaseOrderDetail() },
+      { element: routeElement(<PurchaseInvoicesPage />), path: ROUTES.purchaseInvoices },
+      { element: routeElement(<CreatePurchaseInvoicePage />), path: ROUTES.purchaseInvoiceNew },
+      { element: routeElement(<PurchaseInvoiceDetailPage />), path: ROUTES.purchaseInvoiceDetail() },
+      { element: routeElement(<FreightInvoicesPage />), path: ROUTES.freightInvoices },
+      { element: routeElement(<CreateFreightInvoicePage />), path: ROUTES.freightInvoiceNew },
+      { element: routeElement(<FreightInvoiceDetailPage />), path: ROUTES.freightInvoiceDetail() },
       { element: routeElement(<SuppliersPage />), path: ROUTES.suppliers },
       { element: routeElement(<CreateSupplierPage />), path: ROUTES.supplierNew },
       { element: routeElement(<SupplierDetailPage />), path: ROUTES.supplierDetail() },

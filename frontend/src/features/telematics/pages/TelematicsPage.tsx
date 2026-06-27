@@ -10,6 +10,7 @@ import { useResourceList } from '../../../shared/hooks/useResourceList'
 import { PageContainer } from '../../../shared/layout/PageContainer/PageContainer'
 import { fleetTrucksMock } from '../../fleet/mocks/fleet.mock'
 import type { FleetTruck } from '../../fleet/types/fleet.types'
+import { LiveGpsPanel } from '../components/LiveGpsPanel'
 import { RouteTimeline } from '../components/RouteTimeline'
 import { TelematicsStatsCards } from '../components/TelematicsStatsCards'
 import styles from '../components/TelematicsModule.module.css'
@@ -104,6 +105,8 @@ export function TelematicsPage() {
         />
 
         <TelematicsStatsCards items={items} totalFleet={trucks.length} />
+
+        <LiveGpsPanel />
 
         <div className={styles.controlStrip}>
           <Input

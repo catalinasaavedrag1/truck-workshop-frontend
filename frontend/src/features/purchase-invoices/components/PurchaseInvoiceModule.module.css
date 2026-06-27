@@ -1,0 +1,109 @@
+.pageStack {
+  display: grid;
+  gap: 12px;
+}
+
+.reconTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.reconTable th,
+.reconTable td {
+  padding: 7px 9px;
+  text-align: right;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.reconTable th:first-child,
+.reconTable td:first-child {
+  text-align: left;
+  white-space: normal;
+}
+
+.reconTable thead th {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.reconTable tfoot td {
+  font-weight: 850;
+  border-top: 2px solid var(--color-border-strong);
+}
+
+.matchOk {
+  color: var(--color-success);
+  font-weight: 800;
+}
+
+.matchDiff {
+  color: var(--color-danger);
+  font-weight: 800;
+}
+
+.reconSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.totals {
+  display: grid;
+  gap: 4px;
+  justify-items: end;
+  min-width: 220px;
+}
+
+.totalsRow {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.totalsRow strong {
+  font-size: 1.02rem;
+}
+
+/* Flujo de estados de la factura */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.flowStep {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  background: #f9fbfc;
+}
+
+.flowStepDone {
+  color: var(--color-success);
+  background: var(--color-success-soft);
+  border-color: rgb(6 118 71 / 0.2);
+}
+
+.flowStepCurrent {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border-color: rgb(15 118 110 / 0.32);
+}
+
+.flowArrow {
+  color: var(--color-border-strong);
+}

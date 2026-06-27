@@ -32,6 +32,8 @@ import { alertSubscriptionsMock, notificationsMock } from '../../frontend/src/fe
 import { rolesMock, userRoleAssignmentsMock } from '../../frontend/src/features/permissions/mocks/permissions.mock'
 import { preventiveMaintenanceMock } from '../../frontend/src/features/preventive-maintenance/mocks/preventiveMaintenance.mock'
 import { purchaseOrdersMock, purchaseRequestsMock } from '../../frontend/src/features/purchase-orders/mocks/purchaseOrders.mock'
+import { purchaseInvoicesMock } from '../../frontend/src/features/purchase-invoices/mocks/purchaseInvoices.mock'
+import { freightInvoicesMock } from '../../frontend/src/features/freight-invoices/mocks/freightInvoices.mock'
 import { quotesMock } from '../../frontend/src/features/quotes/mocks/quotes.mock'
 import { scheduleEventsMock, waitingQueueMock } from '../../frontend/src/features/schedule/mocks/schedule.mock'
 import { slaConfigsMock } from '../../frontend/src/features/sla/mocks/sla.mock'
@@ -134,6 +136,8 @@ export const seedRecordsByResource = {
   parts: partsMock.map(withTimestamps),
   'preventive-maintenance-plans': preventiveMaintenanceMock.map(withTimestamps),
   'purchase-orders': purchaseOrdersMock.map(withTimestamps),
+  'purchase-invoices': purchaseInvoicesMock.map(withTimestamps),
+  'freight-invoices': freightInvoicesMock.map(withTimestamps),
   'purchase-requests': purchaseRequestsMock.map(withTimestamps),
   quotes: quotesMock.map(withTimestamps),
   'repair-solutions': deriveRepairSolutions(),

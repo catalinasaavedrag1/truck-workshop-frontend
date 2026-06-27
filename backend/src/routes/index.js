@@ -10,6 +10,7 @@ import { diagnosticRouter } from '../modules/diagnostics/diagnostic.routes.js'
 import { driverTripSheetRouter } from '../modules/driver-trip-sheets/driver-trip-sheet.routes.js'
 import { fleetHealthScoreRouter } from '../modules/fleet/fleet-health-score.routes.js'
 import { fuelPriceRouter } from '../modules/fuel-prices/fuel-price.routes.js'
+import { gpsRouter } from '../modules/telematics-gps/gps.routes.js'
 import { freightAssignmentRouter } from '../modules/freight/freight-assignment.routes.js'
 import { freightPricingRouter } from '../modules/freight/freight-pricing.routes.js'
 import { mapsRouter } from '../modules/maps/maps.routes.js'
@@ -60,6 +61,7 @@ export function registerRoutes(app) {
   api.use('/driver-trip-sheets', driverTripSheetRouter)
   api.use('/fleet/health-scores', fleetHealthScoreRouter)
   api.use('/fuel/prices', fuelPriceRouter)
+  api.use('/gps', gpsRouter)
   api.use('/freight/assignments', freightAssignmentRouter)
   api.use('/freight/pricing', freightPricingRouter)
   api.use('/maps', mapsRouter)
