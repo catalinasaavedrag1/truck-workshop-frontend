@@ -26,7 +26,7 @@ export function FleetOperationsHub({ drivers, healthScoreAverage = 0, trucks }: 
     {
       helper: 'Datos base, chofer asignado, capacidad y propiedad.',
       icon: <Truck aria-hidden size={16} />,
-      label: 'Ficha camiones',
+      label: 'Ficha de flota',
       metric: `${trucks.length}`,
       metricLabel: 'unidades',
       to: ROUTES.fleetTrucks,
@@ -50,7 +50,7 @@ export function FleetOperationsHub({ drivers, healthScoreAverage = 0, trucks }: 
     {
       helper: 'Casos, fallas, bloqueos y unidades en reparacion.',
       icon: <ClipboardList aria-hidden size={16} />,
-      label: 'Taller camiones',
+      label: 'Camiones en taller',
       metric: `${inWorkshop}`,
       metricLabel: 'en taller',
       to: ROUTES.trucks,

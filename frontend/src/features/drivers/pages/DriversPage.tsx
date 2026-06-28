@@ -78,7 +78,7 @@ export function DriversPage() {
             </Link>
             <Link to={ROUTES.fleetTrucks}>
               <Button icon={<Truck size={18} />} variant="secondary">
-                Ficha camiones
+                Ficha de flota
               </Button>
             </Link>
             <Link to={ROUTES.driverPerformanceReport}>

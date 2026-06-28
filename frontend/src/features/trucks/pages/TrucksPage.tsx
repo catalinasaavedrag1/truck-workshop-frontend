@@ -75,8 +75,8 @@ export function TrucksPage() {
             </Link>
           </div>
         }
-        description="Seguimiento de unidades con mantenimiento, servicio pendiente o bloqueo operativo. La ficha maestra queda separada para evitar duplicidad."
-        title="Taller camiones"
+        description="Camiones con mantenimiento, servicio pendiente o bloqueo. La ficha maestra esta en Flota."
+        title="Camiones en taller"
       />
       <div className={styles.summaryGrid}>
         <MetricCard

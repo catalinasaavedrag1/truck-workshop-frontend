@@ -85,7 +85,7 @@ export function TruckMasterPage() {
         <div className="section-heading-row">
           <div>
             <h2 className="section-title">Registro maestro</h2>
-            <p className="muted-text">Para fallas, reparaciones y casos activos usa la pestaña Taller camiones.</p>
+            <p className="muted-text">Para fallas, reparaciones y casos activos usa Camiones en taller (seccion Taller).</p>
           </div>
           <Wrench size={20} />
         </div>
