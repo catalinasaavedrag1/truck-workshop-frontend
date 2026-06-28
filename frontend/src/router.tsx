@@ -3,6 +3,7 @@ import type { ComponentType, ReactNode } from 'react'
 import { Navigate, createBrowserRouter, createHashRouter } from 'react-router-dom'
 import { ROUTES } from './config/routes'
 import { RequireAuth } from './features/auth/components/RequireAuth'
+import { ClientFreightTrackingRedirect } from './features/freight/pages/ClientFreightTrackingRedirect'
 import { LoadingState } from './shared/components/LoadingState/LoadingState'
 import { RouteNotFound } from './shared/components/RouteNotFound/RouteNotFound'
 import { MainLayout } from './shared/layout/MainLayout/MainLayout'
@@ -239,20 +240,22 @@ const routes = [
     element: routeElement(<LoginPage />),
     path: ROUTES.login,
   },
+  // Compatibilidad: el esquema antiguo /portal/freight/* redirige al canonico
+  // /freight/client-portal/* para tener un solo namespace de portal de cliente.
   {
-    element: routeElement(<ClientFreightRequestPage />),
+    element: <Navigate replace to={ROUTES.freightClientPortal} />,
     path: ROUTES.clientFreightRequest,
   },
   {
-    element: routeElement(<ClientFreightRequestsPage />),
+    element: <Navigate replace to={ROUTES.freightClientPortalRequests} />,
     path: ROUTES.clientFreightRequests,
   },
   {
-    element: routeElement(<ClientFreightHistoryPage />),
+    element: <Navigate replace to={ROUTES.freightClientPortalHistory} />,
     path: ROUTES.clientFreightHistory,
   },
   {
-    element: routeElement(<ClientFreightTrackingPage />),
+    element: <ClientFreightTrackingRedirect />,
     path: ROUTES.clientFreightTracking(),
   },
   {
