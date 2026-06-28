@@ -44,7 +44,6 @@ export function MainLayout() {
   // expandido (en vez del riel que se expande solo al pasar el mouse).
   const [isSidebarPinnedOpen, setIsSidebarPinnedOpen] = useState(readSidebarPinnedPreference)
   const [sidebarSearchFocusSignal, setSidebarSearchFocusSignal] = useState(0)
-  const [globalSearchFocusSignal, setGlobalSearchFocusSignal] = useState(0)
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false)
   const [shortcutHelpOpen, setShortcutHelpOpen] = useState(false)
   const [shortcutFeedback, setShortcutFeedback] = useState('')
@@ -140,10 +139,6 @@ export function MainLayout() {
     }
   }, [isDesktop])
 
-  const focusGlobalSearch = useCallback(() => {
-    setGlobalSearchFocusSignal((current) => current + 1)
-  }, [])
-
   const openShortcutHelp = useCallback(() => {
     setShortcutHelpOpen(true)
   }, [])
@@ -191,7 +186,6 @@ export function MainLayout() {
 
   useGlobalShortcuts({
     navigate,
-    onFocusGlobalSearch: focusGlobalSearch,
     onFocusMenuSearch: focusMenuSearch,
     onOpenCommandPalette: openCommandPalette,
     onOpenHelp: openShortcutHelp,
@@ -231,7 +225,6 @@ export function MainLayout() {
       <div className={styles.workspace}>
         <ConnectionBanner />
         <Topbar
-          focusSearchSignal={globalSearchFocusSignal}
           isSidebarOpen={isSidebarVisible}
           isSidebarPinned={isSidebarPinned}
           onOpenShortcutHelp={openShortcutHelp}

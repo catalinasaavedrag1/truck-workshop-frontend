@@ -17,7 +17,6 @@ interface UseGlobalShortcutsOptions {
   navigate: NavigateFunction
   pathname: string
   preferences: ShortcutPreferences
-  onFocusGlobalSearch: () => void
   onFocusMenuSearch: () => void
   onOpenCommandPalette?: () => void
   onOpenHelp: () => void
@@ -28,7 +27,6 @@ const SPACE_SEQUENCE_TIMEOUT_MS = 900
 
 export function useGlobalShortcuts({
   navigate,
-  onFocusGlobalSearch,
   onFocusMenuSearch,
   onOpenCommandPalette,
   onOpenHelp,
@@ -51,13 +49,8 @@ export function useGlobalShortcuts({
 
       if (!targetIsEditable && isGlobalSearchShortcut(event, preferences)) {
         event.preventDefault()
-        if (onOpenCommandPalette) {
-          onOpenCommandPalette()
-          onShortcutFeedback?.('Paleta de comandos abierta')
-        } else {
-          onFocusGlobalSearch()
-          onShortcutFeedback?.('Busqueda global enfocada')
-        }
+        onOpenCommandPalette?.()
+        onShortcutFeedback?.('Paleta de comandos abierta')
         return
       }
 
@@ -109,7 +102,6 @@ export function useGlobalShortcuts({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [
     navigate,
-    onFocusGlobalSearch,
     onFocusMenuSearch,
     onOpenCommandPalette,
     onOpenHelp,

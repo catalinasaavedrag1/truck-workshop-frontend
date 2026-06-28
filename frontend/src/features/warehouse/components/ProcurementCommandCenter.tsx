@@ -1088,13 +1088,8 @@ export function ProcurementCommandCenter({
       const target = event.target
       const isTyping = target instanceof HTMLElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)
 
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault()
-        searchInputRef.current?.focus()
-        searchInputRef.current?.select()
-        return
-      }
-
+      // Ctrl/Cmd+K queda reservado globalmente para la busqueda del menu; aqui no
+      // se intercepta para evitar el conflicto. La busqueda de bodega se usa por clic.
       if (event.key === 'Escape') {
         if (context) {
           setContext(undefined)
