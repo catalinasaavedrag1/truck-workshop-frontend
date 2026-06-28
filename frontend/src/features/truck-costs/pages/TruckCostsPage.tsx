@@ -66,7 +66,7 @@ export function TruckCostsPage() {
             year={year}
           />
         }
-        description="Costo total por camion conectado con combustible, incidentes, fletes, peajes y registros manuales."
+        description="Costo total por camion: combustible, incidentes, fletes y peajes."
         title="Costos por camion"
       />
       {isLoading ? <LoadingState label="Calculando costos conectados" /> : null}

@@ -33,7 +33,7 @@ export function FuelPage() {
             </Link>
           </div>
         }
-        description="Control operacional de cargas, costo, rendimiento km/l, desviaciones y evidencia por camion o chofer."
+        description="Cargas, costo, rendimiento km/l y desviaciones por camion."
         title="Combustible"
       />
       <FuelPriceStatusCard />

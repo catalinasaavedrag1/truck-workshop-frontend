@@ -6,6 +6,7 @@ import { Badge } from '../../../shared/components/Badge/Badge'
 import { Button } from '../../../shared/components/Button/Button'
 import { Card } from '../../../shared/components/Card/Card'
 import { ConfirmModal } from '../../../shared/components/ConfirmModal/ConfirmModal'
+import { toast } from '../../../shared/services/toastStore'
 import { ErrorState } from '../../../shared/components/ErrorState/ErrorState'
 import { FilterBar } from '../../../shared/components/FilterBar/FilterBar'
 import { Input } from '../../../shared/components/Input/Input'
@@ -50,6 +51,7 @@ export function DriverTripSheetsPage() {
   const [statusFilter, setStatusFilter] = useState<'all' | DriverTripSheetStatus>('all')
   const [driverFilter, setDriverFilter] = useState('all')
   const [errorMessage, setErrorMessage] = useState('')
+  const [isDeletingSheet, setIsDeletingSheet] = useState(false)
   const { data: drivers } = useResourceList<Driver>('/drivers', driversMock, { order: 'asc', sort: 'name' })
   const { data: trucks } = useResourceList<Truck>('/trucks', trucksMock, { order: 'asc', sort: 'plate' })
   const { data: assignments } = useResourceList<FreightAssignment>('/freight/assignments', freightAssignmentsMock, {
@@ -143,6 +145,7 @@ export function DriverTripSheetsPage() {
     }
 
     setErrorMessage('')
+    setIsDeletingSheet(true)
 
     try {
       await deleteDriverTripSheet(sheetPendingDeletion.id)
@@ -153,9 +156,14 @@ export function DriverTripSheetsPage() {
         setSelectedSheet(null)
       }
 
+      toast.success('Planilla eliminada', `${sheetPendingDeletion.sheetNumber} se retiro del control operativo.`)
       setSheetPendingDeletion(null)
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error))
+      const message = getApiErrorMessage(error)
+      setErrorMessage(message)
+      toast.error('No se pudo eliminar la planilla', message)
+    } finally {
+      setIsDeletingSheet(false)
     }
   }
 
@@ -329,6 +337,7 @@ export function DriverTripSheetsPage() {
             ? `La planilla ${sheetPendingDeletion.sheetNumber} se retirara del control operativo.`
             : undefined
         }
+        isConfirming={isDeletingSheet}
         onCancel={() => setSheetPendingDeletion(null)}
         onConfirm={confirmDelete}
         open={Boolean(sheetPendingDeletion)}

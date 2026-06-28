@@ -151,7 +151,9 @@ export function FleetGpsMap({ positions, selectedPlate, onSelect, height = 380 }
 
   return (
     <div
+      aria-label="Mapa de la flota en tiempo real. Use la tabla de abajo para ver cada movil."
       ref={containerRef}
+      role="region"
       style={{
         height,
         width: '100%',

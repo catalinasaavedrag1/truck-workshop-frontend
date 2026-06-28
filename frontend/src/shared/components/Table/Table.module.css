@@ -208,6 +208,12 @@
   cursor: pointer;
 }
 
+.sortButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
 .headerLabel {
   display: inline-flex;
   min-height: 34px;
@@ -317,6 +323,11 @@
 .pagination button:disabled {
   opacity: 0.48;
   cursor: not-allowed;
+}
+
+.pagination button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .srOnly {

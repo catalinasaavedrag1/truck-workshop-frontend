@@ -102,7 +102,7 @@ export function TirePerformanceReportPage() {
             </Link>
           </div>
         }
-        description="Flujo completo para medir costo real por kilometro: compra, stock, instalacion, retiro y cierre de datos."
+        description="Costo real por kilometro: compra, instalacion, retiro y cierre."
         title="Rendimiento de neumaticos"
       />
       <TireModuleNav />

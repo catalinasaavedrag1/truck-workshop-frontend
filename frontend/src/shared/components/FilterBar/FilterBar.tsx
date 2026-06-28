@@ -60,6 +60,7 @@ export function FilterBar({
         <div className={styles.actions}>
           {secondary ? (
             <Button
+              aria-controls="filterbar-secondary-panel"
               aria-expanded={showSecondary}
               icon={
                 <ChevronDown
@@ -111,7 +112,11 @@ export function FilterBar({
           )}
         </div>
       ) : null}
-      {secondary && showSecondary ? <div className={styles.secondary}>{secondary}</div> : null}
+      {secondary && showSecondary ? (
+        <div className={styles.secondary} id="filterbar-secondary-panel">
+          {secondary}
+        </div>
+      ) : null}
     </section>
   )
 }

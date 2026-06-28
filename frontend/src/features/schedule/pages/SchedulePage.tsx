@@ -129,7 +129,7 @@ export function SchedulePage() {
             <Button icon={<CalendarPlus size={18} />}>Nuevo caso</Button>
           </Link>
         }
-        description="Planificador diario por estacion de trabajo, horario, mecanico, SLA, repuestos y cola de espera."
+        description="Planificador diario por estacion, horario, mecanico y SLA."
         title="Agenda del taller"
       />
       <ScheduleFilters bays={bays} filters={filters} mechanics={mechanics} setFilters={setFilters} />
